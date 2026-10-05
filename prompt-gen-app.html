@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Web App Prompt Generator</title>
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #0f172a;
+            --border: #e2e8f0;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.5;
+            padding: 2rem 1rem;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        h1 {
+            margin: 0 0 0.5rem 0;
+            color: var(--primary);
+        }
+
+        .card {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            margin-bottom: 2rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 600px) {
+            .grid { grid-template-columns: 1fr; }
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group.full-width {
+            grid-column: span 2;
+        }
+
+        @media (max-width: 600px) {
+            .form-group.full-width { grid-column: span 1; }
+        }
+
+        label {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        select, textarea, input[type="file"] {
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 1rem;
+            background: #fff;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            resize: vertical;
+            height: 120px;
+        }
+
+        .word-count {
+            text-align: right;
+            font-size: 0.8rem;
+            color: #64748b;
+            margin-top: -0.25rem;
+        }
+
+        button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .actions {
+            margin-top: 1.5rem;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .output-box {
+            background: #1e293b;
+            color: #f8fafc;
+            padding: 1.5rem;
+            border-radius: 8px;
+            white-space: pre-wrap;
+            font-family: 'Courier New', Courier, monospace;
+            margin-top: 1rem;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .saved-section h3 {
+            margin-top: 0;
+        }
+
+        .saved-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .saved-slot {
+            background: #e2e8f0;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .saved-slot:hover {
+            background: #cbd5e1;
+        }
+
+        .saved-slot.active {
+            background: var(--primary);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>AI Prompt Generator</h1>
+        <p>Configure your web app specifications to generate a structured LLM prompt.</p>
+    </header>
+
+    <div class="card">
+        <form id="promptForm" onsubmit="event.preventDefault(); generatePrompt();">
+            <div class="grid">
+                
+                <div class="form-group">
+                    <label for="fileStructure">File Structure</label>
+                    <select id="fileStructure">
+                        <option value="Single file (HTML with embedded CSS/JavaScript)">HTML with embedded CSS & JS</option>
+                        <option value="Separated files (Separate HTML, JS, and CSS files)">Separate HTML, JS, and CSS files</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="cssStyle">CSS Style Theme</label>
+                    <select id="cssStyle">
+                        <option value="Bright and bubbly (rounded corners, playful typography, cheerful vibes)">Bright and Bubbly</option>
+                        <option value="Sleek and cool (minimalist, clean lines, professional modernism)">Sleek and Cool</option>
+                        <option value="High-tech looking (dark mode focus, neon accents, cyberpunk/futuristic aesthetic)">High-Tech Looking</option>
+                        <option value="Vintage style (serif fonts, retro textures, warm nostalgic feel)">Vintage Style</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="colorScheme">Color Scheme</label>
+                    <select id="colorScheme">
+                        <option value="Pastels (soft, light, muted tones)">Pastels</option>
+                        <option value="Warm colours (reds, oranges, yellows, creams)">Warm Colours</option>
+                        <option value="Cool colours (blues, greens, purples, teals)">Cool Colours</option>
+                        <option value="Neon (high contrast, bright glowing highlights on dark backgrounds)">Neon</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="layout">Interface Layout</label>
+                    <select id="layout">
+                        <option value="Optimised responsively for both desktop and mobile layouts seamlessly">Optimised responsively (Both)</option>
+                        <option value="Desktop interface layout specifically">Desktop Only</option>
+                        <option value="Mobile interface layout specifically">Mobile Only</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="navStyle">Navigation Type</label>
+                    <select id="navStyle" onchange="toggleNavButtons()">
+                        <option value="None / Not necessary">No Navigation Needed</option>
+                        <option value="Horizontal top navigation bar">Horizontal Top Bar</option>
+                        <option value="Vertical sidebar navigation menu">Vertical Sidebar</option>
+                    </select>
+                </div>
+
+                <div class="form-group" id="navButtonsGroup" style="display: none;">
+                    <label for="navButtons">Navigation Buttons (Comma-separated)</label>
+                    <input type="text" id="navButtons" placeholder="e.g., Home, Dashboard, Settings">
+                </div>
+
+                <div class="form-group">
+                    <label for="imageLayout">Image Layout Feature</label>
+                    <select id="imageLayout">
+                        <option value="No images featured.">No Images</option>
+                        <option value="Include 1 large Hero Picture layout banner.">1 Hero Picture</option>
+                        <option value="Include 2 images arranged side-by-side.">2 Images Side-by-Side</option>
+                        <option value="Include 3 images arranged side-by-side.">3 Images Side-by-Side</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="imageUpload">Upload Assets (Max 3, JPEG/PNG)</label>
+                    <input type="file" id="imageUpload" accept=".jpg, .jpeg, .png" multiple onchange="validateFiles(this)">
+                </div>
+
+                <div class="form-group full-width">
+                    <label for="description">App Functionality & Description</label>
+                    <textarea id="description" placeholder="Describe what the app does in detail..." oninput="checkWordCount(this)"></textarea>
+                    <div class="word-count" id="wordCountLabel">0 / 400 words</div>
+                </div>
+
+            </div>
+
+            <div class="actions">
+                <button type="submit">Generate Prompt</button>
+                <button type="button" onclick="savePromptSlot()" style="background-color: #059669;">Save Setup</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="card" id="outputCard" style="display: none;">
+        <h3>Generated LLM Prompt</h3>
+        <p style="font-size: 0.85rem; color:#64748b; margin-top: -0.5rem;">Copy and paste this text directly into an AI model.</p>
+        <div class="output-box" id="promptOutput"></div>
+        <div class="actions">
+            <button onclick="copyToClipboard()">Copy to Clipboard</button>
+        </div>
+    </div>
+
+    <div class="card saved-section">
+        <h3>Saved Profiles (Max 10 Slots)</h3>
+        <p style="font-size: 0.85rem; color:#64748b; margin-top: -0.5rem;">Click a slot to reload its layout configuration.</p>
+        <div class="saved-list" id="savedSlotsContainer">
+            </div>
+    </div>
+</div>
+
+<script>
+    // Maximum limits configuration
+    const MAX_WORDS = 400;
+    const MAX_SLOTS = 10;
+    let savedPrompts = JSON.parse(localStorage.getItem('app_prompt_slots')) || {};
+
+    // Run layout adjustments on load
+    window.onload = function() {
+        renderSavedSlots();
+    };
+
+    // Toggle navigation buttons field based on selection
+    function toggleNavButtons() {
+        const navStyle = document.getElementById('navStyle').value;
+        const navButtonsGroup = document.getElementById('navButtonsGroup');
+        if(navStyle.includes('None')) {
+            navButtonsGroup.style.display = 'none';
+        } else {
+            navButtonsGroup.style.display = 'flex';
+        }
+    }
+
+    // Restrict files input to max 3 items
+    function validateFiles(input) {
+        if (input.files.length > 3) {
+            alert("You can only upload a maximum of 3 images.");
+            input.value = '';
+        }
+    }
+
+    // Word counting framework logic
+    function checkWordCount(textarea) {
+        let words = textarea.value.trim().split(/\s+/).filter(word => word.length > 0);
+        
+        if (words.length > MAX_WORDS) {
+            // Trim back to 400 words maximum safely
+            const trimmedWords = words.slice(0, MAX_WORDS);
+            textarea.value = trimmedWords.join(" ");
+            words = trimmedWords;
+        }
+        
+        document.getElementById('wordCountLabel').innerText = `${words.length} / ${MAX_WORDS} words`;
+    }
+
+    // Core prompt calculation generation logic
+    function buildPromptText() {
+        const fileStructure = document.getElementById('fileStructure').value;
+        const cssStyle = document.getElementById('cssStyle').value;
+        const colorScheme = document.getElementById('colorScheme').value;
+        const layout = document.getElementById('layout').value;
+        const navStyle = document.getElementById('navStyle').value;
+        const navButtons = document.getElementById('navButtons').value.trim();
+        const imageLayout = document.getElementById('imageLayout').value;
+        const imageUpload = document.getElementById('imageUpload').files;
+        const description = document.getElementById('description').value.trim();
+
+        let prompt = `Act as an expert frontend web developer. Create a complete, fully operational web application using HTML, CSS, and JavaScript based on the following exact specifications:\n\n`;
+        prompt += `### 1. File Structure Architecture\n- ${fileStructure}\n\n`;
+        prompt += `### 2. Design System & UI Theme\n- Visual Aesthetic Style: ${cssStyle}\n- Color Palette Profile: ${colorScheme}\n\n`;
+        prompt += `### 3. Layout & UX Architecture\n- Responsive Viewport targets: ${layout}\n`;
+        prompt += `- Navigation Structure: ${navStyle}\n`;
+        if(!navStyle.includes('None') && navButtons) {
+            prompt += `  - Required Navigation Links/Buttons: ${navButtons}\n`;
+        }
+        
+        prompt += `\n### 4. Graphic & Media Blocks\n- Image Configuration: ${imageLayout}\n`;
+        if(imageUpload.length > 0) {
+            prompt += `- Image Assets Uploaded for Use: (${imageUpload.length} file placeholder hooks provided by user via local runtime uploads)\n`;
+            prompt += `  - Target file slots names to implement in code src tags: `;
+            let names = [];
+            for(let i=0; i<imageUpload.length; i++) { names.push(`"${imageUpload[i].name}"`); }
+            prompt += names.join(', ') + `\n`;
+        }
+
+        prompt += `\n### 5. Functional Core Requirements & Scope Description\n`;
+        if(description) {
+            prompt += `The application must execute and fulfill this explicit operational objective:\n"${description}"`;
+        } else {
+            prompt += `No structural utility description was supplemented. Build out a standard layout template matching the UI specs listed above containing clean placeholders.`;
+        }
+
+        return prompt;
+    }
+
+    function generatePrompt() {
+        const outputCard = document.getElementById('outputCard');
+        const promptOutput = document.getElementById('promptOutput');
+        
+        const finalPromptText = buildPromptText();
+        promptOutput.innerText = finalPromptText;
+        outputCard.style.display = 'block';
+        outputCard.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function copyToClipboard() {
+        const textText = document.getElementById('promptOutput').innerText;
+        navigator.clipboard.writeText(textText).then(() => {
+            alert('Prompt copied successfully to your system clipboard!');
+        }).catch(err => {
+            alert('Failed to copy text safely automatically.', err);
+        });
+    }
+
+    // Render Slots list layout interface tracking 1 to 10
+    function renderSavedSlots() {
+        const container = document.getElementById('savedSlotsContainer');
+        container.innerHTML = '';
+        
+        for (let i = 1; i <= MAX_SLOTS; i++) {
+            const slot = document.createElement('div');
+            slot.classList.add('saved-slot');
+            if(savedPrompts[i]) {
+                slot.classList.add('active');
+                slot.innerText = `Prompt Slot ${i} (Saved)`;
+            } else {
+                slot.innerText = `Slot ${i} (Empty)`;
+            }
+            slot.onclick = () => loadPromptSlot(i);
+            container.appendChild(slot);
+        }
+    }
+
+    // Save prompt configuration form status state to indexed profile target
+    function savePromptSlot() {
+        const targetSlot = prompt("Enter a slot number between 1 and 10 to save this layout configuration to:", "1");
+        const slotNum = parseInt(targetSlot);
+        
+        if (isNaN(slotNum) || slotNum < 1 || slotNum > MAX_SLOTS) {
+            alert("Invalid Selection. Please supply a valid numerical slot designation (1-10).");
+            return;
+        }
+
+        // Gather UI elements form dataset state mapping parameters
+        savedPrompts[slotNum] = {
+            fileStructure: document.getElementById('fileStructure').value,
+            cssStyle: document.getElementById('cssStyle').value,
+            colorScheme: document.getElementById('colorScheme').value,
+            layout: document.getElementById('layout').value,
+            navStyle: document.getElementById('navStyle').value,
+            navButtons: document.getElementById('navButtons').value,
+            imageLayout: document.getElementById('imageLayout').value,
+            description: document.getElementById('description').value
+        };
+
+        localStorage.setItem('app_prompt_slots', JSON.stringify(savedPrompts));
+        renderSavedSlots();
+        alert(`Current form profile state parameters saved successfully into configuration Slot ${slotNum}!`);
+    }
+
+    // Load setup configurations from selected storage slots index numbers mapping data 
+    function loadPromptSlot(slotNum) {
+        const data = savedPrompts[slotNum];
+        if(!data) {
+            alert(`Slot ${slotNum} is empty. Fill out the configuration options above and click "Save Setup" to save them to this slot.`);
+            return;
+        }
+
+        document.getElementById('fileStructure').value = data.fileStructure;
+        document.getElementById('cssStyle').value = data.cssStyle;
+        document.getElementById('colorScheme').value = data.colorScheme;
+        document.getElementById('layout').value = data.layout;
+        document.getElementById('navStyle').value = data.navStyle;
+        
+        toggleNavButtons(); // trigger visibility block updates
+        document.getElementById('navButtons').value = data.navButtons || '';
+        document.getElementById('imageLayout').value = data.imageLayout;
+        document.getElementById('description').value = data.description;
+        
+        // Refresh live elements trackers
+        checkWordCount(document.getElementById('description'));
+        alert(`Loaded layout profile configuration settings from Slot ${slotNum}!`);
+    }
+</script>
+
+</body>
+</html>
