@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pro AI Interior Prompt Generator</title>
+    <style>
+        :root {
+            --bg: #0f172a;
+            --card: #1e293b;
+            --accent: #38bdf8;
+            --accent-hover: #0284c7;
+            --text: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: #334155;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--card);
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+        }
+        h1 { text-align: center; color: var(--accent); margin-bottom: 25px; font-size: 2rem; }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+        
+        .input-group { display: flex; flex-direction: column; gap: 8px; }
+        .input-group.full-width { grid-column: 1 / -1; }
+        
+        label { font-size: 0.9rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+        
+        select, input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: var(--bg);
+            color: var(--text);
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+        select:focus, input[type="text"]:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2); }
+        
+        .output-box {
+            background: var(--bg);
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 4px solid var(--accent);
+            margin: 20px 0;
+            min-height: 100px;
+            font-size: 1.1rem;
+            word-wrap: break-word;
+        }
+        
+        .controls { display: flex; flex-wrap: wrap; gap: 15px; margin-top: 20px; }
+        
+        button {
+            flex: 1;
+            min-width: 150px;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+        .btn-copy { background: var(--accent); color: #0f172a; }
+        .btn-copy:hover { background: var(--accent-hover); color: white; }
+        .btn-save { background: #10b981; color: white; }
+        .btn-save:hover { background: #059669; }
+        .btn-reset { background: transparent; border: 1px solid var(--border); color: var(--text); }
+        .btn-reset:hover { background: var(--border); }
+
+        .saved-presets { margin-top: 40px; border-top: 1px solid var(--border); padding-top: 20px; }
+        .saved-presets h2 { font-size: 1.2rem; color: var(--text-muted); margin-bottom: 15px; }
+        .preset-item { 
+            background: var(--bg); padding: 15px; border-radius: 8px; margin-bottom: 10px; 
+            display: flex; justify-content: space-between; align-items: center; gap: 15px;
+        }
+        .preset-text { font-size: 0.9rem; flex-grow: 1; }
+        .btn-delete { background: #ef4444; color: white; padding: 8px 12px; min-width: auto; flex: 0 0 auto; }
+        .btn-delete:hover { background: #b91c1c; }
+
+        @media (max-width: 600px) {
+            .container { padding: 20px; }
+            .controls { flex-direction: column; }
+            button { width: 100%; }
+            .preset-item { flex-direction: column; align-items: flex-start; }
+            .btn-delete { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Pro Interior Prompt Generator</h1>
+    
+    <div class="grid">
+        <div class="input-group">
+            <label>Building Category</label>
+            <select id="category" onchange="updateRooms(); generate()">
+                <option value="residential">Residential (Homes & Apartments)</option>
+                <option value="commercial">Commercial (Offices & Retail)</option>
+                <option value="public">Public & Grand Spaces</option>
+            </select>
+        </div>
+
+        <div class="input-group">
+            <label>Specific Space</label>
+            <select id="room" onchange="generate()">
+                </select>
+        </div>
+
+        <div class="input-group">
+            <label>Aesthetic Style</label>
+            <select id="style" onchange="generate()">
+                <option value="Mid-century Modern">Mid-century Modern</option>
+                <option value="Vintage 1950s">Vintage 1950s</option>
+                <option value="Scandinavian Minimalist">Scandinavian Minimalist</option>
+                <option value="Industrial Loft">Industrial Loft</option>
+                <option value="Dark Academia">Dark Academia</option>
+                <option value="Art Deco">Art Deco</option>
+                <option value="Cyberpunk High-Tech">Cyberpunk High-Tech</option>
+                <option value="Brutalist">Brutalist</option>
+                <option value="Baroque Ornate">Baroque Ornate</option>
+                <option value="Retro-Futurist">Retro-Futurist</option>
+            </select>
+        </div>
+
+        <div class="input-group">
+            <label>Time of Day</label>
+            <select id="time" onchange="generate()">
+                <option value="bright midday">Midday</option>
+                <option value="golden hour">Golden Hour (Sunset/Sunrise)</option>
+                <option value="blue hour">Blue Hour (Dusk/Dawn)</option>
+                <option value="pitch black night">Nighttime</option>
+            </select>
+        </div>
+
+        <div class="input-group">
+            <label>Weather / Outside Environment</label>
+            <select id="weather" onchange="generate()">
+                <option value="clear sunny skies">Clear / Sunny</option>
+                <option value="heavy rain and water droplets on the windows">Heavy Rain</option>
+                <option value="thick atmospheric fog rolling past the windows">Atmospheric Fog</option>
+                <option value="a gentle snowstorm outside">Snowing</option>
+            </select>
+        </div>
+
+        <div class="input-group">
+            <label>Lighting Type</label>
+            <select id="lighting" onchange="generate()">
+                <option value="soft natural sunlight streaming in">Soft Natural Light</option>
+                <option value="harsh directional sunlight creating sharp shadows">Harsh Directional Sunlight</option>
+                <option value="warm Edison bulbs and flickering candlelight">Warm Artificial (Edison/Candles)</option>
+                <option value="cool LED strips and glowing neon">Cool Artificial (LED/Neon)</option>
+                <option value="cinematic volumetric lighting with dust motes">Cinematic Volumetric Rays</option>
+            </select>
+        </div>
+
+        <div class="input-group full-width">
+            <label>Hero Objects / Specific Details (Optional)</label>
+            <input type="text" id="details" placeholder="e.g., A massive green velvet sofa, a sleeping cat, mahogany bookshelves..." onkeyup="generate()">
+        </div>
+    </div>
+
+    <label>Your Live Prompt</label>
+    <div class="output-box" id="output">
+        Select options to build your prompt...
+    </div>
+
+    <div class="controls">
+        <button class="btn-copy" onclick="copyPrompt()">📋 Copy Prompt</button>
+        <button class="btn-save" onclick="savePreset()">💾 Save to Presets</button>
+        <button class="btn-reset" onclick="resetForm()">🔄 Reset All</button>
+    </div>
+
+    <div class="saved-presets" id="presetsArea" style="display: none;">
+        <h2>Saved Prompts</h2>
+        <div id="presetsList"></div>
+    </div>
+</div>
+
+<script>
+    const roomData = {
+        residential: ["Home Office", "Open-plan Kitchen", "Living Room", "Master Bedroom", "Bathroom", "Attic Studio", "Sunroom", "Nursery"],
+        commercial: ["Corporate Boardroom", "Tech Startup Office", "Boutique Hotel Lobby", "Michelin Star Restaurant", "Cozy Coffee Shop", "High-end Retail Store"],
+        public: ["Grand Theatre", "Shopping Mall Atrium", "Public Library", "Train Station Concourse", "Art Gallery", "Museum Exhibit Hall"]
+    };
+
+    function updateRooms() {
+        const category = document.getElementById('category').value;
+        const roomSelect = document.getElementById('room');
+        roomSelect.innerHTML = "";
+        
+        roomData[category].forEach(room => {
+            const option = document.createElement('option');
+            option.value = room;
+            option.textContent = room;
+            roomSelect.appendChild(option);
+        });
+    }
+
+    function generate() {
+        const style = document.getElementById('style').value;
+        const room = document.getElementById('room').value;
+        const time = document.getElementById('time').value;
+        const weather = document.getElementById('weather').value;
+        const lighting = document.getElementById('lighting').value;
+        const details = document.getElementById('details').value.trim();
+
+        let detailString = details ? ` Prominently featuring: ${details}.` : "";
+
+        const prompt = `A professional ArchViz interior photograph of a ${style} ${room}.${detailString} The scene takes place during ${time} with ${weather}, illuminated by ${lighting}. High-end architectural photography, 8k resolution, Unreal Engine 5 render, highly detailed textures, ray-traced reflections, photorealistic.`;
+
+        document.getElementById('output').innerText = prompt;
+        
+        // Save current active state
+        const state = {
+            category: document.getElementById('category').value,
+            room: room, style: style, time: time, weather: weather, 
+            lighting: lighting, details: details
+        };
+        localStorage.setItem('currentInteriorState', JSON.stringify(state));
+    }
+
+    function copyPrompt() {
+        const text = document.getElementById('output').innerText;
+        navigator.clipboard.writeText(text);
+        
+        const btn = document.querySelector('.btn-copy');
+        btn.innerText = "✅ Copied!";
+        setTimeout(() => btn.innerText = "📋 Copy Prompt", 2000);
+    }
+
+    function resetForm() {
+        document.getElementById('category').selectedIndex = 0;
+        updateRooms();
+        document.getElementById('style').selectedIndex = 0;
+        document.getElementById('time').selectedIndex = 0;
+        document.getElementById('weather').selectedIndex = 0;
+        document.getElementById('lighting').selectedIndex = 0;
+        document.getElementById('details').value = "";
+        generate();
+    }
+
+    function savePreset() {
+        const currentPrompt = document.getElementById('output').innerText;
+        let presets = JSON.parse(localStorage.getItem('savedInteriorPresets') || '[]');
+        if (!presets.includes(currentPrompt)) {
+            presets.push(currentPrompt);
+            localStorage.setItem('savedInteriorPresets', JSON.stringify(presets));
+            renderPresets();
+        }
+    }
+
+    function deletePreset(index) {
+        let presets = JSON.parse(localStorage.getItem('savedInteriorPresets') || '[]');
+        presets.splice(index, 1);
+        localStorage.setItem('savedInteriorPresets', JSON.stringify(presets));
+        renderPresets();
+    }
+
+    function renderPresets() {
+        const presets = JSON.parse(localStorage.getItem('savedInteriorPresets') || '[]');
+        const area = document.getElementById('presetsArea');
+        const list = document.getElementById('presetsList');
+        
+        list.innerHTML = "";
+        
+        if (presets.length > 0) {
+            area.style.display = 'block';
+            presets.forEach((p, index) => {
+                const div = document.createElement('div');
+                div.className = 'preset-item';
+                div.innerHTML = `
+                    <div class="preset-text">${p}</div>
+                    <button class="btn-delete" onclick="deletePreset(${index})">Delete</button>
+                `;
+                list.appendChild(div);
+            });
+        } else {
+            area.style.display = 'none';
+        }
+    }
+
+    // Initialize on load
+    window.onload = () => {
+        updateRooms();
+        
+        // Restore last working state if available
+        const savedState = localStorage.getItem('currentInteriorState');
+        if (savedState) {
+            const data = JSON.parse(savedState);
+            document.getElementById('category').value = data.category;
+            updateRooms(); // Update room dropdown based on saved category
+            document.getElementById('room').value = data.room;
+            document.getElementById('style').value = data.style;
+            document.getElementById('time').value = data.time;
+            document.getElementById('weather').value = data.weather;
+            document.getElementById('lighting').value = data.lighting;
+            document.getElementById('details').value = data.details || "";
+        }
+        
+        generate();
+        renderPresets();
+    };
+</script>
+
+</body>
+</html>
