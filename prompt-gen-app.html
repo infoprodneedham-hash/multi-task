@@ -3,128 +3,34 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OmniPrompt Architect • Modern Web App Prompt Studio</title>
+  <title>EasyApp Prompt Maker • Build Web Apps with AI</title>
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <!-- Google Fonts: Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
   <style>
-    /* Default Theme: Midnight Indigo (Refined & Modern) */
     :root {
       --bg-body: #0b0f19;
-      --bg-surface: rgba(17, 24, 39, 0.75);
-      --bg-surface-elevated: #1e293b;
+      --bg-surface: rgba(17, 24, 39, 0.85);
       --bg-input: #0f172a;
-      --border-subtle: rgba(99, 102, 241, 0.18);
+      --border-subtle: rgba(99, 102, 241, 0.2);
       --border-active: #6366f1;
       --text-main: #f8fafc;
       --text-muted: #94a3b8;
       --accent: #6366f1;
       --accent-secondary: #8b5cf6;
-      --accent-glow: rgba(99, 102, 241, 0.28);
-      --badge-bg: rgba(99, 102, 241, 0.12);
+      --accent-glow: rgba(99, 102, 241, 0.3);
+      --badge-bg: rgba(99, 102, 241, 0.15);
       --badge-text: #a5b4fc;
-      --card-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
-    }
-
-    /* Minimal Slate (High-contrast clean dark) */
-    [data-theme="slate"] {
-      --bg-body: #0f172a;
-      --bg-surface: rgba(30, 41, 59, 0.8);
-      --bg-surface-elevated: #334155;
-      --bg-input: #1e293b;
-      --border-subtle: rgba(148, 163, 184, 0.2);
-      --border-active: #38bdf8;
-      --text-main: #f8fafc;
-      --text-muted: #cbd5e1;
-      --accent: #38bdf8;
-      --accent-secondary: #0ea5e9;
-      --accent-glow: rgba(56, 189, 248, 0.25);
-      --badge-bg: rgba(56, 189, 248, 0.12);
-      --badge-text: #7dd3fc;
-      --card-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.6);
-    }
-
-    /* Emerald Glass (Organic Fintech & Health) */
-    [data-theme="emerald"] {
-      --bg-body: #021a12;
-      --bg-surface: rgba(6, 44, 32, 0.75);
-      --bg-surface-elevated: #0d4a37;
-      --bg-input: #04251a;
-      --border-subtle: rgba(16, 185, 129, 0.22);
-      --border-active: #10b981;
-      --text-main: #f0fdf4;
-      --text-muted: #86efac;
-      --accent: #10b981;
-      --accent-secondary: #14b8a6;
-      --accent-glow: rgba(16, 185, 129, 0.3);
-      --badge-bg: rgba(16, 185, 129, 0.15);
-      --badge-text: #6ee7b7;
-      --card-shadow: 0 10px 30px -10px rgba(2, 26, 18, 0.8);
-    }
-
-    /* Cyberpunk Neon */
-    [data-theme="cyberpunk"] {
-      --bg-body: #0d021f;
-      --bg-surface: rgba(29, 7, 60, 0.8);
-      --bg-surface-elevated: #2e0854;
-      --bg-input: #180233;
-      --border-subtle: rgba(236, 72, 153, 0.25);
-      --border-active: #ec4899;
-      --text-main: #fdf4ff;
-      --text-muted: #f472b6;
-      --accent: #ec4899;
-      --accent-secondary: #06b6d4;
-      --accent-glow: rgba(236, 72, 153, 0.35);
-      --badge-bg: rgba(236, 72, 153, 0.15);
-      --badge-text: #fbcfe8;
-      --card-shadow: 0 10px 35px -5px rgba(236, 72, 153, 0.2);
-    }
-
-    /* Sunset Coral (Warm, creative modernism) */
-    [data-theme="coral"] {
-      --bg-body: #180c0c;
-      --bg-surface: rgba(43, 22, 22, 0.78);
-      --bg-surface-elevated: #4d2323;
-      --bg-input: #231212;
-      --border-subtle: rgba(244, 63, 94, 0.22);
-      --border-active: #f43f5e;
-      --text-main: #fff1f2;
-      --text-muted: #fda4af;
-      --accent: #f43f5e;
-      --accent-secondary: #fb923c;
-      --accent-glow: rgba(244, 63, 94, 0.3);
-      --badge-bg: rgba(244, 63, 94, 0.15);
-      --badge-text: #fecdd3;
-      --card-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.6);
-    }
-
-    /* Nordic Frost (Clean high-end light-dark hybrid) */
-    [data-theme="nordic"] {
-      --bg-body: #0b131e;
-      --bg-surface: rgba(20, 32, 48, 0.85);
-      --bg-surface-elevated: #283e58;
-      --bg-input: #132030;
-      --border-subtle: rgba(125, 211, 252, 0.2);
-      --border-active: #38bdf8;
-      --text-main: #f0f9ff;
-      --text-muted: #93c5fd;
-      --accent: #38bdf8;
-      --accent-secondary: #818cf8;
-      --accent-glow: rgba(56, 189, 248, 0.3);
-      --badge-bg: rgba(56, 189, 248, 0.12);
-      --badge-text: #bae6fd;
-      --card-shadow: 0 10px 30px -10px rgba(11, 19, 30, 0.8);
     }
 
     body {
       font-family: 'Inter', system-ui, -apple-system, sans-serif;
       background-color: var(--bg-body);
       color: var(--text-main);
-      transition: background-color 0.3s ease, color 0.3s ease;
       min-height: 100vh;
     }
 
@@ -135,16 +41,14 @@
     .glass-card {
       background: var(--bg-surface);
       border: 1px solid var(--border-subtle);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      box-shadow: var(--card-shadow);
+      backdrop-filter: blur(12px);
     }
 
     .input-field {
       background: var(--bg-input);
       border: 1px solid var(--border-subtle);
       color: var(--text-main);
-      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 0.2s ease;
     }
 
     .input-field:focus {
@@ -156,7 +60,7 @@
     .tag-chip {
       cursor: pointer;
       user-select: none;
-      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 0.2s ease;
       border: 1px solid var(--border-subtle);
       background: var(--bg-input);
       color: var(--text-muted);
@@ -165,19 +69,17 @@
     .tag-chip:hover {
       border-color: var(--border-active);
       color: var(--text-main);
-      transform: translateY(-1px);
     }
 
     .tag-chip.active {
       background: var(--badge-bg);
       border-color: var(--border-active);
       color: var(--badge-text);
-      box-shadow: 0 2px 10px var(--accent-glow);
       font-weight: 600;
     }
 
     .slot-pill {
-      transition: all 0.2s;
+      transition: all 0.2s ease;
       border: 1px solid var(--border-subtle);
     }
 
@@ -186,412 +88,250 @@
       border-color: var(--border-active);
       color: var(--badge-text);
     }
-
-    .slot-pill:hover {
-      border-color: var(--border-active);
-      transform: translateY(-1px);
-    }
-
-    /* Custom Scrollbars */
-    ::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
-    }
-    ::-webkit-scrollbar-track {
-      background: var(--bg-body);
-    }
-    ::-webkit-scrollbar-thumb {
-      background: var(--border-subtle);
-      border-radius: 9999px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: var(--border-active);
-    }
   </style>
 </head>
 <body class="selection:bg-indigo-500 selection:text-white pb-20">
 
-  <header class="sticky top-0 z-40 border-b border-[var(--border-subtle)] bg-[var(--bg-body)]/85 backdrop-blur-xl">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
-      
-      <!-- Brand & Title -->
-      <div class="flex items-center gap-3.5">
-        <div class="w-11 h-11 rounded-2xl flex items-center justify-center shadow-lg" style="background: linear-gradient(135deg, var(--accent), var(--accent-secondary)); box-shadow: 0 4px 20px var(--accent-glow);">
-          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-          </svg>
+  <!-- Header -->
+  <header class="sticky top-0 z-40 border-b border-[var(--border-subtle)] bg-[var(--bg-body)]/90 backdrop-blur-md">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-18 py-3 flex items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl flex items-center justify-center font-bold text-white shadow-md" style="background: linear-gradient(135deg, var(--accent), var(--accent-secondary));">
+          ✨
         </div>
         <div>
-          <div class="flex items-center gap-2">
-            <h1 class="text-xl font-extrabold tracking-tight">OmniPrompt<span class="text-xs uppercase px-2 py-0.5 ml-2 rounded-full font-mono font-bold tracking-wider" style="background: var(--badge-bg); color: var(--accent); border: 1px solid var(--border-subtle);">v2.4 Pro</span></h1>
-          </div>
-          <p class="text-xs text-[var(--text-muted)] hidden sm:block">Precision System Specification & Architecture Prompter for LLMs</p>
+          <h1 class="text-lg font-bold">EasyApp Prompt Maker</h1>
+          <p class="text-xs text-[var(--text-muted)]">Turn your app idea into a ready-to-use prompt for ChatGPT, Claude, or Gemini</p>
         </div>
       </div>
 
-      <!-- Quick Action Bar & Theme Palette Switcher -->
-      <div class="flex items-center gap-3">
-        <!-- Palette Switcher -->
-        <div class="flex items-center gap-2 px-3 py-1.5 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-input)]">
-          <svg class="w-4 h-4 text-[var(--accent)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
-          </svg>
-          <label for="themeSelect" class="text-xs font-semibold hidden md:inline">Theme:</label>
-          <select id="themeSelect" onchange="changeTheme(this.value)" class="bg-transparent text-xs font-medium focus:outline-none cursor-pointer pr-1">
-            <option value="indigo" class="bg-gray-900 text-indigo-300">Midnight Indigo</option>
-            <option value="slate" class="bg-gray-900 text-sky-300">Minimal Slate</option>
-            <option value="emerald" class="bg-gray-900 text-emerald-300">Emerald Glass</option>
-            <option value="cyberpunk" class="bg-gray-900 text-pink-300">Cyberpunk Neon</option>
-            <option value="coral" class="bg-gray-900 text-rose-300">Sunset Coral</option>
-            <option value="nordic" class="bg-gray-900 text-blue-300">Nordic Frost</option>
-          </select>
-        </div>
-
-        <!-- Quick Reset Button -->
-        <button onclick="resetAllFields()" class="px-3 py-1.5 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-input)] hover:border-rose-500/50 hover:text-rose-400 text-xs font-medium transition-colors" title="Reset all form options">
-          Reset
-        </button>
-      </div>
-
+      <button onclick="resetAllFields()" class="px-3 py-1.5 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-input)] hover:text-rose-400 text-xs font-medium transition-colors">
+        Clear All
+      </button>
     </div>
   </header>
 
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 py-8">
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
       
-      <!-- LEFT COLUMN: Architect Specification Controls -->
+      <!-- LEFT COLUMN: Simple Form Options -->
       <div class="lg:col-span-7 space-y-6">
         
-        <!-- Section 1: Foundation & Target Domain -->
-        <div class="glass-card p-6 sm:p-7 rounded-3xl space-y-6">
-          <div class="flex items-center justify-between pb-3 border-b border-[var(--border-subtle)]">
-            <div class="flex items-center gap-2.5">
-              <span class="w-6 h-6 rounded-lg flex items-center justify-center font-mono text-xs font-bold" style="background: var(--badge-bg); color: var(--accent);">01</span>
-              <h2 class="text-base font-bold">Domain & Application Profile</h2>
-            </div>
-            <span class="text-xs font-mono text-[var(--text-muted)]">Core Parameters</span>
+        <!-- Step 1: The Basics -->
+        <div class="glass-card p-6 rounded-2xl space-y-4">
+          <div class="flex items-center gap-2 border-b border-[var(--border-subtle)] pb-3">
+            <span class="w-6 h-6 rounded-md flex items-center justify-center font-bold text-xs" style="background: var(--badge-bg); color: var(--accent);">1</span>
+            <h2 class="text-sm font-bold uppercase tracking-wider text-slate-200">The Basics</h2>
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <!-- App Name / Title -->
-            <div class="space-y-1.5">
-              <label class="block text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider">Application Name</label>
-              <input type="text" id="appName" placeholder="e.g., NovaFlow, PulseHQ, Lumina" class="w-full p-3 rounded-xl input-field text-sm" oninput="updateLivePrompt()">
+            <div class="space-y-1">
+              <label class="block text-xs font-semibold text-[var(--text-muted)]">App Name</label>
+              <input type="text" id="appName" placeholder="e.g. RecipeBox, HabitTracker" class="w-full p-2.5 rounded-xl input-field text-sm" oninput="updateLivePrompt()">
             </div>
 
-            <!-- Industry Sector (Expanded Selection) -->
-            <div class="space-y-1.5">
-              <label class="block text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider">Industry Sector</label>
-              <select id="industrySector" class="w-full p-3 rounded-xl input-field text-sm font-medium" onchange="onIndustryChange(this.value)">
-                <option value="SaaS & Productivity">💼 SaaS & Productivity</option>
-                <option value="Fintech & Decentralized Finance">💳 Fintech & Banking</option>
-                <option value="Healthcare & MedTech">🏥 Healthcare & MedTech</option>
-                <option value="E-Commerce & Retail">🛍️ E-Commerce & Retail</option>
-                <option value="Artificial Intelligence & ML Tools">🤖 AI & Machine Learning Tools</option>
-                <option value="EdTech & Learning Management">🎓 EdTech & Learning Management</option>
-                <option value="Creative Studio & Multimedia">🎨 Creative Studio & Media</option>
-                <option value="Gaming & Interactive WebGL">🎮 Gaming & Interactive</option>
-                <option value="Real Estate & Spatial Booking">🏡 Real Estate & PropTech</option>
-                <option value="Logistics & Supply Chain">🚚 Logistics & Supply Chain</option>
-                <option value="Developer Tooling & Cloud DevOps">⚡ Developer Tooling & DevOps</option>
+            <div class="space-y-1">
+              <label class="block text-xs font-semibold text-[var(--text-muted)]">What kind of app is it?</label>
+              <select id="industrySector" class="w-full p-2.5 rounded-xl input-field text-sm" onchange="updateLivePrompt()">
+                <option value="Productivity & Task Management">Productivity / Task Tracker</option>
+                <option value="Personal Finance & Budgeting">Personal Finance / Budgeting</option>
+                <option value="Online Store & Shopping">Shop / Digital Store</option>
+                <option value="Health & Fitness Tracker">Health & Fitness</option>
+                <option value="Learning & Flashcards">Education / Study Flashcards</option>
+                <option value="Portfolio & Freelance Showcase">Portfolio / Freelance Showcase</option>
+                <option value="Fun & Mini-Game">Casual Mini-Game / Quiz</option>
               </select>
             </div>
 
-            <!-- Target User Persona -->
-            <div class="space-y-1.5">
-              <label class="block text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider">Target User Persona</label>
-              <select id="userPersona" class="w-full p-3 rounded-xl input-field text-sm font-medium" onchange="updateLivePrompt()">
-                <option value="Enterprise Teams & Decision Makers">Enterprise Teams & Executives</option>
-                <option value="Solo Founders & Indie Hackers">Solo Founders & Indie Hackers</option>
-                <option value="Everyday Consumers & Shoppers">Everyday Consumers & Shoppers</option>
-                <option value="Technical Developers & Engineers">Technical Developers & Engineers</option>
-                <option value="Students & Academic Researchers">Students & Researchers</option>
-                <option value="Creative Artists & Designers">Creative Designers & Creators</option>
-                <option value="Medical Practitioners & Clinicians">Healthcare Professionals</option>
+            <div class="space-y-1">
+              <label class="block text-xs font-semibold text-[var(--text-muted)]">Who is going to use it?</label>
+              <select id="userPersona" class="w-full p-2.5 rounded-xl input-field text-sm" onchange="updateLivePrompt()">
+                <option value="Everyday people looking for a simple, fast tool">Beginners & Everyday People</option>
+                <option value="Small business owners and freelancers">Freelancers & Small Business Owners</option>
+                <option value="Students and learners">Students & Learners</option>
+                <option value="Power users wanting lots of options">Experienced Power Users</option>
               </select>
             </div>
 
-            <!-- Architecture / File Structure -->
-            <div class="space-y-1.5">
-              <label class="block text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider">Target Deliverable Format</label>
-              <select id="fileStructure" class="w-full p-3 rounded-xl input-field text-sm font-medium" onchange="updateLivePrompt()">
-                <option value="Single-file mandate (Self-contained runnable HTML + Tailwind + inline JS)">Single-file HTML (All-in-one runnable)</option>
-                <option value="Single-file React component (App.jsx with Lucide + Tailwind)">Single-file React component (App.jsx)</option>
-                <option value="Modular structure (index.html, styles.css, app.js)">Modular Files (HTML, CSS, JS separate)</option>
-                <option value="Full-stack Next.js App Router (TypeScript + Tailwind + API)">Next.js App Router (TypeScript + Tailwind)</option>
+            <div class="space-y-1">
+              <label class="block text-xs font-semibold text-[var(--text-muted)]">How do you want the code delivered?</label>
+              <select id="fileStructure" class="w-full p-2.5 rounded-xl input-field text-sm" onchange="updateLivePrompt()">
+                <option value="One single .html file that runs immediately in any web browser without needing to install anything">Single .html file (Easiest — double-click to open)</option>
+                <option value="Separate files (index.html, styles.css, app.js)">Separate files (HTML, CSS, and JS)</option>
               </select>
             </div>
           </div>
         </div>
 
-        <!-- Section 2: Design System & Visual Palette -->
-        <div class="glass-card p-6 sm:p-7 rounded-3xl space-y-6">
-          <div class="flex items-center justify-between pb-3 border-b border-[var(--border-subtle)]">
-            <div class="flex items-center gap-2.5">
-              <span class="w-6 h-6 rounded-lg flex items-center justify-center font-mono text-xs font-bold" style="background: var(--badge-bg); color: var(--accent);">02</span>
-              <h2 class="text-base font-bold">Design System & UX Aesthetics</h2>
-            </div>
-            <span class="text-xs font-mono text-[var(--text-muted)]">Visual Styling</span>
+        <!-- Step 2: Look & Feel -->
+        <div class="glass-card p-6 rounded-2xl space-y-4">
+          <div class="flex items-center gap-2 border-b border-[var(--border-subtle)] pb-3">
+            <span class="w-6 h-6 rounded-md flex items-center justify-center font-bold text-xs" style="background: var(--badge-bg); color: var(--accent);">2</span>
+            <h2 class="text-sm font-bold uppercase tracking-wider text-slate-200">Look & Feel</h2>
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <!-- Visual Style Theme -->
-            <div class="space-y-1.5">
-              <label class="block text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider">Aesthetic Archetype</label>
-              <select id="cssStyle" class="w-full p-3 rounded-xl input-field text-sm font-medium" onchange="updateLivePrompt()">
-                <option value="Bento-grid Modernist (Card-based layout, subtle borders, high visual hierarchy)">Bento-grid Modernist (Popular SaaS)</option>
-                <option value="Glassmorphic Dark UI (Translucent frosted panels, neon rim glows, deep contrast)">Glassmorphic Dark Mode</option>
-                <option value="Minimalist Editorial (Typographic focus, crisp borders, ample whitespace, muted palette)">Minimalist Editorial / Swiss</option>
-                <option value="Neobrutalism (Bold solid borders, playful stark drop shadows, vibrant high-contrast accents)">Neobrutalism (Bold & Punchy)</option>
-                <option value="High-Tech Cyberpunk HUD (Scanlines, mono fonts, tactical badges, glowing telemetry)">High-Tech Cyberpunk HUD</option>
-                <option value="Soft Pastel & Playful (Generous pill curves, buoyant transitions, cheerful gradients)">Soft Pastel & Playful</option>
-                <option value="Enterprise Linear Clean (Subtle 1px gray borders, dense data tables, rapid ergonomics)">Linear / Vercel Ultra-Clean</option>
+            <div class="space-y-1">
+              <label class="block text-xs font-semibold text-[var(--text-muted)]">Visual Style</label>
+              <select id="cssStyle" class="w-full p-2.5 rounded-xl input-field text-sm" onchange="updateLivePrompt()">
+                <option value="Modern dark mode with cards and rounded corners">Modern Dark Theme (Clean Cards)</option>
+                <option value="Clean, bright, minimalist light mode">Bright & Minimalist Light Theme</option>
+                <option value="Playful with soft pastel colors and rounded buttons">Playful & Friendly (Soft Pastels)</option>
+                <option value="Bold and high-contrast with punchy borders">Bold & Punchy High Contrast</option>
               </select>
             </div>
 
-            <!-- Color Palette Preset -->
-            <div class="space-y-1.5">
-              <label class="block text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider">Primary Color Palette</label>
-              <select id="colorScheme" class="w-full p-3 rounded-xl input-field text-sm font-medium" onchange="updateLivePrompt()">
-                <option value="Electric Indigo & Violet with Obsidian Dark Backgrounds">Electric Indigo & Violet (Modern SaaS)</option>
-                <option value="Monochrome Minimalist Slate & Zinc with Sky Blue accents">Slate & Zinc with Sky Blue (Technical)</option>
-                <option value="Emerald, Mint & Forest Teal with Deep Jade shades">Emerald & Mint Green (Fintech / Eco)</option>
-                <option value="Sunset Ember, Rose Quartz & Amber Glow">Sunset Amber & Coral Rose (Warm & Creative)</option>
-                <option value="High-Voltage Cyber Cyan & Hot Pink">Cyber Cyan & Hot Pink (Futuristic)</option>
-                <option value="Warm Terracotta, Sandstone & Muted Espresso">Warm Sandstone & Espresso (Editorial)</option>
-                <option value="Dynamic Auto-adaptive (Includes Dark and Light theme toggle)">Adaptive Light & Dark Palette</option>
+            <div class="space-y-1">
+              <label class="block text-xs font-semibold text-[var(--text-muted)]">Color Vibe</label>
+              <select id="colorScheme" class="w-full p-2.5 rounded-xl input-field text-sm" onchange="updateLivePrompt()">
+                <option value="Indigo blue and purple">Indigo Blue & Purple</option>
+                <option value="Emerald and fresh mint green">Fresh Emerald & Mint</option>
+                <option value="Warm sunset orange and coral">Warm Sunset Coral</option>
+                <option value="Clean neutral gray and slate blue">Neutral Slate & Cool Gray</option>
               </select>
             </div>
 
-            <!-- Viewport Layout -->
-            <div class="space-y-1.5">
-              <label class="block text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider">Viewport & Device Strategy</label>
-              <select id="layoutStrategy" class="w-full p-3 rounded-xl input-field text-sm font-medium" onchange="updateLivePrompt()">
-                <option value="Fully fluid responsive (Mobile-first with dedicated breakpoints for tablets & ultra-wides)">Mobile-First Fluid Responsive (Default)</option>
-                <option value="Desktop-first Command Center with collapsible side rails and wide canvas">Desktop Command Center (Side-rail focus)</option>
-                <option value="Mobile-app viewport simulator with touch-gesture support and bottom tab-bar">Mobile App Native Shell (Touch focused)</option>
-              </select>
+            <div class="space-y-1 sm:col-span-2">
+              <label class="block text-xs font-semibold text-[var(--text-muted)]">Menu / Navigation Tabs</label>
+              <input type="text" id="navLinks" value="Home, My Tasks, Analytics, Settings" placeholder="e.g. Home, Dashboard, Settings" class="w-full p-2.5 rounded-xl input-field text-sm font-mono" oninput="updateLivePrompt()">
+              <p class="text-[11px] text-[var(--text-muted)]">Separate page or tab names with commas.</p>
             </div>
-
-            <!-- Navigation Architecture -->
-            <div class="space-y-1.5">
-              <label class="block text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider">Navigation Topology</label>
-              <select id="navTopology" class="w-full p-3 rounded-xl input-field text-sm font-medium" onchange="toggleNavCustom()">
-                <option value="Sticky top-bar with brand logo, quick search, and action CTA">Sticky Top Navigation Header</option>
-                <option value="Left collapsible sidebar with icon rails and nested category groups">Collapsible Left Sidebar Menu</option>
-                <option value="Bottom fixed floating dock bar (iOS / macOS style)">Floating Island Dock (Bottom bar)</option>
-                <option value="Full-screen command palette overlay (Cmd + K / Ctrl + K driven)">Command Palette Only (Cmd+K Driven)</option>
-                <option value="Zero navigation / Focused single-canvas view">Single Canvas / No Global Nav</option>
-              </select>
-            </div>
-          </div>
-
-          <!-- Custom Nav Links Input (Conditionally visible) -->
-          <div id="navLinksContainer" class="space-y-1.5 pt-1">
-            <label class="block text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider">Navigation Items / Routes</label>
-            <input type="text" id="navLinks" value="Dashboard, Analytics, Workspaces, Settings" placeholder="e.g., Home, Feed, Metrics, Settings" class="w-full p-3 rounded-xl input-field text-sm font-mono" oninput="updateLivePrompt()">
           </div>
         </div>
 
-        <!-- Section 3: Feature Modules & Interactive Tags -->
-        <div class="glass-card p-6 sm:p-7 rounded-3xl space-y-5">
-          <div class="flex items-center justify-between pb-3 border-b border-[var(--border-subtle)]">
-            <div class="flex items-center gap-2.5">
-              <span class="w-6 h-6 rounded-lg flex items-center justify-center font-mono text-xs font-bold" style="background: var(--badge-bg); color: var(--accent);">03</span>
-              <h2 class="text-base font-bold">Core Functional Modules & Capabilities</h2>
+        <!-- Step 3: Features -->
+        <div class="glass-card p-6 rounded-2xl space-y-4">
+          <div class="flex items-center justify-between border-b border-[var(--border-subtle)] pb-3">
+            <div class="flex items-center gap-2">
+              <span class="w-6 h-6 rounded-md flex items-center justify-center font-bold text-xs" style="background: var(--badge-bg); color: var(--accent);">3</span>
+              <h2 class="text-sm font-bold uppercase tracking-wider text-slate-200">Pick Your Features</h2>
             </div>
-            <button onclick="toggleAllTags(true)" class="text-xs text-[var(--accent)] hover:underline">Select All</button>
+            <button onclick="toggleAllTags()" class="text-xs text-[var(--accent)] hover:underline">Select / Clear All</button>
           </div>
 
-          <p class="text-xs text-[var(--text-muted)]">Click tags to inject ready-to-prompt architectural requirements directly into the specification:</p>
+          <p class="text-xs text-[var(--text-muted)]">Click any feature you want the AI to build into the app:</p>
 
           <div class="flex flex-wrap gap-2" id="tagsContainer">
-            <!-- Tags rendered via JS for clean management -->
+            <!-- Populated by JS -->
           </div>
         </div>
 
-        <!-- Section 4: Operational Objective & Deep Description -->
-        <div class="glass-card p-6 sm:p-7 rounded-3xl space-y-4">
-          <div class="flex items-center justify-between pb-3 border-b border-[var(--border-subtle)]">
-            <div class="flex items-center gap-2.5">
-              <span class="w-6 h-6 rounded-lg flex items-center justify-center font-mono text-xs font-bold" style="background: var(--badge-bg); color: var(--accent);">04</span>
-              <h2 class="text-base font-bold">App Specification & Functional Scope</h2>
-            </div>
-            <!-- Word & Character Counters -->
-            <div class="text-xs font-mono text-[var(--text-muted)]">
-              <span id="wordCounter" class="font-bold text-[var(--accent)]">0</span> / 450 words
-            </div>
-          </div>
-
-          <!-- Quick Templates Inserter -->
-          <div class="flex items-center gap-2 overflow-x-auto pb-1">
-            <span class="text-[11px] font-semibold text-[var(--text-muted)] shrink-0">Insert Blueprint:</span>
-            <button onclick="applyBlueprint('analytics')" class="px-2.5 py-1 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-input)] hover:border-[var(--border-active)] text-xs text-[var(--text-muted)] hover:text-white transition-all whitespace-nowrap">📊 SaaS Dashboard</button>
-            <button onclick="applyBlueprint('kanban')" class="px-2.5 py-1 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-input)] hover:border-[var(--border-active)] text-xs text-[var(--text-muted)] hover:text-white transition-all whitespace-nowrap">📋 Drag Kanban</button>
-            <button onclick="applyBlueprint('ai_chat')" class="px-2.5 py-1 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-input)] hover:border-[var(--border-active)] text-xs text-[var(--text-muted)] hover:text-white transition-all whitespace-nowrap">💬 AI Studio Chat</button>
-            <button onclick="applyBlueprint('store')" class="px-2.5 py-1 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-input)] hover:border-[var(--border-active)] text-xs text-[var(--text-muted)] hover:text-white transition-all whitespace-nowrap">🛍️ Checkout Store</button>
-          </div>
-
-          <textarea id="appDescription" rows="5" class="w-full p-4 rounded-2xl input-field text-sm leading-relaxed resize-y font-sans" placeholder="Describe the specific purpose, core user journeys, data structures, and interactions... (Or select a quick blueprint above)" oninput="handleDescriptionInput(this)"></textarea>
-
-          <!-- Guardrails & Quality Standards -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
-            <label class="flex items-start gap-2.5 cursor-pointer p-3 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-input)] hover:border-[var(--border-active)] transition-all">
-              <input type="checkbox" id="guardNoPlaceholders" checked class="mt-0.5 rounded text-[var(--accent)] focus:ring-0" onchange="updateLivePrompt()">
-              <div>
-                <span class="block text-xs font-semibold text-[var(--text-main)]">Zero Placeholders</span>
-                <span class="text-[11px] text-[var(--text-muted)]">Instruct AI to provide 100% complete, runnable code without ellipsis (...)</span>
-              </div>
-            </label>
-
-            <label class="flex items-start gap-2.5 cursor-pointer p-3 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-input)] hover:border-[var(--border-active)] transition-all">
-              <input type="checkbox" id="guardNoAlerts" checked class="mt-0.5 rounded text-[var(--accent)] focus:ring-0" onchange="updateLivePrompt()">
-              <div>
-                <span class="block text-xs font-semibold text-[var(--text-main)]">Custom Toasts & Modals</span>
-                <span class="text-[11px] text-[var(--text-muted)]">Ban ugly browser alert()/confirm() in favor of sleek toast notifications</span>
-              </div>
-            </label>
-          </div>
-        </div>
-
-        <!-- Section 5: Persistent Saved Profiles (10 Slots) -->
-        <div class="glass-card p-6 sm:p-7 rounded-3xl space-y-4">
-          <div class="flex items-center justify-between pb-3 border-b border-[var(--border-subtle)]">
-            <div class="flex items-center gap-2.5">
-              <span class="w-6 h-6 rounded-lg flex items-center justify-center font-mono text-xs font-bold" style="background: var(--badge-bg); color: var(--accent);">05</span>
-              <h2 class="text-base font-bold">Saved Preset Profiles</h2>
-            </div>
+        <!-- Step 4: Describe It in Your Words -->
+        <div class="glass-card p-6 rounded-2xl space-y-4">
+          <div class="flex items-center justify-between border-b border-[var(--border-subtle)] pb-3">
             <div class="flex items-center gap-2">
-              <button onclick="saveCurrentSlotPrompt()" class="px-3 py-1.5 rounded-xl border border-emerald-500/40 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 text-xs font-bold transition-all flex items-center gap-1.5">
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/></svg>
-                Save to Slot
-              </button>
+              <span class="w-6 h-6 rounded-md flex items-center justify-center font-bold text-xs" style="background: var(--badge-bg); color: var(--accent);">4</span>
+              <h2 class="text-sm font-bold uppercase tracking-wider text-slate-200">What does it do?</h2>
             </div>
           </div>
 
-          <p class="text-xs text-[var(--text-muted)]">Click any active slot below to load its configuration instantly, or click delete to clear a slot:</p>
+          <!-- Starter Blueprints -->
+          <div class="flex items-center gap-2 overflow-x-auto pb-1">
+            <span class="text-xs text-[var(--text-muted)] shrink-0">Try a starter idea:</span>
+            <button onclick="applyBlueprint('kanban')" class="px-2.5 py-1 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-input)] hover:text-white text-xs text-[var(--text-muted)] whitespace-nowrap">📋 Drag-and-Drop Tasks</button>
+            <button onclick="applyBlueprint('habits')" class="px-2.5 py-1 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-input)] hover:text-white text-xs text-[var(--text-muted)] whitespace-nowrap">🔥 Daily Habit Tracker</button>
+            <button onclick="applyBlueprint('budget')" class="px-2.5 py-1 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-input)] hover:text-white text-xs text-[var(--text-muted)] whitespace-nowrap">💰 Quick Budget & Chart</button>
+          </div>
 
-          <div class="grid grid-cols-2 sm:grid-cols-5 gap-2.5" id="savedSlotsContainer">
-            <!-- Dynamically populated 10 slots -->
+          <textarea id="appDescription" rows="4" class="w-full p-3 rounded-xl input-field text-sm leading-relaxed resize-y" placeholder="Describe what the app should do in plain English. For example: A simple app where I can add my daily tasks, check them off, filter by priority, and have it remember everything when I refresh..." oninput="updateLivePrompt()"></textarea>
+
+          <div class="pt-2 border-t border-[var(--border-subtle)]">
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" id="guardComplete" checked class="rounded text-[var(--accent)]" onchange="updateLivePrompt()">
+              <span class="text-xs text-[var(--text-muted)]">Remind AI to write <strong>100% complete code</strong> (no skipping code with comments like "add code here")</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Step 5: Saved Presets (5 Slots) -->
+        <div class="glass-card p-6 rounded-2xl space-y-4">
+          <div class="flex items-center justify-between border-b border-[var(--border-subtle)] pb-3">
+            <div class="flex items-center gap-2">
+              <span class="w-6 h-6 rounded-md flex items-center justify-center font-bold text-xs" style="background: var(--badge-bg); color: var(--accent);">5</span>
+              <h2 class="text-sm font-bold uppercase tracking-wider text-slate-200">Save Your Ideas</h2>
+            </div>
+            <button onclick="saveCurrentSlotPrompt()" class="px-3 py-1.5 rounded-lg border border-emerald-500/40 bg-emerald-500/10 text-emerald-400 text-xs font-semibold hover:bg-emerald-500/20 transition-all">
+              Save Current Settings
+            </button>
+          </div>
+
+          <div class="grid grid-cols-2 sm:grid-cols-5 gap-2" id="savedSlotsContainer">
+            <!-- Populated by JS -->
           </div>
         </div>
 
       </div>
 
-      <!-- RIGHT COLUMN: Real-Time Output & Action Station -->
-      <div class="lg:col-span-5 space-y-6 lg:sticky lg:top-28">
-        
-        <div class="glass-card p-6 sm:p-7 rounded-3xl space-y-5">
-          <div class="flex items-center justify-between pb-3 border-b border-[var(--border-subtle)]">
+      <!-- RIGHT COLUMN: Output Box & Copy -->
+      <div class="lg:col-span-5 space-y-4 lg:sticky lg:top-24">
+        <div class="glass-card p-6 rounded-2xl space-y-4">
+          <div class="flex items-center justify-between border-b border-[var(--border-subtle)] pb-3">
             <div>
-              <h2 class="text-base font-bold flex items-center gap-2">
-                <span class="w-2.5 h-2.5 rounded-full bg-[var(--accent)] animate-pulse"></span>
-                Generated Master Prompt
-              </h2>
-              <p class="text-[11px] text-[var(--text-muted)]">Optimized for Claude 3.5 Sonnet, GPT-4o, and Gemini 1.5/2.0 Pro</p>
+              <h2 class="text-sm font-bold">Your Ready-To-Use AI Prompt</h2>
+              <p class="text-xs text-[var(--text-muted)]">Copy and paste this directly into your favorite AI tool.</p>
             </div>
-            
-            <span id="promptWordStats" class="text-xs font-mono px-2 py-0.5 rounded-full" style="background: var(--badge-bg); color: var(--accent);">0 tokens</span>
           </div>
 
-          <!-- Prompt Output Pre Box -->
           <div class="relative">
-            <div id="promptOutput" class="w-full p-4 rounded-2xl input-field font-mono text-xs leading-relaxed max-h-[500px] overflow-y-auto whitespace-pre-wrap select-all">
+            <div id="promptOutput" class="w-full p-4 rounded-xl input-field font-mono text-xs leading-relaxed max-h-[460px] overflow-y-auto whitespace-pre-wrap select-all">
               <!-- Live compiled prompt goes here -->
             </div>
           </div>
 
-          <!-- Primary Control Actions -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
-            <button onclick="copyGeneratedPrompt()" class="py-3.5 px-4 rounded-2xl text-xs font-bold text-white shadow-xl transition-transform active:scale-95 flex items-center justify-center gap-2" style="background: linear-gradient(135deg, var(--accent), var(--accent-secondary)); box-shadow: 0 4px 20px var(--accent-glow);">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
-              Copy to Clipboard
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <button onclick="copyGeneratedPrompt()" class="py-3 px-4 rounded-xl text-xs font-bold text-white shadow-lg transition-transform active:scale-95 flex items-center justify-center gap-2" style="background: linear-gradient(135deg, var(--accent), var(--accent-secondary));">
+              📋 Copy Prompt
             </button>
 
-            <button onclick="downloadPromptMarkdown()" class="py-3.5 px-4 rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-input)] hover:border-[var(--border-active)] text-xs font-bold text-[var(--text-main)] transition-colors flex items-center justify-center gap-2">
-              <svg class="w-4 h-4 text-[var(--accent)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-              Export as .MD
+            <button onclick="downloadPromptMarkdown()" class="py-3 px-4 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-input)] hover:border-[var(--border-active)] text-xs font-bold transition-colors flex items-center justify-center gap-2">
+              💾 Save as File (.txt)
             </button>
           </div>
 
-          <!-- Quick Metrics & Spec Checklist -->
-          <div class="p-4 rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-input)] space-y-2 text-xs">
-            <span class="font-bold text-[var(--text-main)] uppercase tracking-wider text-[10px] text-[var(--text-muted)]">Specification Checklist:</span>
-            <div class="grid grid-cols-2 gap-2 text-[11px] font-mono text-[var(--text-muted)]">
-              <div class="flex items-center gap-1.5">
-                <span class="text-emerald-400">✓</span> Modular CSS Engine
-              </div>
-              <div class="flex items-center gap-1.5">
-                <span class="text-emerald-400">✓</span> Full UX Guidelines
-              </div>
-              <div class="flex items-center gap-1.5">
-                <span class="text-emerald-400">✓</span> Robust Error Handling
-              </div>
-              <div class="flex items-center gap-1.5">
-                <span class="text-emerald-400">✓</span> Zero Alert() Constraints
-              </div>
-            </div>
+          <div class="p-3 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-input)] text-xs text-[var(--text-muted)] leading-relaxed">
+            💡 <strong>Beginner Tip:</strong> After the AI gives you the code, copy it, paste it into a blank text file, save it as <code class="text-indigo-300">index.html</code>, and double-click it to open it in Chrome, Edge, or Safari!
           </div>
-
         </div>
-
       </div>
 
     </div>
   </main>
 
-  <!-- Floating Toast Notification -->
+  <!-- Toast Notification -->
   <div id="toastNotification" class="fixed bottom-6 right-6 z-50 transform translate-y-24 opacity-0 transition-all duration-300 pointer-events-none">
-    <div class="px-5 py-3 rounded-2xl bg-gray-950 border border-[var(--border-active)] text-[var(--text-main)] shadow-2xl flex items-center gap-3 text-xs font-semibold backdrop-blur-xl">
-      <span class="w-2 h-2 rounded-full" style="background: var(--accent);"></span>
-      <span id="toastMessage">Action completed successfully!</span>
+    <div class="px-4 py-2.5 rounded-xl bg-gray-950 border border-[var(--border-active)] text-xs font-medium text-white shadow-xl flex items-center gap-2">
+      <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+      <span id="toastMessage">Done!</span>
     </div>
   </div>
 
   <script>
-    /* ====================================================================
-       1. CORE STATE, TAGS CATALOG, AND PRESETS
-       ==================================================================== */
-    const MAX_WORDS = 450;
-    const MAX_SLOTS = 10;
+    const MAX_SLOTS = 5;
 
-    // Feature tags catalog
+    // Beginner-friendly tags list
     const FEATURE_TAGS = [
-      { id: "auth", label: "🔐 Auth / RBAC Simulation", desc: "User login/signup modal with role permissions" },
-      { id: "realtime", label: "⚡ Real-time Mock Sync", desc: "Simulated WebSockets with live feed pulse" },
-      { id: "dashboard", label: "📊 Analytics & Charts", desc: "Interactive stat cards and SVG/Canvas charts" },
-      { id: "stripe", label: "💳 Stripe / Payment Mock", desc: "Pricing tiers, plan toggles and checkout flow" },
-      { id: "dragdrop", label: "✋ Drag & Drop Kanban", desc: "Draggable task boards and reordering logic" },
-      { id: "canvas", label: "🎨 Canvas / Three.js Visuals", desc: "Dynamic 2D/3D canvas rendering engine" },
-      { id: "media", label: "🎵 Audio / Media Player", desc: "Sound effects, Web Audio DSP, or audio deck" },
-      { id: "offline", label: "📦 PWA / Local Storage Sync", desc: "Persistent offline-first localStorage database" },
-      { id: "export", label: "📄 Export CSV & PDF", desc: "One-click data export and printable report format" },
-      { id: "darkmode", label: "🌗 Dark / Light Mode Switcher", desc: "Dynamic CSS custom variable theme toggler" },
-      { id: "aichat", label: "🤖 AI Assistant Chat Drawer", desc: "Collapsible conversational LLM interface" },
-      { id: "search", label: "🔍 Instant Fuzzy Search & Filter", desc: "Multi-parameter filter chips and search bar" },
-      { id: "wizard", label: "🧙 Multi-step Stepper Form", desc: "Progress bar wizard with validation per stage" },
-      { id: "datatable", label: "📋 Interactive Data Tables", desc: "Sortable headers, pagination, and row selection" },
-      { id: "keyboard", label: "⌨️ Keyboard Shortcuts (Cmd+K)", desc: "Hotkeys for fast navigation and search modal" }
+      { id: "savedata", label: "💾 Saves Data (LocalStorage)", desc: "Keeps data saved even if the user refreshes or closes the tab" },
+      { id: "darkmode", label: "🌗 Dark / Light Mode Switcher", desc: "A simple button to switch between light and dark themes" },
+      { id: "search", label: "🔍 Search & Filter Bar", desc: "Quickly search through items and lists" },
+      { id: "stats", label: "📊 Simple Stats & Summary Cards", desc: "Visual overview cards showing totals and simple progress" },
+      { id: "dragdrop", label: "✋ Drag-and-Drop Cards", desc: "Reorder tasks or move cards between columns" },
+      { id: "auth", label: "👤 Fake Login / Profile Modal", desc: "A clean simulated login popup to switch user accounts" },
+      { id: "export", label: "📥 Export to CSV / Spreadsheet", desc: "A button allowing users to download their data as a spreadsheet" },
+      { id: "alerts", label: "🔔 Friendly Toast Notifications", desc: "Non-annoying popup alerts when someone saves or deletes an item" }
     ];
 
-    let activeTags = new Set(["dashboard", "darkmode", "search", "export"]);
-    let savedSlots = JSON.parse(localStorage.getItem('omniprompt_pro_slots')) || {};
+    let activeTags = new Set(["savedata", "darkmode", "search", "alerts"]);
+    let savedSlots = JSON.parse(localStorage.getItem('easyprompt_slots')) || {};
 
-    /* Industry Blueprints */
     const BLUEPRINTS = {
-      analytics: "Build a comprehensive analytics telemetry control deck. Features interactive metrics tiles with percentage changes, a responsive canvas line chart visualizing traffic trends, filtered activity logs, and a date range picker with CSV export functionality.",
-      kanban: "Create an intuitive project kanban workspace. Include columns for 'Backlog', 'In Progress', 'In Review', and 'Completed'. Implement HTML5 drag-and-drop to move task cards between columns, priority badge color coding, and quick task modal creation.",
-      ai_chat: "Design an AI workspace studio containing a chat dialog panel with typing indicator simulations, streaming markdown output bubbles, a system prompt parameter configuration drawer (temperature, top_p sliders), and token count telemetry.",
-      store: "Develop a slick digital product showcase and checkout app. Features category filtering, dynamic shopping cart drawer with quantity adjustments, promo code input verification, and a simulated multi-step payment confirmation modal."
+      kanban: "Build a friendly drag-and-drop task board with 3 columns: 'To Do', 'In Progress', and 'Done'. Let me add new tasks, set a priority (Low, Medium, High), drag cards between columns, and delete tasks.",
+      habits: "Build a daily habit tracker. Let me type in daily habits (like 'Drink 2L Water', 'Read 20 mins'), check them off each day, and see a visual streak counter for each habit. Keep everything saved in the browser.",
+      budget: "Build a simple personal budget tracker. Let me type in income and expenses with categories (Food, Rent, Bills). Show total balance, total expenses, and a simple bar or progress visual showing spending breakdown."
     };
 
-    /* ====================================================================
-       2. INITIALIZATION & RENDERING
-       ==================================================================== */
     window.onload = function() {
       renderTags();
       renderSavedSlots();
-      toggleNavCustom();
       updateLivePrompt();
     };
 
@@ -602,7 +342,7 @@
         return `
           <button type="button" 
                   onclick="toggleTag('${tag.id}')" 
-                  class="tag-chip px-3.5 py-1.5 rounded-xl text-xs flex items-center gap-1.5 ${isActive ? 'active' : ''}" 
+                  class="tag-chip px-3 py-1.5 rounded-lg text-xs flex items-center gap-1.5 ${isActive ? 'active' : ''}" 
                   title="${tag.desc}">
             <span>${tag.label}</span>
           </button>
@@ -620,7 +360,7 @@
       updateLivePrompt();
     }
 
-    function toggleAllTags(select) {
+    function toggleAllTags() {
       if (activeTags.size === FEATURE_TAGS.length) {
         activeTags.clear();
       } else {
@@ -630,182 +370,97 @@
       updateLivePrompt();
     }
 
-    function toggleNavCustom() {
-      const navType = document.getElementById('navTopology').value;
-      const container = document.getElementById('navLinksContainer');
-      if (navType.includes('Zero') || navType.includes('Command')) {
-        container.style.display = 'none';
-      } else {
-        container.style.display = 'block';
-      }
-      updateLivePrompt();
-    }
-
-    function onIndustryChange(industry) {
-      // Auto-suggest app names if empty
-      const appNameInput = document.getElementById('appName');
-      if (!appNameInput.value.trim()) {
-        const suggestions = {
-          "SaaS & Productivity": "SyncFlow Pro",
-          "Fintech & Decentralized Finance": "Apex Capital",
-          "Healthcare & MedTech": "PulseCare Hub",
-          "E-Commerce & Retail": "Aura Market",
-          "Artificial Intelligence & ML Tools": "NeuroStudio AI",
-          "EdTech & Learning Management": "OmniLearn Deck",
-          "Creative Studio & Multimedia": "Prism Canvas",
-          "Gaming & Interactive WebGL": "Vortex Arena",
-          "Real Estate & Spatial Booking": "Haven Spaces",
-          "Logistics & Supply Chain": "FleetCore Global",
-          "Developer Tooling & Cloud DevOps": "KubePilot Dashboard"
-        };
-        appNameInput.value = suggestions[industry] || "Modern App Studio";
-      }
-      updateLivePrompt();
-    }
-
-    function handleDescriptionInput(textarea) {
-      let words = textarea.value.trim().split(/\s+/).filter(w => w.length > 0);
-      if (words.length > MAX_WORDS) {
-        textarea.value = words.slice(0, MAX_WORDS).join(" ");
-        words = words.slice(0, MAX_WORDS);
-      }
-      document.getElementById('wordCounter').innerText = words.length;
-      updateLivePrompt();
-    }
-
     function applyBlueprint(key) {
       const text = BLUEPRINTS[key];
       if (text) {
-        const desc = document.getElementById('appDescription');
-        desc.value = text;
-        handleDescriptionInput(desc);
-        showToast("Applied blueprint: " + key.toUpperCase());
+        document.getElementById('appDescription').value = text;
+        updateLivePrompt();
+        showToast("Blueprint applied!");
       }
     }
 
-    /* ====================================================================
-       3. PROMPT GENERATION ENGINE
-       ==================================================================== */
     function buildPromptText() {
-      const appName = document.getElementById('appName').value.trim() || "Dynamic Modern Web Application";
-      const industry = document.getElementById('industrySector').value;
+      const appName = document.getElementById('appName').value.trim() || "My Web App";
+      const sector = document.getElementById('industrySector').value;
       const persona = document.getElementById('userPersona').value;
       const structure = document.getElementById('fileStructure').value;
       const style = document.getElementById('cssStyle').value;
       const palette = document.getElementById('colorScheme').value;
-      const layout = document.getElementById('layoutStrategy').value;
-      const navTopology = document.getElementById('navTopology').value;
       const navLinks = document.getElementById('navLinks').value.trim();
       const description = document.getElementById('appDescription').value.trim();
-      const guardNoPlaceholders = document.getElementById('guardNoPlaceholders').checked;
-      const guardNoAlerts = document.getElementById('guardNoAlerts').checked;
+      const guardComplete = document.getElementById('guardComplete').checked;
 
-      // Extract labels for active tags
-      const selectedFeatureLabels = Array.from(activeTags).map(id => {
+      const selectedFeatures = Array.from(activeTags).map(id => {
         const item = FEATURE_TAGS.find(t => t.id === id);
         return item ? item.label : id;
       });
 
-      let prompt = `Act as a world-class principal frontend software engineer and UI/UX designer. Your objective is to architect and code a complete, fully operational web application named "${appName}".\n\n`;
+      let prompt = `Please build a complete, ready-to-run web application called "${appName}".\n\n`;
 
-      prompt += `### 1. High-Level Concept & Sector Context\n`;
-      prompt += `- Application Title: "${appName}"\n`;
-      prompt += `- Industry & Domain: ${industry}\n`;
-      prompt += `- Target Audience & User Persona: ${persona}\n\n`;
+      prompt += `### What This App Is:\n`;
+      prompt += `- Category: ${sector}\n`;
+      prompt += `- Who it's for: ${persona}\n\n`;
 
-      prompt += `### 2. Architecture & File Structure\n`;
-      prompt += `- Target Deliverable: ${structure}\n`;
-      if (structure.includes('Single-file')) {
-        prompt += `- CRITICAL CONSTRAINT: All HTML markup, styling (Tailwind CSS utility classes or semantic inline <style>), and JavaScript logic MUST reside in ONE single self-contained, fully runnable file. Do not omit code or link external unfinished scripts.\n`;
+      prompt += `### Deliverable Format:\n`;
+      prompt += `- ${structure}\n`;
+      if (structure.includes('Single')) {
+        prompt += `- Please keep all HTML, CSS (using Tailwind CSS via CDN or simple clean CSS), and JavaScript inside ONE standalone file so I can just double-click it and run it immediately.\n`;
       }
       prompt += `\n`;
 
-      prompt += `### 3. Design System & UX Aesthetics\n`;
-      prompt += `- Aesthetic Archetype: ${style}\n`;
-      prompt += `- Color Palette System: ${palette}\n`;
-      prompt += `- Viewport Strategy: ${layout}\n`;
-      prompt += `- Navigation Structure: ${navTopology}\n`;
-      if (!navTopology.includes('Zero') && navLinks) {
-        prompt += `  - Key Navigation Routes/Tabs: ${navLinks}\n`;
+      prompt += `### Design & Layout:\n`;
+      prompt += `- Style: ${style}\n`;
+      prompt += `- Color theme: ${palette}\n`;
+      if (navLinks) {
+        prompt += `- Navigation tabs: ${navLinks}\n`;
       }
-      prompt += `- Typography & Layout: Use modern, legible sans-serif fonts (e.g. Inter/Plus Jakarta Sans), crisp border radii, balanced negative space, and deep visual contrast.\n\n`;
+      prompt += `- Please make sure the layout looks great on both mobile phones and desktop computers.\n\n`;
 
-      prompt += `### 4. Required Functional Modules & Feature Integrations\n`;
-      if (selectedFeatureLabels.length > 0) {
-        selectedFeatureLabels.forEach(feature => {
-          prompt += `- [x] ${feature}\n`;
+      if (selectedFeatures.length > 0) {
+        prompt += `### Features to Include:\n`;
+        selectedFeatures.forEach(feature => {
+          prompt += `- ${feature}\n`;
         });
-      } else {
-        prompt += `- Standard modular architecture with interactive views and sample data.\n`;
+        prompt += `\n`;
       }
-      prompt += `\n`;
 
-      prompt += `### 5. Detailed Scope & Behavioral Requirements\n`;
+      prompt += `### How It Should Work:\n`;
       if (description) {
         prompt += `${description}\n\n`;
       } else {
-        prompt += `Implement an engaging, intuitive user flow tailored for ${persona}, featuring smooth state transitions, mock data generation, responsive interactions, and accessible controls.\n\n`;
+        prompt += `Create an intuitive, easy-to-use experience with sample data already loaded in so it looks full and working right away.\n\n`;
       }
 
-      prompt += `### 6. Engineering Standards & Strict Guardrails\n`;
-      if (guardNoPlaceholders) {
-        prompt += `- ZERO PLACEHOLDERS: Provide 100% complete, end-to-end working source code. NEVER use "// ... existing code ...", "/* insert logic here */", or placeholder comments.\n`;
+      prompt += `### Important Coding Rules for the AI:\n`;
+      if (guardComplete) {
+        prompt += `1. Provide 100% complete, working code. Do NOT use placeholders, ellipsis (...), or comments like "// implement logic here". Write the full code.\n`;
       }
-      if (guardNoAlerts) {
-        prompt += `- NO BROWSER ALERTS: Under no circumstances use alert(), prompt(), or confirm(). Implement sleek, self-dismissing custom toast banners or modern glassmorphic dialog modals for all user feedback.\n`;
-      }
-      prompt += `- Resilient Error Handling: Wrap async/event handlers in clean try/catch blocks with fallback UI states.\n`;
-      prompt += `- Responsive & Touch Friendly: Interactive targets must maintain comfortable hit areas (minimum 40x40px) with fluid mobile-adapted layouts.`;
+      prompt += `2. Do not use ugly default browser alert() popups; use friendly in-page feedback or notifications.\n`;
+      prompt += `3. Include clear, friendly comments in the JavaScript explaining how key parts work so a beginner can understand and learn from it.`;
 
       return prompt;
     }
 
     function updateLivePrompt() {
       const promptText = buildPromptText();
-      const outputElem = document.getElementById('promptOutput');
-      outputElem.innerText = promptText;
-
-      // Calculate approximate token count (~4 characters per token)
-      const approxTokens = Math.round(promptText.length / 4);
-      document.getElementById('promptWordStats').innerText = `~${approxTokens} tokens (${promptText.split(/\s+/).length} words)`;
+      document.getElementById('promptOutput').innerText = promptText;
     }
 
-    /* ====================================================================
-       4. EXPORT & CLIPBOARD UTILITIES
-       ==================================================================== */
     function copyGeneratedPrompt() {
       const text = document.getElementById('promptOutput').innerText;
-      
-      // Fallback-compatible copy mechanism for iframe safety
-      const dummy = document.createElement('textarea');
-      dummy.value = text;
-      dummy.style.position = 'fixed';
-      dummy.style.opacity = '0';
-      document.body.appendChild(dummy);
-      dummy.select();
-      
-      try {
-        document.execCommand('copy');
-        showToast("Master Prompt copied to clipboard!");
-      } catch (err) {
-        if (navigator.clipboard) {
-          navigator.clipboard.writeText(text).then(() => {
-            showToast("Master Prompt copied to clipboard!");
-          });
-        } else {
-          showToast("Please copy manually from the preview box.");
-        }
-      } finally {
-        document.body.removeChild(dummy);
-      }
+      navigator.clipboard.writeText(text).then(() => {
+        showToast("Prompt copied to clipboard!");
+      }).catch(() => {
+        showToast("Please copy manually from the box.");
+      });
     }
 
     function downloadPromptMarkdown() {
       const text = document.getElementById('promptOutput').innerText;
-      const appName = document.getElementById('appName').value.trim() || 'App_Prompt';
-      const cleanFileName = appName.toLowerCase().replace(/[^a-z0-9]/g, '_') + '_prompt.md';
+      const appName = document.getElementById('appName').value.trim() || 'my_app';
+      const cleanFileName = appName.toLowerCase().replace(/[^a-z0-9]/g, '_') + '_prompt.txt';
 
-      const blob = new Blob([text], { type: 'text/markdown;charset=utf-8;' });
+      const blob = new Blob([text], { type: 'text/plain;charset=utf-8;' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
@@ -815,103 +470,87 @@
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
 
-      showToast(`Exported ${cleanFileName}`);
+      showToast(`Downloaded ${cleanFileName}`);
     }
 
-    /* ====================================================================
-       5. PERSISTENT STORAGE / SLOTS MANAGER (1 to 10)
-       ==================================================================== */
     function renderSavedSlots() {
       const container = document.getElementById('savedSlotsContainer');
       container.innerHTML = '';
 
       for (let i = 1; i <= MAX_SLOTS; i++) {
         const data = savedSlots[i];
-        const slotCard = document.createElement('div');
-        slotCard.className = `slot-pill p-3 rounded-2xl cursor-pointer flex flex-col justify-between ${data ? 'saved' : 'bg-[var(--bg-input)] text-[var(--text-muted)]'}`;
+        const card = document.createElement('div');
+        card.className = `slot-pill p-2.5 rounded-xl cursor-pointer flex flex-col justify-between text-xs ${data ? 'saved' : 'bg-[var(--bg-input)] text-[var(--text-muted)]'}`;
 
         if (data) {
-          slotCard.innerHTML = `
+          card.innerHTML = `
             <div onclick="loadPromptSlot(${i})">
-              <div class="flex items-center justify-between">
-                <span class="font-mono text-[10px] font-bold">SLOT 0${i}</span>
-                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-              </div>
-              <div class="text-xs font-bold text-[var(--text-main)] truncate mt-1">${data.appName || 'Custom Setup'}</div>
-              <div class="text-[10px] text-[var(--text-muted)] truncate">${data.industry || 'Saved'}</div>
+              <div class="font-bold text-[10px] text-indigo-400">SLOT ${i}</div>
+              <div class="font-semibold truncate text-[var(--text-main)] mt-0.5">${data.appName || 'My Idea'}</div>
             </div>
-            <div class="flex justify-end pt-2 border-t border-[var(--border-subtle)] mt-2">
-              <button onclick="deletePromptSlot(event, ${i})" class="text-[10px] text-rose-400 hover:text-rose-300 hover:underline">Clear</button>
+            <div class="mt-2 text-right">
+              <button onclick="deletePromptSlot(event, ${i})" class="text-[10px] text-rose-400 hover:underline">Clear</button>
             </div>
           `;
         } else {
-          slotCard.onclick = () => loadPromptSlot(i);
-          slotCard.innerHTML = `
+          card.onclick = () => loadPromptSlot(i);
+          card.innerHTML = `
             <div>
-              <div class="font-mono text-[10px]">SLOT 0${i}</div>
-              <div class="text-xs font-semibold mt-1">Empty Slot</div>
-              <div class="text-[10px] opacity-60">Ready to save</div>
+              <div class="font-bold text-[10px] opacity-50">SLOT ${i}</div>
+              <div class="opacity-60 text-[11px] mt-0.5">Empty</div>
             </div>
           `;
         }
 
-        container.appendChild(slotCard);
+        container.appendChild(card);
       }
     }
 
     function saveCurrentSlotPrompt() {
-      // Find first empty slot or prompt user
-      let defaultSlot = 1;
+      let targetSlot = 1;
       for (let i = 1; i <= MAX_SLOTS; i++) {
-        if (!savedSlots[i]) { defaultSlot = i; break; }
+        if (!savedSlots[i]) { targetSlot = i; break; }
       }
 
-      // Safe in-app slot selector prompt
-      const targetInput = window.prompt(`Select slot number to store profile (1 to ${MAX_SLOTS}):`, defaultSlot);
-      if (!targetInput) return;
+      const input = window.prompt(`Save to which slot number? (1 to ${MAX_SLOTS}):`, targetSlot);
+      if (!input) return;
 
-      const slotNum = parseInt(targetInput, 10);
-      if (isNaN(slotNum) || slotNum < 1 || slotNum > MAX_SLOTS) {
-        showToast("Invalid slot selection (1-10 only).");
+      const slot = parseInt(input, 10);
+      if (isNaN(slot) || slot < 1 || slot > MAX_SLOTS) {
+        showToast("Please enter a number between 1 and 5.");
         return;
       }
 
-      savedSlots[slotNum] = {
+      savedSlots[slot] = {
         appName: document.getElementById('appName').value.trim(),
-        industry: document.getElementById('industrySector').value,
+        sector: document.getElementById('industrySector').value,
         persona: document.getElementById('userPersona').value,
-        fileStructure: document.getElementById('fileStructure').value,
-        cssStyle: document.getElementById('cssStyle').value,
-        colorScheme: document.getElementById('colorScheme').value,
-        layout: document.getElementById('layoutStrategy').value,
-        navTopology: document.getElementById('navTopology').value,
+        structure: document.getElementById('fileStructure').value,
+        style: document.getElementById('cssStyle').value,
+        palette: document.getElementById('colorScheme').value,
         navLinks: document.getElementById('navLinks').value,
         description: document.getElementById('appDescription').value,
-        tags: Array.from(activeTags),
-        guardNoPlaceholders: document.getElementById('guardNoPlaceholders').checked,
-        guardNoAlerts: document.getElementById('guardNoAlerts').checked
+        tags: Array.from(activeTags)
       };
 
-      localStorage.setItem('omniprompt_pro_slots', JSON.stringify(savedSlots));
+      localStorage.setItem('easyprompt_slots', JSON.stringify(savedSlots));
       renderSavedSlots();
-      showToast(`Saved configuration into Slot 0${slotNum}!`);
+      showToast(`Saved to Slot ${slot}!`);
     }
 
-    function loadPromptSlot(slotNum) {
-      const data = savedSlots[slotNum];
+    function loadPromptSlot(slot) {
+      const data = savedSlots[slot];
       if (!data) {
-        showToast(`Slot 0${slotNum} is currently empty.`);
+        showToast(`Slot ${slot} is empty.`);
         return;
       }
 
       document.getElementById('appName').value = data.appName || '';
-      document.getElementById('industrySector').value = data.industry || 'SaaS & Productivity';
-      document.getElementById('userPersona').value = data.persona || 'Enterprise Teams & Decision Makers';
-      document.getElementById('fileStructure').value = data.fileStructure || 'Single-file mandate (Self-contained runnable HTML + Tailwind + inline JS)';
-      document.getElementById('cssStyle').value = data.cssStyle || 'Bento-grid Modernist (Card-based layout, subtle borders, high visual hierarchy)';
-      document.getElementById('colorScheme').value = data.colorScheme || 'Electric Indigo & Violet with Obsidian Dark Backgrounds';
-      document.getElementById('layoutStrategy').value = data.layout || 'Fully fluid responsive (Mobile-first with dedicated breakpoints for tablets & ultra-wides)';
-      document.getElementById('navTopology').value = data.navTopology || 'Sticky top-bar with brand logo, quick search, and action CTA';
+      document.getElementById('industrySector').value = data.sector || 'Productivity & Task Management';
+      document.getElementById('userPersona').value = data.persona || 'Everyday people looking for a simple, fast tool';
+      document.getElementById('fileStructure').value = data.structure || 'One single .html file that runs immediately in any web browser without needing to install anything';
+      document.getElementById('cssStyle').value = data.style || 'Modern dark mode with cards and rounded corners';
+      document.getElementById('colorScheme').value = data.palette || 'Indigo blue and purple';
       document.getElementById('navLinks').value = data.navLinks || '';
       document.getElementById('appDescription').value = data.description || '';
 
@@ -920,25 +559,16 @@
         renderTags();
       }
 
-      if (data.guardNoPlaceholders !== undefined) {
-        document.getElementById('guardNoPlaceholders').checked = data.guardNoPlaceholders;
-      }
-      if (data.guardNoAlerts !== undefined) {
-        document.getElementById('guardNoAlerts').checked = data.guardNoAlerts;
-      }
-
-      toggleNavCustom();
-      handleDescriptionInput(document.getElementById('appDescription'));
       updateLivePrompt();
-      showToast(`Loaded layout setup from Slot 0${slotNum}!`);
+      showToast(`Loaded Slot ${slot}!`);
     }
 
-    function deletePromptSlot(e, slotNum) {
+    function deletePromptSlot(e, slot) {
       e.stopPropagation();
-      delete savedSlots[slotNum];
-      localStorage.setItem('omniprompt_pro_slots', JSON.stringify(savedSlots));
+      delete savedSlots[slot];
+      localStorage.setItem('easyprompt_slots', JSON.stringify(savedSlots));
       renderSavedSlots();
-      showToast(`Cleared Slot 0${slotNum}`);
+      showToast(`Cleared Slot ${slot}`);
     }
 
     function resetAllFields() {
@@ -948,42 +578,25 @@
       document.getElementById('fileStructure').selectedIndex = 0;
       document.getElementById('cssStyle').selectedIndex = 0;
       document.getElementById('colorScheme').selectedIndex = 0;
-      document.getElementById('layoutStrategy').selectedIndex = 0;
-      document.getElementById('navTopology').selectedIndex = 0;
-      document.getElementById('navLinks').value = 'Dashboard, Analytics, Workspaces, Settings';
+      document.getElementById('navLinks').value = 'Home, My Tasks, Analytics, Settings';
       document.getElementById('appDescription').value = '';
-      activeTags = new Set(["dashboard", "darkmode", "search", "export"]);
+      activeTags = new Set(["savedata", "darkmode", "search", "alerts"]);
       renderTags();
-      toggleNavCustom();
-      handleDescriptionInput(document.getElementById('appDescription'));
       updateLivePrompt();
-      showToast("Reset form to default state.");
-    }
-
-    /* ====================================================================
-       6. THEME ENGINE & NOTIFICATIONS
-       ==================================================================== */
-    function changeTheme(themeName) {
-      if (themeName === 'indigo') {
-        document.documentElement.removeAttribute('data-theme');
-      } else {
-        document.documentElement.setAttribute('data-theme', themeName);
-      }
-      showToast("Switched theme palette: " + themeName.toUpperCase());
+      showToast("Reset to defaults!");
     }
 
     function showToast(msg) {
       const toast = document.getElementById('toastNotification');
-      const toastText = document.getElementById('toastMessage');
-      toastText.innerText = msg;
+      document.getElementById('toastMessage').innerText = msg;
       toast.classList.remove('translate-y-24', 'opacity-0');
       toast.classList.add('translate-y-0', 'opacity-100');
-      
-      clearTimeout(window._toastTimeout);
-      window._toastTimeout = setTimeout(() => {
+
+      clearTimeout(window._t);
+      window._t = setTimeout(() => {
         toast.classList.add('translate-y-24', 'opacity-0');
         toast.classList.remove('translate-y-0', 'opacity-100');
-      }, 2600);
+      }, 2400);
     }
   </script>
 </body>
