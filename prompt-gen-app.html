@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EasyApp Prompt Maker • Build Web Apps with AI</title>
+  <title>EasyApp Prompt Playground • Web App Idea Studio</title>
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Google Fonts: Inter -->
+  <!-- Google Fonts: Inter & JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -94,19 +94,19 @@
 
   <!-- Header -->
   <header class="sticky top-0 z-40 border-b border-[var(--border-subtle)] bg-[var(--bg-body)]/90 backdrop-blur-md">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-18 py-3 flex items-center justify-between gap-4">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-18 py-3.5 flex items-center justify-between gap-4">
       <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl flex items-center justify-center font-bold text-white shadow-md" style="background: linear-gradient(135deg, var(--accent), var(--accent-secondary));">
-          ✨
+        <div class="w-10 h-10 rounded-xl flex items-center justify-center font-bold text-lg text-white shadow-md" style="background: linear-gradient(135deg, var(--accent), var(--accent-secondary));">
+          ⚡
         </div>
         <div>
-          <h1 class="text-lg font-bold">EasyApp Prompt Maker</h1>
-          <p class="text-xs text-[var(--text-muted)]">Turn your app idea into a ready-to-use prompt for ChatGPT, Claude, or Gemini</p>
+          <h1 class="text-lg font-bold">EasyApp Playground</h1>
+          <p class="text-xs text-[var(--text-muted)]">Mix & match options to build a clean prompt for ChatGPT, Claude, or Gemini</p>
         </div>
       </div>
 
       <button onclick="resetAllFields()" class="px-3 py-1.5 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-input)] hover:text-rose-400 text-xs font-medium transition-colors">
-        Clear All
+        Reset Form
       </button>
     </div>
   </header>
@@ -114,109 +114,152 @@
   <main class="max-w-6xl mx-auto px-4 sm:px-6 py-8">
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
       
-      <!-- LEFT COLUMN: Simple Form Options -->
+      <!-- LEFT COLUMN: Playground Controls -->
       <div class="lg:col-span-7 space-y-6">
         
-        <!-- Step 1: The Basics -->
+        <!-- Step 1: The App Core -->
         <div class="glass-card p-6 rounded-2xl space-y-4">
           <div class="flex items-center gap-2 border-b border-[var(--border-subtle)] pb-3">
             <span class="w-6 h-6 rounded-md flex items-center justify-center font-bold text-xs" style="background: var(--badge-bg); color: var(--accent);">1</span>
-            <h2 class="text-sm font-bold uppercase tracking-wider text-slate-200">The Basics</h2>
+            <h2 class="text-sm font-bold uppercase tracking-wider text-slate-200">The Idea & Audience</h2>
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div class="space-y-1">
               <label class="block text-xs font-semibold text-[var(--text-muted)]">App Name</label>
-              <input type="text" id="appName" placeholder="e.g. RecipeBox, HabitTracker" class="w-full p-2.5 rounded-xl input-field text-sm" oninput="updateLivePrompt()">
+              <input type="text" id="appName" placeholder="e.g. QuickQuote, RetroRacer, PlantCare" class="w-full p-2.5 rounded-xl input-field text-sm" oninput="updateLivePrompt()">
             </div>
 
+            <!-- Expanded App Types -->
             <div class="space-y-1">
-              <label class="block text-xs font-semibold text-[var(--text-muted)]">What kind of app is it?</label>
+              <label class="block text-xs font-semibold text-[var(--text-muted)]">What type of app is this?</label>
               <select id="industrySector" class="w-full p-2.5 rounded-xl input-field text-sm" onchange="updateLivePrompt()">
-                <option value="Productivity & Task Management">Productivity / Task Tracker</option>
-                <option value="Personal Finance & Budgeting">Personal Finance / Budgeting</option>
-                <option value="Online Store & Shopping">Shop / Digital Store</option>
-                <option value="Health & Fitness Tracker">Health & Fitness</option>
-                <option value="Learning & Flashcards">Education / Study Flashcards</option>
-                <option value="Portfolio & Freelance Showcase">Portfolio / Freelance Showcase</option>
-                <option value="Fun & Mini-Game">Casual Mini-Game / Quiz</option>
+                <option value="Productivity & Task Tracker">📝 To-Do List & Task Board</option>
+                <option value="Personal Finance & Money Tracker">💰 Budget & Expense Tracker</option>
+                <option value="Simple Digital Shop & Cart">🛍️ Simple Store & Checkout</option>
+                <option value="Habit & Daily Routine Builder">🔥 Daily Habit & Streak Tracker</option>
+                <option value="Health, Fitness & Workout Log">🏃 Health, Workout & Fitness Log</option>
+                <option value="Flashcards & Learning Quiz">🎓 Flashcards & Study Quiz</option>
+                <option value="Recipe Book & Meal Planner">🍳 Recipe Organizer & Meal Prep</option>
+                <option value="Trade, Invoicing & Client Estimator">🔨 Trades, Quotes & Invoicing Tool</option>
+                <option value="Appointments & Booking Calendar">📅 Booking & Schedule Calendar</option>
+                <option value="Hobby, Collection & Inventory Tracker">📦 Hobby & Inventory Collector</option>
+                <option value="Retro Arcade 2D Browser Game">🕹️ 2D Retro Canvas Mini-Game</option>
+                <option value="Music, Sound Deck & Audio Tool">🎵 Soundboard & Audio Player</option>
+                <option value="Creative Notes & Journaling">📖 Personal Journal & Notebook</option>
+                <option value="Club, Roster & Community Board">👥 Community, Club or Team Roster</option>
+                <option value="Quick Reference & Cheat Sheet Desk">⚡ Quick Reference & Cheat Sheet</option>
+                <option value="Portfolio & Project Showcase">💼 Creative Portfolio & Bio Showcase</option>
               </select>
             </div>
 
+            <!-- Expanded Personas -->
             <div class="space-y-1">
-              <label class="block text-xs font-semibold text-[var(--text-muted)]">Who is going to use it?</label>
+              <label class="block text-xs font-semibold text-[var(--text-muted)]">Who is the primary user?</label>
               <select id="userPersona" class="w-full p-2.5 rounded-xl input-field text-sm" onchange="updateLivePrompt()">
-                <option value="Everyday people looking for a simple, fast tool">Beginners & Everyday People</option>
-                <option value="Small business owners and freelancers">Freelancers & Small Business Owners</option>
-                <option value="Students and learners">Students & Learners</option>
-                <option value="Power users wanting lots of options">Experienced Power Users</option>
+                <option value="Everyday people who want something fast, simple, and clutter-free">Everyday People (Simple & Easy)</option>
+                <option value="Solo freelancers and small business operators">Freelancers & Small Business Owners</option>
+                <option value="Trade workers, contractors, and field staff needing quick input">Trades & Field Contractors</option>
+                <option value="Busy parents managing family routines and schedules">Busy Families & Parents</option>
+                <option value="Students, teachers, and learners">Students & Educators</option>
+                <option value="Fitness fans, coaches, and gym-goers">Gym-goers, Athletes & Coaches</option>
+                <option value="Hobby collectors and craftspeople">Hobbyists, Makers & Collectors</option>
+                <option value="Casual gamers looking for instant fun">Casual Gamers & Kids</option>
+                <option value="Older adults who need large text, high contrast, and clear buttons">Seniors (High Legibility & Large Buttons)</option>
+                <option value="Power users who love keyboard shortcuts and deep customization">Power Users (Shortcuts & Speed)</option>
               </select>
             </div>
 
+            <!-- Deliverable Choices -->
             <div class="space-y-1">
-              <label class="block text-xs font-semibold text-[var(--text-muted)]">How do you want the code delivered?</label>
+              <label class="block text-xs font-semibold text-[var(--text-muted)]">How do you want the code built?</label>
               <select id="fileStructure" class="w-full p-2.5 rounded-xl input-field text-sm" onchange="updateLivePrompt()">
-                <option value="One single .html file that runs immediately in any web browser without needing to install anything">Single .html file (Easiest — double-click to open)</option>
-                <option value="Separate files (index.html, styles.css, app.js)">Separate files (HTML, CSS, and JS)</option>
+                <option value="One single, self-contained .html file (with Tailwind CSS and inline JS) that runs instantly in any browser">Single-File HTML (Easiest — runs anywhere)</option>
+                <option value="Single-file PWA-ready HTML (includes offline local storage caching)">Offline-Ready PWA (Works without internet)</option>
+                <option value="Three clean separate files: index.html, styles.css, and app.js">Three Separate Files (HTML, CSS, JS)</option>
+                <option value="Single-file modern React component (using Tailwind and Lucide icons)">Single-File React Component (.jsx)</option>
               </select>
             </div>
           </div>
         </div>
 
-        <!-- Step 2: Look & Feel -->
+        <!-- Step 2: Styling & Visual Vibe -->
         <div class="glass-card p-6 rounded-2xl space-y-4">
           <div class="flex items-center gap-2 border-b border-[var(--border-subtle)] pb-3">
             <span class="w-6 h-6 rounded-md flex items-center justify-center font-bold text-xs" style="background: var(--badge-bg); color: var(--accent);">2</span>
-            <h2 class="text-sm font-bold uppercase tracking-wider text-slate-200">Look & Feel</h2>
+            <h2 class="text-sm font-bold uppercase tracking-wider text-slate-200">Look, Feel & Navigation</h2>
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <!-- Expanded Themes -->
             <div class="space-y-1">
-              <label class="block text-xs font-semibold text-[var(--text-muted)]">Visual Style</label>
+              <label class="block text-xs font-semibold text-[var(--text-muted)]">Visual Theme</label>
               <select id="cssStyle" class="w-full p-2.5 rounded-xl input-field text-sm" onchange="updateLivePrompt()">
-                <option value="Modern dark mode with cards and rounded corners">Modern Dark Theme (Clean Cards)</option>
-                <option value="Clean, bright, minimalist light mode">Bright & Minimalist Light Theme</option>
-                <option value="Playful with soft pastel colors and rounded buttons">Playful & Friendly (Soft Pastels)</option>
-                <option value="Bold and high-contrast with punchy borders">Bold & Punchy High Contrast</option>
+                <option value="Modern dark mode with sleek frosted cards and rounded corners">Modern Dark Cards (Clean & Sleek)</option>
+                <option value="Bright, clean minimalist light mode with crisp borders">Minimalist Light (Clean White & Slate)</option>
+                <option value="Warm cozy coffee-house style with soft paper textures and rounded cards">Warm Paper & Coffee House</option>
+                <option value="Playful pastel cards with bubbly buttons and friendly icons">Playful & Friendly Pastels</option>
+                <option value="Retro 80s arcade style with neon glow and pixel accents">Retro 80s Arcade & Pixel Feel</option>
+                <option value="Neobrutalist with bold black outlines, stark drop shadows, and bright cards">Bold Pop / Chunky Outlines</option>
+                <option value="High-tech futuristic dashboard with mono fonts and subtle grid lines">Sci-Fi Terminal & Dashboard</option>
+                <option value="Clean notebook journal with lined accents and handwritten header feel">Classic Notebook / Journal</option>
+                <option value="High-contrast accessibility theme with large text and distinct outlines">Accessible High-Contrast</option>
+              </select>
+            </div>
+
+            <!-- Expanded Color Palettes -->
+            <div class="space-y-1">
+              <label class="block text-xs font-semibold text-[var(--text-muted)]">Color Palette</label>
+              <select id="colorScheme" class="w-full p-2.5 rounded-xl input-field text-sm" onchange="updateLivePrompt()">
+                <option value="Electric Indigo and deep violet">Indigo & Violet (Modern Tech)</option>
+                <option value="Emerald, mint green, and dark forest slate">Emerald & Mint Green (Fresh & Eco)</option>
+                <option value="Sunset amber, coral orange, and warm rose">Sunset Coral & Warm Amber</option>
+                <option value="Sky blue, slate gray, and crisp white">Sky Blue & Cool Steel</option>
+                <option value="Hot pink, cyan blue, and pitch dark purple">Neon Cyberpunk (Pink & Cyan)</option>
+                <option value="Earthy terracotta, sand, and warm mocha brown">Terracotta & Warm Sand (Earthy)</option>
+                <option value="Monochrome pure black, white, and subtle silver">Pure Monochrome (Black & Silver)</option>
+                <option value="Golden honey yellow and rich navy blue">Navy Blue & Honey Gold</option>
+                <option value="Deep ocean teal and seafoam green">Deep Ocean Teal & Seafoam</option>
+                <option value="Classic retro gaming green monochrome (Game Boy vibe)">Retro Monochrome Green</option>
+              </select>
+            </div>
+
+            <!-- Expanded Menu Bar Styles -->
+            <div class="space-y-1">
+              <label class="block text-xs font-semibold text-[var(--text-muted)]">Menu & Layout Setup</label>
+              <select id="navTopology" class="w-full p-2.5 rounded-xl input-field text-sm" onchange="updateLivePrompt()">
+                <option value="Sticky top navigation header with logo and clean tab links">Sticky Top Header Menu</option>
+                <option value="Collapsible left-side menu bar with clean icons">Left Sidebar Navigation</option>
+                <option value="Bottom floating mobile app dock (iOS / phone app style)">Bottom Floating App Dock (Great on phones)</option>
+                <option value="Single-page focused dashboard without global navigation">Single Screen / No Menu (Focused Tool)</option>
               </select>
             </div>
 
             <div class="space-y-1">
-              <label class="block text-xs font-semibold text-[var(--text-muted)]">Color Vibe</label>
-              <select id="colorScheme" class="w-full p-2.5 rounded-xl input-field text-sm" onchange="updateLivePrompt()">
-                <option value="Indigo blue and purple">Indigo Blue & Purple</option>
-                <option value="Emerald and fresh mint green">Fresh Emerald & Mint</option>
-                <option value="Warm sunset orange and coral">Warm Sunset Coral</option>
-                <option value="Clean neutral gray and slate blue">Neutral Slate & Cool Gray</option>
-              </select>
-            </div>
-
-            <div class="space-y-1 sm:col-span-2">
-              <label class="block text-xs font-semibold text-[var(--text-muted)]">Menu / Navigation Tabs</label>
-              <input type="text" id="navLinks" value="Home, My Tasks, Analytics, Settings" placeholder="e.g. Home, Dashboard, Settings" class="w-full p-2.5 rounded-xl input-field text-sm font-mono" oninput="updateLivePrompt()">
-              <p class="text-[11px] text-[var(--text-muted)]">Separate page or tab names with commas.</p>
+              <label class="block text-xs font-semibold text-[var(--text-muted)]">Page / Tab Names</label>
+              <input type="text" id="navLinks" value="Home, Dashboard, History, Settings" placeholder="e.g. Overview, Tasks, Reports, Settings" class="w-full p-2.5 rounded-xl input-field text-sm font-mono" oninput="updateLivePrompt()">
             </div>
           </div>
         </div>
 
-        <!-- Step 3: Features -->
+        <!-- Step 3: Interactive Features Catalog -->
         <div class="glass-card p-6 rounded-2xl space-y-4">
           <div class="flex items-center justify-between border-b border-[var(--border-subtle)] pb-3">
             <div class="flex items-center gap-2">
               <span class="w-6 h-6 rounded-md flex items-center justify-center font-bold text-xs" style="background: var(--badge-bg); color: var(--accent);">3</span>
-              <h2 class="text-sm font-bold uppercase tracking-wider text-slate-200">Pick Your Features</h2>
+              <h2 class="text-sm font-bold uppercase tracking-wider text-slate-200">Interactive Features</h2>
             </div>
-            <button onclick="toggleAllTags()" class="text-xs text-[var(--accent)] hover:underline">Select / Clear All</button>
+            <button onclick="toggleAllTags()" class="text-xs text-[var(--accent)] hover:underline">Toggle All</button>
           </div>
 
-          <p class="text-xs text-[var(--text-muted)]">Click any feature you want the AI to build into the app:</p>
+          <p class="text-xs text-[var(--text-muted)]">Pick the building blocks you want the AI to wire up:</p>
 
           <div class="flex flex-wrap gap-2" id="tagsContainer">
             <!-- Populated by JS -->
           </div>
         </div>
 
-        <!-- Step 4: Describe It in Your Words -->
+        <!-- Step 4: Blueprint & Details -->
         <div class="glass-card p-6 rounded-2xl space-y-4">
           <div class="flex items-center justify-between border-b border-[var(--border-subtle)] pb-3">
             <div class="flex items-center gap-2">
@@ -225,30 +268,37 @@
             </div>
           </div>
 
-          <!-- Starter Blueprints -->
+          <!-- Starter Blueprints Bar -->
           <div class="flex items-center gap-2 overflow-x-auto pb-1">
-            <span class="text-xs text-[var(--text-muted)] shrink-0">Try a starter idea:</span>
-            <button onclick="applyBlueprint('kanban')" class="px-2.5 py-1 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-input)] hover:text-white text-xs text-[var(--text-muted)] whitespace-nowrap">📋 Drag-and-Drop Tasks</button>
-            <button onclick="applyBlueprint('habits')" class="px-2.5 py-1 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-input)] hover:text-white text-xs text-[var(--text-muted)] whitespace-nowrap">🔥 Daily Habit Tracker</button>
-            <button onclick="applyBlueprint('budget')" class="px-2.5 py-1 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-input)] hover:text-white text-xs text-[var(--text-muted)] whitespace-nowrap">💰 Quick Budget & Chart</button>
+            <span class="text-xs text-[var(--text-muted)] shrink-0">Blueprints:</span>
+            <button onclick="applyBlueprint('kanban')" class="px-2.5 py-1 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-input)] hover:text-white text-xs text-[var(--text-muted)] whitespace-nowrap">📋 Drag Tasks</button>
+            <button onclick="applyBlueprint('habits')" class="px-2.5 py-1 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-input)] hover:text-white text-xs text-[var(--text-muted)] whitespace-nowrap">🔥 Daily Habits</button>
+            <button onclick="applyBlueprint('trades')" class="px-2.5 py-1 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-input)] hover:text-white text-xs text-[var(--text-muted)] whitespace-nowrap">🔨 Quick Invoicing</button>
+            <button onclick="applyBlueprint('quiz')" class="px-2.5 py-1 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-input)] hover:text-white text-xs text-[var(--text-muted)] whitespace-nowrap">🎓 Flashcard Quiz</button>
+            <button onclick="applyBlueprint('arcade')" class="px-2.5 py-1 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-input)] hover:text-white text-xs text-[var(--text-muted)] whitespace-nowrap">🕹️ Canvas Game</button>
+            <button onclick="applyBlueprint('recipes')" class="px-2.5 py-1 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-input)] hover:text-white text-xs text-[var(--text-muted)] whitespace-nowrap">🍳 Recipe Box</button>
           </div>
 
-          <textarea id="appDescription" rows="4" class="w-full p-3 rounded-xl input-field text-sm leading-relaxed resize-y" placeholder="Describe what the app should do in plain English. For example: A simple app where I can add my daily tasks, check them off, filter by priority, and have it remember everything when I refresh..." oninput="updateLivePrompt()"></textarea>
+          <textarea id="appDescription" rows="4" class="w-full p-3 rounded-xl input-field text-sm leading-relaxed resize-y" placeholder="Describe how you want it to work in everyday words. What should users click? What should happen when they save or submit? (Or click one of the blueprints above to start!)" oninput="updateLivePrompt()"></textarea>
 
-          <div class="pt-2 border-t border-[var(--border-subtle)]">
+          <div class="pt-2 border-t border-[var(--border-subtle)] space-y-2">
             <label class="flex items-center gap-2 cursor-pointer">
               <input type="checkbox" id="guardComplete" checked class="rounded text-[var(--accent)]" onchange="updateLivePrompt()">
-              <span class="text-xs text-[var(--text-muted)]">Remind AI to write <strong>100% complete code</strong> (no skipping code with comments like "add code here")</span>
+              <span class="text-xs text-[var(--text-muted)]">Remind AI to write <strong>100% complete, fully working code</strong> (no skipping code with comments)</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" id="guardDummyData" checked class="rounded text-[var(--accent)]" onchange="updateLivePrompt()">
+              <span class="text-xs text-[var(--text-muted)]">Include <strong>realistic sample data</strong> so the app looks alive the moment I open it</span>
             </label>
           </div>
         </div>
 
-        <!-- Step 5: Saved Presets (5 Slots) -->
+        <!-- Step 5: Saved Ideas Slots -->
         <div class="glass-card p-6 rounded-2xl space-y-4">
           <div class="flex items-center justify-between border-b border-[var(--border-subtle)] pb-3">
             <div class="flex items-center gap-2">
               <span class="w-6 h-6 rounded-md flex items-center justify-center font-bold text-xs" style="background: var(--badge-bg); color: var(--accent);">5</span>
-              <h2 class="text-sm font-bold uppercase tracking-wider text-slate-200">Save Your Ideas</h2>
+              <h2 class="text-sm font-bold uppercase tracking-wider text-slate-200">Save Your App Setups</h2>
             </div>
             <button onclick="saveCurrentSlotPrompt()" class="px-3 py-1.5 rounded-lg border border-emerald-500/40 bg-emerald-500/10 text-emerald-400 text-xs font-semibold hover:bg-emerald-500/20 transition-all">
               Save Current Settings
@@ -262,13 +312,13 @@
 
       </div>
 
-      <!-- RIGHT COLUMN: Output Box & Copy -->
+      <!-- RIGHT COLUMN: Output Box & Actions -->
       <div class="lg:col-span-5 space-y-4 lg:sticky lg:top-24">
         <div class="glass-card p-6 rounded-2xl space-y-4">
           <div class="flex items-center justify-between border-b border-[var(--border-subtle)] pb-3">
             <div>
-              <h2 class="text-sm font-bold">Your Ready-To-Use AI Prompt</h2>
-              <p class="text-xs text-[var(--text-muted)]">Copy and paste this directly into your favorite AI tool.</p>
+              <h2 class="text-sm font-bold">Your Ready-To-Paste AI Prompt</h2>
+              <p class="text-xs text-[var(--text-muted)]">Ready for ChatGPT, Claude 3.5, or Gemini</p>
             </div>
           </div>
 
@@ -284,12 +334,17 @@
             </button>
 
             <button onclick="downloadPromptMarkdown()" class="py-3 px-4 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-input)] hover:border-[var(--border-active)] text-xs font-bold transition-colors flex items-center justify-center gap-2">
-              💾 Save as File (.txt)
+              💾 Save File (.txt)
             </button>
           </div>
 
-          <div class="p-3 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-input)] text-xs text-[var(--text-muted)] leading-relaxed">
-            💡 <strong>Beginner Tip:</strong> After the AI gives you the code, copy it, paste it into a blank text file, save it as <code class="text-indigo-300">index.html</code>, and double-click it to open it in Chrome, Edge, or Safari!
+          <div class="p-3.5 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-input)] text-xs text-[var(--text-muted)] leading-relaxed space-y-1.5">
+            <div class="font-bold text-[var(--text-main)] flex items-center gap-1.5">
+              <span>🚀</span> How to run this:
+            </div>
+            <p>1. Copy this prompt and paste it into your AI model.</p>
+            <p>2. Copy the code the AI gives you, paste it into a blank file, and name it <code class="text-indigo-300">index.html</code>.</p>
+            <p>3. Double-click the file to run your app right in your browser!</p>
           </div>
         </div>
       </div>
@@ -308,25 +363,33 @@
   <script>
     const MAX_SLOTS = 5;
 
-    // Beginner-friendly tags list
+    // Rich feature catalog in beginner terms
     const FEATURE_TAGS = [
-      { id: "savedata", label: "💾 Saves Data (LocalStorage)", desc: "Keeps data saved even if the user refreshes or closes the tab" },
-      { id: "darkmode", label: "🌗 Dark / Light Mode Switcher", desc: "A simple button to switch between light and dark themes" },
-      { id: "search", label: "🔍 Search & Filter Bar", desc: "Quickly search through items and lists" },
-      { id: "stats", label: "📊 Simple Stats & Summary Cards", desc: "Visual overview cards showing totals and simple progress" },
-      { id: "dragdrop", label: "✋ Drag-and-Drop Cards", desc: "Reorder tasks or move cards between columns" },
-      { id: "auth", label: "👤 Fake Login / Profile Modal", desc: "A clean simulated login popup to switch user accounts" },
-      { id: "export", label: "📥 Export to CSV / Spreadsheet", desc: "A button allowing users to download their data as a spreadsheet" },
-      { id: "alerts", label: "🔔 Friendly Toast Notifications", desc: "Non-annoying popup alerts when someone saves or deletes an item" }
+      { id: "savedata", label: "💾 Saves in Browser (LocalStorage)", desc: "Keeps data saved even when refreshed or closed" },
+      { id: "darkmode", label: "🌗 Dark / Light Mode Switch", desc: "A toggle button for light and dark themes" },
+      { id: "search", label: "🔍 Search & Quick Filters", desc: "Instantly search items and filter by category or tag" },
+      { id: "stats", label: "📊 Summary Cards & Totals", desc: "Visual stat cards showing totals, averages, and counts" },
+      { id: "dragdrop", label: "✋ Drag-and-Drop Cards", desc: "Drag to reorder cards or move between columns" },
+      { id: "audio", label: "🔊 Sound Effects (Web Audio)", desc: "Satisfying retro beeps, clicks, and chimes on actions" },
+      { id: "timer", label: "⏱️ Built-in Timer & Stopwatch", desc: "Countdown clock or stopwatch with start/pause" },
+      { id: "export", label: "📥 Export to CSV / Spreadsheet", desc: "Download data directly to an Excel/Sheets spreadsheet" },
+      { id: "print", label: "🖨️ Printable Receipt / Card View", desc: "Clean print-ready formatting for receipts or invoices" },
+      { id: "badges", label: "🏆 Badges & Streaks", desc: "Show fun achievement badges and day-streak counters" },
+      { id: "auth", label: "👤 Fake Login / Profile Switcher", desc: "A mock login dialog to switch user profiles" },
+      { id: "alerts", label: "🔔 Friendly In-App Toasts", desc: "Nice smooth popup banners when saving or deleting" }
     ];
 
     let activeTags = new Set(["savedata", "darkmode", "search", "alerts"]);
-    let savedSlots = JSON.parse(localStorage.getItem('easyprompt_slots')) || {};
+    let savedSlots = JSON.parse(localStorage.getItem('easyplayground_slots')) || {};
 
+    // Practical, varied blueprint starters
     const BLUEPRINTS = {
-      kanban: "Build a friendly drag-and-drop task board with 3 columns: 'To Do', 'In Progress', and 'Done'. Let me add new tasks, set a priority (Low, Medium, High), drag cards between columns, and delete tasks.",
-      habits: "Build a daily habit tracker. Let me type in daily habits (like 'Drink 2L Water', 'Read 20 mins'), check them off each day, and see a visual streak counter for each habit. Keep everything saved in the browser.",
-      budget: "Build a simple personal budget tracker. Let me type in income and expenses with categories (Food, Rent, Bills). Show total balance, total expenses, and a simple bar or progress visual showing spending breakdown."
+      kanban: "Build an interactive task board with columns for 'To Do', 'Doing', and 'Done'. Let me type in new tasks, choose a priority badge (Low, Medium, High), drag cards between columns, and click to edit or delete.",
+      habits: "Build a daily habit and streak tracker. Let me add habits (e.g. 'Morning Walk', 'Drink Water', 'Read 20 Mins'), click checkboxes to mark them completed today, and watch my day-streak increase. Save everything in the browser.",
+      trades: "Build a clean quotation and invoice generator for small jobs. Let me enter customer name, job description, itemized labor and materials costs, auto-calculate totals with tax, and click a button to print or export a clean quote.",
+      quiz: "Build an interactive flashcard study quiz. Show a card with a question, flip it on click to reveal the answer, let me mark 'Got it right' or 'Need practice', and show a final score card with a confetti celebration.",
+      arcade: "Build a fun, simple 2D retro arcade game rendered on an HTML5 canvas (like an endless road dodger or balloon popper). Include keyboard arrow controls, score tracker, high-score memory, and simple retro sound chimes.",
+      recipes: "Build a personal recipe box. Let me add recipes with ingredients, prep time, and instructions. Include a category filter (Breakfast, Dinner, Snacks), an instant search bar, and a button to scale ingredient amounts up or down."
     };
 
     window.onload = function() {
@@ -375,68 +438,74 @@
       if (text) {
         document.getElementById('appDescription').value = text;
         updateLivePrompt();
-        showToast("Blueprint applied!");
+        showToast("Blueprint loaded!");
       }
     }
 
     function buildPromptText() {
-      const appName = document.getElementById('appName').value.trim() || "My Web App";
+      const appName = document.getElementById('appName').value.trim() || "My Web Application";
       const sector = document.getElementById('industrySector').value;
       const persona = document.getElementById('userPersona').value;
       const structure = document.getElementById('fileStructure').value;
       const style = document.getElementById('cssStyle').value;
       const palette = document.getElementById('colorScheme').value;
+      const navTopology = document.getElementById('navTopology').value;
       const navLinks = document.getElementById('navLinks').value.trim();
       const description = document.getElementById('appDescription').value.trim();
       const guardComplete = document.getElementById('guardComplete').checked;
+      const guardDummyData = document.getElementById('guardDummyData').checked;
 
       const selectedFeatures = Array.from(activeTags).map(id => {
         const item = FEATURE_TAGS.find(t => t.id === id);
         return item ? item.label : id;
       });
 
-      let prompt = `Please build a complete, ready-to-run web application called "${appName}".\n\n`;
+      let prompt = `Please build a complete, ready-to-use web application called "${appName}".\n\n`;
 
-      prompt += `### What This App Is:\n`;
-      prompt += `- Category: ${sector}\n`;
-      prompt += `- Who it's for: ${persona}\n\n`;
+      prompt += `### 1. What This App Is:\n`;
+      prompt += `- App Type: ${sector}\n`;
+      prompt += `- Target User: ${persona}\n\n`;
 
-      prompt += `### Deliverable Format:\n`;
-      prompt += `- ${structure}\n`;
+      prompt += `### 2. Format & Deliverable:\n`;
+      prompt += `- Deliverable: ${structure}\n`;
       if (structure.includes('Single')) {
-        prompt += `- Please keep all HTML, CSS (using Tailwind CSS via CDN or simple clean CSS), and JavaScript inside ONE standalone file so I can just double-click it and run it immediately.\n`;
+        prompt += `- Put all HTML structure, CSS styling (Tailwind CSS via CDN or clean CSS), and JavaScript into ONE single file. It must run immediately when opened in any browser without needing terminal commands or build tools.\n`;
       }
       prompt += `\n`;
 
-      prompt += `### Design & Layout:\n`;
-      prompt += `- Style: ${style}\n`;
-      prompt += `- Color theme: ${palette}\n`;
-      if (navLinks) {
-        prompt += `- Navigation tabs: ${navLinks}\n`;
+      prompt += `### 3. Visual Styling & Navigation:\n`;
+      prompt += `- Visual Style: ${style}\n`;
+      prompt += `- Color Scheme: ${palette}\n`;
+      prompt += `- Menu / Navigation Layout: ${navTopology}\n`;
+      if (navLinks && !navTopology.includes('Single-page')) {
+        prompt += `- Menu Tabs: ${navLinks}\n`;
       }
-      prompt += `- Please make sure the layout looks great on both mobile phones and desktop computers.\n\n`;
+      prompt += `- Layout: Must look great and work smoothly on both mobile phones and desktop screens.\n\n`;
 
       if (selectedFeatures.length > 0) {
-        prompt += `### Features to Include:\n`;
+        prompt += `### 4. Interactive Features to Include:\n`;
         selectedFeatures.forEach(feature => {
-          prompt += `- ${feature}\n`;
+          prompt += `- [x] ${feature}\n`;
         });
         prompt += `\n`;
       }
 
-      prompt += `### How It Should Work:\n`;
+      prompt += `### 5. Detailed Behavior & Workflow:\n`;
       if (description) {
         prompt += `${description}\n\n`;
       } else {
-        prompt += `Create an intuitive, easy-to-use experience with sample data already loaded in so it looks full and working right away.\n\n`;
+        prompt += `Provide a smooth, intuitive workflow designed specifically for ${persona}, with clear buttons, friendly feedback, and easy data entry.\n\n`;
       }
 
-      prompt += `### Important Coding Rules for the AI:\n`;
+      prompt += `### 6. Rules for the Code:\n`;
       if (guardComplete) {
-        prompt += `1. Provide 100% complete, working code. Do NOT use placeholders, ellipsis (...), or comments like "// implement logic here". Write the full code.\n`;
+        prompt += `- Full Code Only: Write 100% complete, fully working code. NEVER use placeholders or skip code with comments like "// add the rest here".\n`;
       }
-      prompt += `2. Do not use ugly default browser alert() popups; use friendly in-page feedback or notifications.\n`;
-      prompt += `3. Include clear, friendly comments in the JavaScript explaining how key parts work so a beginner can understand and learn from it.`;
+      if (guardDummyData) {
+        prompt += `- Pre-loaded Data: Include a few realistic default items in the app so it doesn't open to an empty screen.\n`;
+      }
+      prompt += `- Clean Feedback: Avoid standard browser alert() popups. Use smooth in-page notices or toast banners instead.\n`;
+      prompt += `- Beginner Friendly: Add helpful, friendly comments throughout the JavaScript code so I can see how it works and learn from it.`;
 
       return prompt;
     }
@@ -457,7 +526,7 @@
 
     function downloadPromptMarkdown() {
       const text = document.getElementById('promptOutput').innerText;
-      const appName = document.getElementById('appName').value.trim() || 'my_app';
+      const appName = document.getElementById('appName').value.trim() || 'app_prompt';
       const cleanFileName = appName.toLowerCase().replace(/[^a-z0-9]/g, '_') + '_prompt.txt';
 
       const blob = new Blob([text], { type: 'text/plain;charset=utf-8;' });
@@ -470,7 +539,7 @@
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
 
-      showToast(`Downloaded ${cleanFileName}`);
+      showToast(`Saved ${cleanFileName}`);
     }
 
     function renderSavedSlots() {
@@ -487,6 +556,7 @@
             <div onclick="loadPromptSlot(${i})">
               <div class="font-bold text-[10px] text-indigo-400">SLOT ${i}</div>
               <div class="font-semibold truncate text-[var(--text-main)] mt-0.5">${data.appName || 'My Idea'}</div>
+              <div class="text-[10px] opacity-75 truncate">${data.sector || ''}</div>
             </div>
             <div class="mt-2 text-right">
               <button onclick="deletePromptSlot(event, ${i})" class="text-[10px] text-rose-400 hover:underline">Clear</button>
@@ -512,12 +582,12 @@
         if (!savedSlots[i]) { targetSlot = i; break; }
       }
 
-      const input = window.prompt(`Save to which slot number? (1 to ${MAX_SLOTS}):`, targetSlot);
+      const input = window.prompt(`Save to slot number? (1 to ${MAX_SLOTS}):`, targetSlot);
       if (!input) return;
 
       const slot = parseInt(input, 10);
       if (isNaN(slot) || slot < 1 || slot > MAX_SLOTS) {
-        showToast("Please enter a number between 1 and 5.");
+        showToast("Please pick a number between 1 and 5.");
         return;
       }
 
@@ -528,14 +598,15 @@
         structure: document.getElementById('fileStructure').value,
         style: document.getElementById('cssStyle').value,
         palette: document.getElementById('colorScheme').value,
+        navTopology: document.getElementById('navTopology').value,
         navLinks: document.getElementById('navLinks').value,
         description: document.getElementById('appDescription').value,
         tags: Array.from(activeTags)
       };
 
-      localStorage.setItem('easyprompt_slots', JSON.stringify(savedSlots));
+      localStorage.setItem('easyplayground_slots', JSON.stringify(savedSlots));
       renderSavedSlots();
-      showToast(`Saved to Slot ${slot}!`);
+      showToast(`Saved into Slot ${slot}!`);
     }
 
     function loadPromptSlot(slot) {
@@ -546,11 +617,12 @@
       }
 
       document.getElementById('appName').value = data.appName || '';
-      document.getElementById('industrySector').value = data.sector || 'Productivity & Task Management';
-      document.getElementById('userPersona').value = data.persona || 'Everyday people looking for a simple, fast tool';
-      document.getElementById('fileStructure').value = data.structure || 'One single .html file that runs immediately in any web browser without needing to install anything';
-      document.getElementById('cssStyle').value = data.style || 'Modern dark mode with cards and rounded corners';
-      document.getElementById('colorScheme').value = data.palette || 'Indigo blue and purple';
+      document.getElementById('industrySector').value = data.sector || 'Productivity & Task Tracker';
+      document.getElementById('userPersona').value = data.persona || 'Everyday people who want something fast, simple, and clutter-free';
+      document.getElementById('fileStructure').value = data.structure || 'One single, self-contained .html file (with Tailwind CSS and inline JS) that runs instantly in any browser';
+      document.getElementById('cssStyle').value = data.style || 'Modern dark mode with sleek frosted cards and rounded corners';
+      document.getElementById('colorScheme').value = data.palette || 'Electric Indigo and deep violet';
+      document.getElementById('navTopology').value = data.navTopology || 'Sticky top navigation header with logo and clean tab links';
       document.getElementById('navLinks').value = data.navLinks || '';
       document.getElementById('appDescription').value = data.description || '';
 
@@ -566,7 +638,7 @@
     function deletePromptSlot(e, slot) {
       e.stopPropagation();
       delete savedSlots[slot];
-      localStorage.setItem('easyprompt_slots', JSON.stringify(savedSlots));
+      localStorage.setItem('easyplayground_slots', JSON.stringify(savedSlots));
       renderSavedSlots();
       showToast(`Cleared Slot ${slot}`);
     }
@@ -578,12 +650,13 @@
       document.getElementById('fileStructure').selectedIndex = 0;
       document.getElementById('cssStyle').selectedIndex = 0;
       document.getElementById('colorScheme').selectedIndex = 0;
-      document.getElementById('navLinks').value = 'Home, My Tasks, Analytics, Settings';
+      document.getElementById('navTopology').selectedIndex = 0;
+      document.getElementById('navLinks').value = 'Home, Dashboard, History, Settings';
       document.getElementById('appDescription').value = '';
       activeTags = new Set(["savedata", "darkmode", "search", "alerts"]);
       renderTags();
       updateLivePrompt();
-      showToast("Reset to defaults!");
+      showToast("Reset to default playground!");
     }
 
     function showToast(msg) {
@@ -596,7 +669,7 @@
       window._t = setTimeout(() => {
         toast.classList.add('translate-y-24', 'opacity-0');
         toast.classList.remove('translate-y-0', 'opacity-100');
-      }, 2400);
+      }, 2200);
     }
   </script>
 </body>
