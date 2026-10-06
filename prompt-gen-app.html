@@ -1,450 +1,990 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Web App Prompt Generator</title>
-    <style>
-        :root {
-            --primary: #4f46e5;
-            --primary-hover: #4338ca;
-            --bg: #f8fafc;
-            --card-bg: #ffffff;
-            --text: #0f172a;
-            --border: #e2e8f0;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OmniPrompt Architect • Modern Web App Prompt Studio</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-        body {
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
-            line-height: 1.5;
-            padding: 2rem 1rem;
-            margin: 0;
-        }
+  <style>
+    /* Default Theme: Midnight Indigo (Refined & Modern) */
+    :root {
+      --bg-body: #0b0f19;
+      --bg-surface: rgba(17, 24, 39, 0.75);
+      --bg-surface-elevated: #1e293b;
+      --bg-input: #0f172a;
+      --border-subtle: rgba(99, 102, 241, 0.18);
+      --border-active: #6366f1;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent: #6366f1;
+      --accent-secondary: #8b5cf6;
+      --accent-glow: rgba(99, 102, 241, 0.28);
+      --badge-bg: rgba(99, 102, 241, 0.12);
+      --badge-text: #a5b4fc;
+      --card-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+    }
 
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
+    /* Minimal Slate (High-contrast clean dark) */
+    [data-theme="slate"] {
+      --bg-body: #0f172a;
+      --bg-surface: rgba(30, 41, 59, 0.8);
+      --bg-surface-elevated: #334155;
+      --bg-input: #1e293b;
+      --border-subtle: rgba(148, 163, 184, 0.2);
+      --border-active: #38bdf8;
+      --text-main: #f8fafc;
+      --text-muted: #cbd5e1;
+      --accent: #38bdf8;
+      --accent-secondary: #0ea5e9;
+      --accent-glow: rgba(56, 189, 248, 0.25);
+      --badge-bg: rgba(56, 189, 248, 0.12);
+      --badge-text: #7dd3fc;
+      --card-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.6);
+    }
 
-        header {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
+    /* Emerald Glass (Organic Fintech & Health) */
+    [data-theme="emerald"] {
+      --bg-body: #021a12;
+      --bg-surface: rgba(6, 44, 32, 0.75);
+      --bg-surface-elevated: #0d4a37;
+      --bg-input: #04251a;
+      --border-subtle: rgba(16, 185, 129, 0.22);
+      --border-active: #10b981;
+      --text-main: #f0fdf4;
+      --text-muted: #86efac;
+      --accent: #10b981;
+      --accent-secondary: #14b8a6;
+      --accent-glow: rgba(16, 185, 129, 0.3);
+      --badge-bg: rgba(16, 185, 129, 0.15);
+      --badge-text: #6ee7b7;
+      --card-shadow: 0 10px 30px -10px rgba(2, 26, 18, 0.8);
+    }
 
-        h1 {
-            margin: 0 0 0.5rem 0;
-            color: var(--primary);
-        }
+    /* Cyberpunk Neon */
+    [data-theme="cyberpunk"] {
+      --bg-body: #0d021f;
+      --bg-surface: rgba(29, 7, 60, 0.8);
+      --bg-surface-elevated: #2e0854;
+      --bg-input: #180233;
+      --border-subtle: rgba(236, 72, 153, 0.25);
+      --border-active: #ec4899;
+      --text-main: #fdf4ff;
+      --text-muted: #f472b6;
+      --accent: #ec4899;
+      --accent-secondary: #06b6d4;
+      --accent-glow: rgba(236, 72, 153, 0.35);
+      --badge-bg: rgba(236, 72, 153, 0.15);
+      --badge-text: #fbcfe8;
+      --card-shadow: 0 10px 35px -5px rgba(236, 72, 153, 0.2);
+    }
 
-        .card {
-            background: var(--card-bg);
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            margin-bottom: 2rem;
-        }
+    /* Sunset Coral (Warm, creative modernism) */
+    [data-theme="coral"] {
+      --bg-body: #180c0c;
+      --bg-surface: rgba(43, 22, 22, 0.78);
+      --bg-surface-elevated: #4d2323;
+      --bg-input: #231212;
+      --border-subtle: rgba(244, 63, 94, 0.22);
+      --border-active: #f43f5e;
+      --text-main: #fff1f2;
+      --text-muted: #fda4af;
+      --accent: #f43f5e;
+      --accent-secondary: #fb923c;
+      --accent-glow: rgba(244, 63, 94, 0.3);
+      --badge-bg: rgba(244, 63, 94, 0.15);
+      --badge-text: #fecdd3;
+      --card-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.6);
+    }
 
-        .grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
-        }
+    /* Nordic Frost (Clean high-end light-dark hybrid) */
+    [data-theme="nordic"] {
+      --bg-body: #0b131e;
+      --bg-surface: rgba(20, 32, 48, 0.85);
+      --bg-surface-elevated: #283e58;
+      --bg-input: #132030;
+      --border-subtle: rgba(125, 211, 252, 0.2);
+      --border-active: #38bdf8;
+      --text-main: #f0f9ff;
+      --text-muted: #93c5fd;
+      --accent: #38bdf8;
+      --accent-secondary: #818cf8;
+      --accent-glow: rgba(56, 189, 248, 0.3);
+      --badge-bg: rgba(56, 189, 248, 0.12);
+      --badge-text: #bae6fd;
+      --card-shadow: 0 10px 30px -10px rgba(11, 19, 30, 0.8);
+    }
 
-        @media (max-width: 600px) {
-            .grid { grid-template-columns: 1fr; }
-        }
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background-color: var(--bg-body);
+      color: var(--text-main);
+      transition: background-color 0.3s ease, color 0.3s ease;
+      min-height: 100vh;
+    }
 
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
+    .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
 
-        .form-group.full-width {
-            grid-column: span 2;
-        }
+    .glass-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      box-shadow: var(--card-shadow);
+    }
 
-        @media (max-width: 600px) {
-            .form-group.full-width { grid-column: span 1; }
-        }
+    .input-field {
+      background: var(--bg-input);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-main);
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
 
-        label {
-            font-weight: 600;
-            font-size: 0.9rem;
-        }
+    .input-field:focus {
+      outline: none;
+      border-color: var(--border-active);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+    }
 
-        select, textarea, input[type="file"] {
-            padding: 0.75rem;
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            font-size: 1rem;
-            background: #fff;
-            width: 100%;
-            box-sizing: border-box;
-        }
+    .tag-chip {
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-input);
+      color: var(--text-muted);
+    }
 
-        textarea {
-            resize: vertical;
-            height: 120px;
-        }
+    .tag-chip:hover {
+      border-color: var(--border-active);
+      color: var(--text-main);
+      transform: translateY(-1px);
+    }
 
-        .word-count {
-            text-align: right;
-            font-size: 0.8rem;
-            color: #64748b;
-            margin-top: -0.25rem;
-        }
+    .tag-chip.active {
+      background: var(--badge-bg);
+      border-color: var(--border-active);
+      color: var(--badge-text);
+      box-shadow: 0 2px 10px var(--accent-glow);
+      font-weight: 600;
+    }
 
-        button {
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            font-size: 1rem;
-            font-weight: 600;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
+    .slot-pill {
+      transition: all 0.2s;
+      border: 1px solid var(--border-subtle);
+    }
 
-        button:hover {
-            background-color: var(--primary-hover);
-        }
+    .slot-pill.saved {
+      background: var(--badge-bg);
+      border-color: var(--border-active);
+      color: var(--badge-text);
+    }
 
-        .actions {
-            margin-top: 1.5rem;
-            display: flex;
-            gap: 1rem;
-        }
+    .slot-pill:hover {
+      border-color: var(--border-active);
+      transform: translateY(-1px);
+    }
 
-        .output-box {
-            background: #1e293b;
-            color: #f8fafc;
-            padding: 1.5rem;
-            border-radius: 8px;
-            white-space: pre-wrap;
-            font-family: 'Courier New', Courier, monospace;
-            margin-top: 1rem;
-            max-height: 300px;
-            overflow-y: auto;
-        }
-
-        .saved-section h3 {
-            margin-top: 0;
-        }
-
-        .saved-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-top: 1rem;
-        }
-
-        .saved-slot {
-            background: #e2e8f0;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            cursor: pointer;
-            font-weight: 500;
-            transition: all 0.2s;
-        }
-
-        .saved-slot:hover {
-            background: #cbd5e1;
-        }
-
-        .saved-slot.active {
-            background: var(--primary);
-            color: white;
-        }
-    </style>
+    /* Custom Scrollbars */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--bg-body);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--border-subtle);
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--border-active);
+    }
+  </style>
 </head>
-<body>
+<body class="selection:bg-indigo-500 selection:text-white pb-20">
 
-<div class="container">
-    <header>
-        <h1>AI Prompt Generator</h1>
-        <p>Configure your web app specifications to generate a structured LLM prompt.</p>
-    </header>
-
-    <div class="card">
-        <form id="promptForm" onsubmit="event.preventDefault(); generatePrompt();">
-            <div class="grid">
-                
-                <div class="form-group">
-                    <label for="fileStructure">File Structure</label>
-                    <select id="fileStructure">
-                        <option value="Single file (HTML with embedded CSS/JavaScript)">HTML with embedded CSS & JS</option>
-                        <option value="Separated files (Separate HTML, JS, and CSS files)">Separate HTML, JS, and CSS files</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="cssStyle">CSS Style Theme</label>
-                    <select id="cssStyle">
-                        <option value="Bright and bubbly (rounded corners, playful typography, cheerful vibes)">Bright and Bubbly</option>
-                        <option value="Sleek and cool (minimalist, clean lines, professional modernism)">Sleek and Cool</option>
-                        <option value="High-tech looking (dark mode focus, neon accents, cyberpunk/futuristic aesthetic)">High-Tech Looking</option>
-                        <option value="Vintage style (serif fonts, retro textures, warm nostalgic feel)">Vintage Style</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="colorScheme">Color Scheme</label>
-                    <select id="colorScheme">
-                        <option value="Pastels (soft, light, muted tones)">Pastels</option>
-                        <option value="Warm colours (reds, oranges, yellows, creams)">Warm Colours</option>
-                        <option value="Cool colours (blues, greens, purples, teals)">Cool Colours</option>
-                        <option value="Neon (high contrast, bright glowing highlights on dark backgrounds)">Neon</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="layout">Interface Layout</label>
-                    <select id="layout">
-                        <option value="Optimised responsively for both desktop and mobile layouts seamlessly">Optimised responsively (Both)</option>
-                        <option value="Desktop interface layout specifically">Desktop Only</option>
-                        <option value="Mobile interface layout specifically">Mobile Only</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="navStyle">Navigation Type</label>
-                    <select id="navStyle" onchange="toggleNavButtons()">
-                        <option value="None / Not necessary">No Navigation Needed</option>
-                        <option value="Horizontal top navigation bar">Horizontal Top Bar</option>
-                        <option value="Vertical sidebar navigation menu">Vertical Sidebar</option>
-                    </select>
-                </div>
-
-                <div class="form-group" id="navButtonsGroup" style="display: none;">
-                    <label for="navButtons">Navigation Buttons (Comma-separated)</label>
-                    <input type="text" id="navButtons" placeholder="e.g., Home, Dashboard, Settings">
-                </div>
-
-                <div class="form-group">
-                    <label for="imageLayout">Image Layout Feature</label>
-                    <select id="imageLayout">
-                        <option value="No images featured.">No Images</option>
-                        <option value="Include 1 large Hero Picture layout banner.">1 Hero Picture</option>
-                        <option value="Include 2 images arranged side-by-side.">2 Images Side-by-Side</option>
-                        <option value="Include 3 images arranged side-by-side.">3 Images Side-by-Side</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="imageUpload">Upload Assets (Max 3, JPEG/PNG)</label>
-                    <input type="file" id="imageUpload" accept=".jpg, .jpeg, .png" multiple onchange="validateFiles(this)">
-                </div>
-
-                <div class="form-group full-width">
-                    <label for="description">App Functionality & Description</label>
-                    <textarea id="description" placeholder="Describe what the app does in detail..." oninput="checkWordCount(this)"></textarea>
-                    <div class="word-count" id="wordCountLabel">0 / 400 words</div>
-                </div>
-
-            </div>
-
-            <div class="actions">
-                <button type="submit">Generate Prompt</button>
-                <button type="button" onclick="savePromptSlot()" style="background-color: #059669;">Save Setup</button>
-            </div>
-        </form>
-    </div>
-
-    <div class="card" id="outputCard" style="display: none;">
-        <h3>Generated LLM Prompt</h3>
-        <p style="font-size: 0.85rem; color:#64748b; margin-top: -0.5rem;">Copy and paste this text directly into an AI model.</p>
-        <div class="output-box" id="promptOutput"></div>
-        <div class="actions">
-            <button onclick="copyToClipboard()">Copy to Clipboard</button>
+  <header class="sticky top-0 z-40 border-b border-[var(--border-subtle)] bg-[var(--bg-body)]/85 backdrop-blur-xl">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+      
+      <!-- Brand & Title -->
+      <div class="flex items-center gap-3.5">
+        <div class="w-11 h-11 rounded-2xl flex items-center justify-center shadow-lg" style="background: linear-gradient(135deg, var(--accent), var(--accent-secondary)); box-shadow: 0 4px 20px var(--accent-glow);">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+          </svg>
         </div>
-    </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="text-xl font-extrabold tracking-tight">OmniPrompt<span class="text-xs uppercase px-2 py-0.5 ml-2 rounded-full font-mono font-bold tracking-wider" style="background: var(--badge-bg); color: var(--accent); border: 1px solid var(--border-subtle);">v2.4 Pro</span></h1>
+          </div>
+          <p class="text-xs text-[var(--text-muted)] hidden sm:block">Precision System Specification & Architecture Prompter for LLMs</p>
+        </div>
+      </div>
 
-    <div class="card saved-section">
-        <h3>Saved Profiles (Max 10 Slots)</h3>
-        <p style="font-size: 0.85rem; color:#64748b; margin-top: -0.5rem;">Click a slot to reload its layout configuration.</p>
-        <div class="saved-list" id="savedSlotsContainer">
+      <!-- Quick Action Bar & Theme Palette Switcher -->
+      <div class="flex items-center gap-3">
+        <!-- Palette Switcher -->
+        <div class="flex items-center gap-2 px-3 py-1.5 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-input)]">
+          <svg class="w-4 h-4 text-[var(--accent)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
+          </svg>
+          <label for="themeSelect" class="text-xs font-semibold hidden md:inline">Theme:</label>
+          <select id="themeSelect" onchange="changeTheme(this.value)" class="bg-transparent text-xs font-medium focus:outline-none cursor-pointer pr-1">
+            <option value="indigo" class="bg-gray-900 text-indigo-300">Midnight Indigo</option>
+            <option value="slate" class="bg-gray-900 text-sky-300">Minimal Slate</option>
+            <option value="emerald" class="bg-gray-900 text-emerald-300">Emerald Glass</option>
+            <option value="cyberpunk" class="bg-gray-900 text-pink-300">Cyberpunk Neon</option>
+            <option value="coral" class="bg-gray-900 text-rose-300">Sunset Coral</option>
+            <option value="nordic" class="bg-gray-900 text-blue-300">Nordic Frost</option>
+          </select>
+        </div>
+
+        <!-- Quick Reset Button -->
+        <button onclick="resetAllFields()" class="px-3 py-1.5 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-input)] hover:border-rose-500/50 hover:text-rose-400 text-xs font-medium transition-colors" title="Reset all form options">
+          Reset
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      
+      <!-- LEFT COLUMN: Architect Specification Controls -->
+      <div class="lg:col-span-7 space-y-6">
+        
+        <!-- Section 1: Foundation & Target Domain -->
+        <div class="glass-card p-6 sm:p-7 rounded-3xl space-y-6">
+          <div class="flex items-center justify-between pb-3 border-b border-[var(--border-subtle)]">
+            <div class="flex items-center gap-2.5">
+              <span class="w-6 h-6 rounded-lg flex items-center justify-center font-mono text-xs font-bold" style="background: var(--badge-bg); color: var(--accent);">01</span>
+              <h2 class="text-base font-bold">Domain & Application Profile</h2>
             </div>
+            <span class="text-xs font-mono text-[var(--text-muted)]">Core Parameters</span>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <!-- App Name / Title -->
+            <div class="space-y-1.5">
+              <label class="block text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider">Application Name</label>
+              <input type="text" id="appName" placeholder="e.g., NovaFlow, PulseHQ, Lumina" class="w-full p-3 rounded-xl input-field text-sm" oninput="updateLivePrompt()">
+            </div>
+
+            <!-- Industry Sector (Expanded Selection) -->
+            <div class="space-y-1.5">
+              <label class="block text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider">Industry Sector</label>
+              <select id="industrySector" class="w-full p-3 rounded-xl input-field text-sm font-medium" onchange="onIndustryChange(this.value)">
+                <option value="SaaS & Productivity">💼 SaaS & Productivity</option>
+                <option value="Fintech & Decentralized Finance">💳 Fintech & Banking</option>
+                <option value="Healthcare & MedTech">🏥 Healthcare & MedTech</option>
+                <option value="E-Commerce & Retail">🛍️ E-Commerce & Retail</option>
+                <option value="Artificial Intelligence & ML Tools">🤖 AI & Machine Learning Tools</option>
+                <option value="EdTech & Learning Management">🎓 EdTech & Learning Management</option>
+                <option value="Creative Studio & Multimedia">🎨 Creative Studio & Media</option>
+                <option value="Gaming & Interactive WebGL">🎮 Gaming & Interactive</option>
+                <option value="Real Estate & Spatial Booking">🏡 Real Estate & PropTech</option>
+                <option value="Logistics & Supply Chain">🚚 Logistics & Supply Chain</option>
+                <option value="Developer Tooling & Cloud DevOps">⚡ Developer Tooling & DevOps</option>
+              </select>
+            </div>
+
+            <!-- Target User Persona -->
+            <div class="space-y-1.5">
+              <label class="block text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider">Target User Persona</label>
+              <select id="userPersona" class="w-full p-3 rounded-xl input-field text-sm font-medium" onchange="updateLivePrompt()">
+                <option value="Enterprise Teams & Decision Makers">Enterprise Teams & Executives</option>
+                <option value="Solo Founders & Indie Hackers">Solo Founders & Indie Hackers</option>
+                <option value="Everyday Consumers & Shoppers">Everyday Consumers & Shoppers</option>
+                <option value="Technical Developers & Engineers">Technical Developers & Engineers</option>
+                <option value="Students & Academic Researchers">Students & Researchers</option>
+                <option value="Creative Artists & Designers">Creative Designers & Creators</option>
+                <option value="Medical Practitioners & Clinicians">Healthcare Professionals</option>
+              </select>
+            </div>
+
+            <!-- Architecture / File Structure -->
+            <div class="space-y-1.5">
+              <label class="block text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider">Target Deliverable Format</label>
+              <select id="fileStructure" class="w-full p-3 rounded-xl input-field text-sm font-medium" onchange="updateLivePrompt()">
+                <option value="Single-file mandate (Self-contained runnable HTML + Tailwind + inline JS)">Single-file HTML (All-in-one runnable)</option>
+                <option value="Single-file React component (App.jsx with Lucide + Tailwind)">Single-file React component (App.jsx)</option>
+                <option value="Modular structure (index.html, styles.css, app.js)">Modular Files (HTML, CSS, JS separate)</option>
+                <option value="Full-stack Next.js App Router (TypeScript + Tailwind + API)">Next.js App Router (TypeScript + Tailwind)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 2: Design System & Visual Palette -->
+        <div class="glass-card p-6 sm:p-7 rounded-3xl space-y-6">
+          <div class="flex items-center justify-between pb-3 border-b border-[var(--border-subtle)]">
+            <div class="flex items-center gap-2.5">
+              <span class="w-6 h-6 rounded-lg flex items-center justify-center font-mono text-xs font-bold" style="background: var(--badge-bg); color: var(--accent);">02</span>
+              <h2 class="text-base font-bold">Design System & UX Aesthetics</h2>
+            </div>
+            <span class="text-xs font-mono text-[var(--text-muted)]">Visual Styling</span>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <!-- Visual Style Theme -->
+            <div class="space-y-1.5">
+              <label class="block text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider">Aesthetic Archetype</label>
+              <select id="cssStyle" class="w-full p-3 rounded-xl input-field text-sm font-medium" onchange="updateLivePrompt()">
+                <option value="Bento-grid Modernist (Card-based layout, subtle borders, high visual hierarchy)">Bento-grid Modernist (Popular SaaS)</option>
+                <option value="Glassmorphic Dark UI (Translucent frosted panels, neon rim glows, deep contrast)">Glassmorphic Dark Mode</option>
+                <option value="Minimalist Editorial (Typographic focus, crisp borders, ample whitespace, muted palette)">Minimalist Editorial / Swiss</option>
+                <option value="Neobrutalism (Bold solid borders, playful stark drop shadows, vibrant high-contrast accents)">Neobrutalism (Bold & Punchy)</option>
+                <option value="High-Tech Cyberpunk HUD (Scanlines, mono fonts, tactical badges, glowing telemetry)">High-Tech Cyberpunk HUD</option>
+                <option value="Soft Pastel & Playful (Generous pill curves, buoyant transitions, cheerful gradients)">Soft Pastel & Playful</option>
+                <option value="Enterprise Linear Clean (Subtle 1px gray borders, dense data tables, rapid ergonomics)">Linear / Vercel Ultra-Clean</option>
+              </select>
+            </div>
+
+            <!-- Color Palette Preset -->
+            <div class="space-y-1.5">
+              <label class="block text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider">Primary Color Palette</label>
+              <select id="colorScheme" class="w-full p-3 rounded-xl input-field text-sm font-medium" onchange="updateLivePrompt()">
+                <option value="Electric Indigo & Violet with Obsidian Dark Backgrounds">Electric Indigo & Violet (Modern SaaS)</option>
+                <option value="Monochrome Minimalist Slate & Zinc with Sky Blue accents">Slate & Zinc with Sky Blue (Technical)</option>
+                <option value="Emerald, Mint & Forest Teal with Deep Jade shades">Emerald & Mint Green (Fintech / Eco)</option>
+                <option value="Sunset Ember, Rose Quartz & Amber Glow">Sunset Amber & Coral Rose (Warm & Creative)</option>
+                <option value="High-Voltage Cyber Cyan & Hot Pink">Cyber Cyan & Hot Pink (Futuristic)</option>
+                <option value="Warm Terracotta, Sandstone & Muted Espresso">Warm Sandstone & Espresso (Editorial)</option>
+                <option value="Dynamic Auto-adaptive (Includes Dark and Light theme toggle)">Adaptive Light & Dark Palette</option>
+              </select>
+            </div>
+
+            <!-- Viewport Layout -->
+            <div class="space-y-1.5">
+              <label class="block text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider">Viewport & Device Strategy</label>
+              <select id="layoutStrategy" class="w-full p-3 rounded-xl input-field text-sm font-medium" onchange="updateLivePrompt()">
+                <option value="Fully fluid responsive (Mobile-first with dedicated breakpoints for tablets & ultra-wides)">Mobile-First Fluid Responsive (Default)</option>
+                <option value="Desktop-first Command Center with collapsible side rails and wide canvas">Desktop Command Center (Side-rail focus)</option>
+                <option value="Mobile-app viewport simulator with touch-gesture support and bottom tab-bar">Mobile App Native Shell (Touch focused)</option>
+              </select>
+            </div>
+
+            <!-- Navigation Architecture -->
+            <div class="space-y-1.5">
+              <label class="block text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider">Navigation Topology</label>
+              <select id="navTopology" class="w-full p-3 rounded-xl input-field text-sm font-medium" onchange="toggleNavCustom()">
+                <option value="Sticky top-bar with brand logo, quick search, and action CTA">Sticky Top Navigation Header</option>
+                <option value="Left collapsible sidebar with icon rails and nested category groups">Collapsible Left Sidebar Menu</option>
+                <option value="Bottom fixed floating dock bar (iOS / macOS style)">Floating Island Dock (Bottom bar)</option>
+                <option value="Full-screen command palette overlay (Cmd + K / Ctrl + K driven)">Command Palette Only (Cmd+K Driven)</option>
+                <option value="Zero navigation / Focused single-canvas view">Single Canvas / No Global Nav</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Custom Nav Links Input (Conditionally visible) -->
+          <div id="navLinksContainer" class="space-y-1.5 pt-1">
+            <label class="block text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider">Navigation Items / Routes</label>
+            <input type="text" id="navLinks" value="Dashboard, Analytics, Workspaces, Settings" placeholder="e.g., Home, Feed, Metrics, Settings" class="w-full p-3 rounded-xl input-field text-sm font-mono" oninput="updateLivePrompt()">
+          </div>
+        </div>
+
+        <!-- Section 3: Feature Modules & Interactive Tags -->
+        <div class="glass-card p-6 sm:p-7 rounded-3xl space-y-5">
+          <div class="flex items-center justify-between pb-3 border-b border-[var(--border-subtle)]">
+            <div class="flex items-center gap-2.5">
+              <span class="w-6 h-6 rounded-lg flex items-center justify-center font-mono text-xs font-bold" style="background: var(--badge-bg); color: var(--accent);">03</span>
+              <h2 class="text-base font-bold">Core Functional Modules & Capabilities</h2>
+            </div>
+            <button onclick="toggleAllTags(true)" class="text-xs text-[var(--accent)] hover:underline">Select All</button>
+          </div>
+
+          <p class="text-xs text-[var(--text-muted)]">Click tags to inject ready-to-prompt architectural requirements directly into the specification:</p>
+
+          <div class="flex flex-wrap gap-2" id="tagsContainer">
+            <!-- Tags rendered via JS for clean management -->
+          </div>
+        </div>
+
+        <!-- Section 4: Operational Objective & Deep Description -->
+        <div class="glass-card p-6 sm:p-7 rounded-3xl space-y-4">
+          <div class="flex items-center justify-between pb-3 border-b border-[var(--border-subtle)]">
+            <div class="flex items-center gap-2.5">
+              <span class="w-6 h-6 rounded-lg flex items-center justify-center font-mono text-xs font-bold" style="background: var(--badge-bg); color: var(--accent);">04</span>
+              <h2 class="text-base font-bold">App Specification & Functional Scope</h2>
+            </div>
+            <!-- Word & Character Counters -->
+            <div class="text-xs font-mono text-[var(--text-muted)]">
+              <span id="wordCounter" class="font-bold text-[var(--accent)]">0</span> / 450 words
+            </div>
+          </div>
+
+          <!-- Quick Templates Inserter -->
+          <div class="flex items-center gap-2 overflow-x-auto pb-1">
+            <span class="text-[11px] font-semibold text-[var(--text-muted)] shrink-0">Insert Blueprint:</span>
+            <button onclick="applyBlueprint('analytics')" class="px-2.5 py-1 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-input)] hover:border-[var(--border-active)] text-xs text-[var(--text-muted)] hover:text-white transition-all whitespace-nowrap">📊 SaaS Dashboard</button>
+            <button onclick="applyBlueprint('kanban')" class="px-2.5 py-1 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-input)] hover:border-[var(--border-active)] text-xs text-[var(--text-muted)] hover:text-white transition-all whitespace-nowrap">📋 Drag Kanban</button>
+            <button onclick="applyBlueprint('ai_chat')" class="px-2.5 py-1 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-input)] hover:border-[var(--border-active)] text-xs text-[var(--text-muted)] hover:text-white transition-all whitespace-nowrap">💬 AI Studio Chat</button>
+            <button onclick="applyBlueprint('store')" class="px-2.5 py-1 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-input)] hover:border-[var(--border-active)] text-xs text-[var(--text-muted)] hover:text-white transition-all whitespace-nowrap">🛍️ Checkout Store</button>
+          </div>
+
+          <textarea id="appDescription" rows="5" class="w-full p-4 rounded-2xl input-field text-sm leading-relaxed resize-y font-sans" placeholder="Describe the specific purpose, core user journeys, data structures, and interactions... (Or select a quick blueprint above)" oninput="handleDescriptionInput(this)"></textarea>
+
+          <!-- Guardrails & Quality Standards -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+            <label class="flex items-start gap-2.5 cursor-pointer p-3 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-input)] hover:border-[var(--border-active)] transition-all">
+              <input type="checkbox" id="guardNoPlaceholders" checked class="mt-0.5 rounded text-[var(--accent)] focus:ring-0" onchange="updateLivePrompt()">
+              <div>
+                <span class="block text-xs font-semibold text-[var(--text-main)]">Zero Placeholders</span>
+                <span class="text-[11px] text-[var(--text-muted)]">Instruct AI to provide 100% complete, runnable code without ellipsis (...)</span>
+              </div>
+            </label>
+
+            <label class="flex items-start gap-2.5 cursor-pointer p-3 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-input)] hover:border-[var(--border-active)] transition-all">
+              <input type="checkbox" id="guardNoAlerts" checked class="mt-0.5 rounded text-[var(--accent)] focus:ring-0" onchange="updateLivePrompt()">
+              <div>
+                <span class="block text-xs font-semibold text-[var(--text-main)]">Custom Toasts & Modals</span>
+                <span class="text-[11px] text-[var(--text-muted)]">Ban ugly browser alert()/confirm() in favor of sleek toast notifications</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Section 5: Persistent Saved Profiles (10 Slots) -->
+        <div class="glass-card p-6 sm:p-7 rounded-3xl space-y-4">
+          <div class="flex items-center justify-between pb-3 border-b border-[var(--border-subtle)]">
+            <div class="flex items-center gap-2.5">
+              <span class="w-6 h-6 rounded-lg flex items-center justify-center font-mono text-xs font-bold" style="background: var(--badge-bg); color: var(--accent);">05</span>
+              <h2 class="text-base font-bold">Saved Preset Profiles</h2>
+            </div>
+            <div class="flex items-center gap-2">
+              <button onclick="saveCurrentSlotPrompt()" class="px-3 py-1.5 rounded-xl border border-emerald-500/40 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 text-xs font-bold transition-all flex items-center gap-1.5">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/></svg>
+                Save to Slot
+              </button>
+            </div>
+          </div>
+
+          <p class="text-xs text-[var(--text-muted)]">Click any active slot below to load its configuration instantly, or click delete to clear a slot:</p>
+
+          <div class="grid grid-cols-2 sm:grid-cols-5 gap-2.5" id="savedSlotsContainer">
+            <!-- Dynamically populated 10 slots -->
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT COLUMN: Real-Time Output & Action Station -->
+      <div class="lg:col-span-5 space-y-6 lg:sticky lg:top-28">
+        
+        <div class="glass-card p-6 sm:p-7 rounded-3xl space-y-5">
+          <div class="flex items-center justify-between pb-3 border-b border-[var(--border-subtle)]">
+            <div>
+              <h2 class="text-base font-bold flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-[var(--accent)] animate-pulse"></span>
+                Generated Master Prompt
+              </h2>
+              <p class="text-[11px] text-[var(--text-muted)]">Optimized for Claude 3.5 Sonnet, GPT-4o, and Gemini 1.5/2.0 Pro</p>
+            </div>
+            
+            <span id="promptWordStats" class="text-xs font-mono px-2 py-0.5 rounded-full" style="background: var(--badge-bg); color: var(--accent);">0 tokens</span>
+          </div>
+
+          <!-- Prompt Output Pre Box -->
+          <div class="relative">
+            <div id="promptOutput" class="w-full p-4 rounded-2xl input-field font-mono text-xs leading-relaxed max-h-[500px] overflow-y-auto whitespace-pre-wrap select-all">
+              <!-- Live compiled prompt goes here -->
+            </div>
+          </div>
+
+          <!-- Primary Control Actions -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+            <button onclick="copyGeneratedPrompt()" class="py-3.5 px-4 rounded-2xl text-xs font-bold text-white shadow-xl transition-transform active:scale-95 flex items-center justify-center gap-2" style="background: linear-gradient(135deg, var(--accent), var(--accent-secondary)); box-shadow: 0 4px 20px var(--accent-glow);">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+              Copy to Clipboard
+            </button>
+
+            <button onclick="downloadPromptMarkdown()" class="py-3.5 px-4 rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-input)] hover:border-[var(--border-active)] text-xs font-bold text-[var(--text-main)] transition-colors flex items-center justify-center gap-2">
+              <svg class="w-4 h-4 text-[var(--accent)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+              Export as .MD
+            </button>
+          </div>
+
+          <!-- Quick Metrics & Spec Checklist -->
+          <div class="p-4 rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-input)] space-y-2 text-xs">
+            <span class="font-bold text-[var(--text-main)] uppercase tracking-wider text-[10px] text-[var(--text-muted)]">Specification Checklist:</span>
+            <div class="grid grid-cols-2 gap-2 text-[11px] font-mono text-[var(--text-muted)]">
+              <div class="flex items-center gap-1.5">
+                <span class="text-emerald-400">✓</span> Modular CSS Engine
+              </div>
+              <div class="flex items-center gap-1.5">
+                <span class="text-emerald-400">✓</span> Full UX Guidelines
+              </div>
+              <div class="flex items-center gap-1.5">
+                <span class="text-emerald-400">✓</span> Robust Error Handling
+              </div>
+              <div class="flex items-center gap-1.5">
+                <span class="text-emerald-400">✓</span> Zero Alert() Constraints
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
     </div>
-</div>
+  </main>
 
-<script>
-    // Maximum limits configuration
-    const MAX_WORDS = 400;
+  <!-- Floating Toast Notification -->
+  <div id="toastNotification" class="fixed bottom-6 right-6 z-50 transform translate-y-24 opacity-0 transition-all duration-300 pointer-events-none">
+    <div class="px-5 py-3 rounded-2xl bg-gray-950 border border-[var(--border-active)] text-[var(--text-main)] shadow-2xl flex items-center gap-3 text-xs font-semibold backdrop-blur-xl">
+      <span class="w-2 h-2 rounded-full" style="background: var(--accent);"></span>
+      <span id="toastMessage">Action completed successfully!</span>
+    </div>
+  </div>
+
+  <script>
+    /* ====================================================================
+       1. CORE STATE, TAGS CATALOG, AND PRESETS
+       ==================================================================== */
+    const MAX_WORDS = 450;
     const MAX_SLOTS = 10;
-    let savedPrompts = JSON.parse(localStorage.getItem('app_prompt_slots')) || {};
 
-    // Run layout adjustments on load
-    window.onload = function() {
-        renderSavedSlots();
+    // Feature tags catalog
+    const FEATURE_TAGS = [
+      { id: "auth", label: "🔐 Auth / RBAC Simulation", desc: "User login/signup modal with role permissions" },
+      { id: "realtime", label: "⚡ Real-time Mock Sync", desc: "Simulated WebSockets with live feed pulse" },
+      { id: "dashboard", label: "📊 Analytics & Charts", desc: "Interactive stat cards and SVG/Canvas charts" },
+      { id: "stripe", label: "💳 Stripe / Payment Mock", desc: "Pricing tiers, plan toggles and checkout flow" },
+      { id: "dragdrop", label: "✋ Drag & Drop Kanban", desc: "Draggable task boards and reordering logic" },
+      { id: "canvas", label: "🎨 Canvas / Three.js Visuals", desc: "Dynamic 2D/3D canvas rendering engine" },
+      { id: "media", label: "🎵 Audio / Media Player", desc: "Sound effects, Web Audio DSP, or audio deck" },
+      { id: "offline", label: "📦 PWA / Local Storage Sync", desc: "Persistent offline-first localStorage database" },
+      { id: "export", label: "📄 Export CSV & PDF", desc: "One-click data export and printable report format" },
+      { id: "darkmode", label: "🌗 Dark / Light Mode Switcher", desc: "Dynamic CSS custom variable theme toggler" },
+      { id: "aichat", label: "🤖 AI Assistant Chat Drawer", desc: "Collapsible conversational LLM interface" },
+      { id: "search", label: "🔍 Instant Fuzzy Search & Filter", desc: "Multi-parameter filter chips and search bar" },
+      { id: "wizard", label: "🧙 Multi-step Stepper Form", desc: "Progress bar wizard with validation per stage" },
+      { id: "datatable", label: "📋 Interactive Data Tables", desc: "Sortable headers, pagination, and row selection" },
+      { id: "keyboard", label: "⌨️ Keyboard Shortcuts (Cmd+K)", desc: "Hotkeys for fast navigation and search modal" }
+    ];
+
+    let activeTags = new Set(["dashboard", "darkmode", "search", "export"]);
+    let savedSlots = JSON.parse(localStorage.getItem('omniprompt_pro_slots')) || {};
+
+    /* Industry Blueprints */
+    const BLUEPRINTS = {
+      analytics: "Build a comprehensive analytics telemetry control deck. Features interactive metrics tiles with percentage changes, a responsive canvas line chart visualizing traffic trends, filtered activity logs, and a date range picker with CSV export functionality.",
+      kanban: "Create an intuitive project kanban workspace. Include columns for 'Backlog', 'In Progress', 'In Review', and 'Completed'. Implement HTML5 drag-and-drop to move task cards between columns, priority badge color coding, and quick task modal creation.",
+      ai_chat: "Design an AI workspace studio containing a chat dialog panel with typing indicator simulations, streaming markdown output bubbles, a system prompt parameter configuration drawer (temperature, top_p sliders), and token count telemetry.",
+      store: "Develop a slick digital product showcase and checkout app. Features category filtering, dynamic shopping cart drawer with quantity adjustments, promo code input verification, and a simulated multi-step payment confirmation modal."
     };
 
-    // Toggle navigation buttons field based on selection
-    function toggleNavButtons() {
-        const navStyle = document.getElementById('navStyle').value;
-        const navButtonsGroup = document.getElementById('navButtonsGroup');
-        if(navStyle.includes('None')) {
-            navButtonsGroup.style.display = 'none';
-        } else {
-            navButtonsGroup.style.display = 'flex';
-        }
+    /* ====================================================================
+       2. INITIALIZATION & RENDERING
+       ==================================================================== */
+    window.onload = function() {
+      renderTags();
+      renderSavedSlots();
+      toggleNavCustom();
+      updateLivePrompt();
+    };
+
+    function renderTags() {
+      const container = document.getElementById('tagsContainer');
+      container.innerHTML = FEATURE_TAGS.map(tag => {
+        const isActive = activeTags.has(tag.id);
+        return `
+          <button type="button" 
+                  onclick="toggleTag('${tag.id}')" 
+                  class="tag-chip px-3.5 py-1.5 rounded-xl text-xs flex items-center gap-1.5 ${isActive ? 'active' : ''}" 
+                  title="${tag.desc}">
+            <span>${tag.label}</span>
+          </button>
+        `;
+      }).join('');
     }
 
-    // Restrict files input to max 3 items
-    function validateFiles(input) {
-        if (input.files.length > 3) {
-            alert("You can only upload a maximum of 3 images.");
-            input.value = '';
-        }
+    function toggleTag(id) {
+      if (activeTags.has(id)) {
+        activeTags.delete(id);
+      } else {
+        activeTags.add(id);
+      }
+      renderTags();
+      updateLivePrompt();
     }
 
-    // Word counting framework logic
-    function checkWordCount(textarea) {
-        let words = textarea.value.trim().split(/\s+/).filter(word => word.length > 0);
-        
-        if (words.length > MAX_WORDS) {
-            // Trim back to 400 words maximum safely
-            const trimmedWords = words.slice(0, MAX_WORDS);
-            textarea.value = trimmedWords.join(" ");
-            words = trimmedWords;
-        }
-        
-        document.getElementById('wordCountLabel').innerText = `${words.length} / ${MAX_WORDS} words`;
+    function toggleAllTags(select) {
+      if (activeTags.size === FEATURE_TAGS.length) {
+        activeTags.clear();
+      } else {
+        FEATURE_TAGS.forEach(t => activeTags.add(t.id));
+      }
+      renderTags();
+      updateLivePrompt();
     }
 
-    // Core prompt calculation generation logic
-    function buildPromptText() {
-        const fileStructure = document.getElementById('fileStructure').value;
-        const cssStyle = document.getElementById('cssStyle').value;
-        const colorScheme = document.getElementById('colorScheme').value;
-        const layout = document.getElementById('layout').value;
-        const navStyle = document.getElementById('navStyle').value;
-        const navButtons = document.getElementById('navButtons').value.trim();
-        const imageLayout = document.getElementById('imageLayout').value;
-        const imageUpload = document.getElementById('imageUpload').files;
-        const description = document.getElementById('description').value.trim();
-
-        let prompt = `Act as an expert frontend web developer. Create a complete, fully operational web application using HTML, CSS, and JavaScript based on the following exact specifications:\n\n`;
-        prompt += `### 1. File Structure Architecture\n- ${fileStructure}\n\n`;
-        prompt += `### 2. Design System & UI Theme\n- Visual Aesthetic Style: ${cssStyle}\n- Color Palette Profile: ${colorScheme}\n\n`;
-        prompt += `### 3. Layout & UX Architecture\n- Responsive Viewport targets: ${layout}\n`;
-        prompt += `- Navigation Structure: ${navStyle}\n`;
-        if(!navStyle.includes('None') && navButtons) {
-            prompt += `  - Required Navigation Links/Buttons: ${navButtons}\n`;
-        }
-        
-        prompt += `\n### 4. Graphic & Media Blocks\n- Image Configuration: ${imageLayout}\n`;
-        if(imageUpload.length > 0) {
-            prompt += `- Image Assets Uploaded for Use: (${imageUpload.length} file placeholder hooks provided by user via local runtime uploads)\n`;
-            prompt += `  - Target file slots names to implement in code src tags: `;
-            let names = [];
-            for(let i=0; i<imageUpload.length; i++) { names.push(`"${imageUpload[i].name}"`); }
-            prompt += names.join(', ') + `\n`;
-        }
-
-        prompt += `\n### 5. Functional Core Requirements & Scope Description\n`;
-        if(description) {
-            prompt += `The application must execute and fulfill this explicit operational objective:\n"${description}"`;
-        } else {
-            prompt += `No structural utility description was supplemented. Build out a standard layout template matching the UI specs listed above containing clean placeholders.`;
-        }
-
-        return prompt;
+    function toggleNavCustom() {
+      const navType = document.getElementById('navTopology').value;
+      const container = document.getElementById('navLinksContainer');
+      if (navType.includes('Zero') || navType.includes('Command')) {
+        container.style.display = 'none';
+      } else {
+        container.style.display = 'block';
+      }
+      updateLivePrompt();
     }
 
-    function generatePrompt() {
-        const outputCard = document.getElementById('outputCard');
-        const promptOutput = document.getElementById('promptOutput');
-        
-        const finalPromptText = buildPromptText();
-        promptOutput.innerText = finalPromptText;
-        outputCard.style.display = 'block';
-        outputCard.scrollIntoView({ behavior: 'smooth' });
-    }
-
-    function copyToClipboard() {
-        const textText = document.getElementById('promptOutput').innerText;
-        navigator.clipboard.writeText(textText).then(() => {
-            alert('Prompt copied successfully to your system clipboard!');
-        }).catch(err => {
-            alert('Failed to copy text safely automatically.', err);
-        });
-    }
-
-    // Render Slots list layout interface tracking 1 to 10
-    function renderSavedSlots() {
-        const container = document.getElementById('savedSlotsContainer');
-        container.innerHTML = '';
-        
-        for (let i = 1; i <= MAX_SLOTS; i++) {
-            const slot = document.createElement('div');
-            slot.classList.add('saved-slot');
-            if(savedPrompts[i]) {
-                slot.classList.add('active');
-                slot.innerText = `Prompt Slot ${i} (Saved)`;
-            } else {
-                slot.innerText = `Slot ${i} (Empty)`;
-            }
-            slot.onclick = () => loadPromptSlot(i);
-            container.appendChild(slot);
-        }
-    }
-
-    // Save prompt configuration form status state to indexed profile target
-    function savePromptSlot() {
-        const targetSlot = prompt("Enter a slot number between 1 and 10 to save this layout configuration to:", "1");
-        const slotNum = parseInt(targetSlot);
-        
-        if (isNaN(slotNum) || slotNum < 1 || slotNum > MAX_SLOTS) {
-            alert("Invalid Selection. Please supply a valid numerical slot designation (1-10).");
-            return;
-        }
-
-        // Gather UI elements form dataset state mapping parameters
-        savedPrompts[slotNum] = {
-            fileStructure: document.getElementById('fileStructure').value,
-            cssStyle: document.getElementById('cssStyle').value,
-            colorScheme: document.getElementById('colorScheme').value,
-            layout: document.getElementById('layout').value,
-            navStyle: document.getElementById('navStyle').value,
-            navButtons: document.getElementById('navButtons').value,
-            imageLayout: document.getElementById('imageLayout').value,
-            description: document.getElementById('description').value
+    function onIndustryChange(industry) {
+      // Auto-suggest app names if empty
+      const appNameInput = document.getElementById('appName');
+      if (!appNameInput.value.trim()) {
+        const suggestions = {
+          "SaaS & Productivity": "SyncFlow Pro",
+          "Fintech & Decentralized Finance": "Apex Capital",
+          "Healthcare & MedTech": "PulseCare Hub",
+          "E-Commerce & Retail": "Aura Market",
+          "Artificial Intelligence & ML Tools": "NeuroStudio AI",
+          "EdTech & Learning Management": "OmniLearn Deck",
+          "Creative Studio & Multimedia": "Prism Canvas",
+          "Gaming & Interactive WebGL": "Vortex Arena",
+          "Real Estate & Spatial Booking": "Haven Spaces",
+          "Logistics & Supply Chain": "FleetCore Global",
+          "Developer Tooling & Cloud DevOps": "KubePilot Dashboard"
         };
-
-        localStorage.setItem('app_prompt_slots', JSON.stringify(savedPrompts));
-        renderSavedSlots();
-        alert(`Current form profile state parameters saved successfully into configuration Slot ${slotNum}!`);
+        appNameInput.value = suggestions[industry] || "Modern App Studio";
+      }
+      updateLivePrompt();
     }
 
-    // Load setup configurations from selected storage slots index numbers mapping data 
-    function loadPromptSlot(slotNum) {
-        const data = savedPrompts[slotNum];
-        if(!data) {
-            alert(`Slot ${slotNum} is empty. Fill out the configuration options above and click "Save Setup" to save them to this slot.`);
-            return;
+    function handleDescriptionInput(textarea) {
+      let words = textarea.value.trim().split(/\s+/).filter(w => w.length > 0);
+      if (words.length > MAX_WORDS) {
+        textarea.value = words.slice(0, MAX_WORDS).join(" ");
+        words = words.slice(0, MAX_WORDS);
+      }
+      document.getElementById('wordCounter').innerText = words.length;
+      updateLivePrompt();
+    }
+
+    function applyBlueprint(key) {
+      const text = BLUEPRINTS[key];
+      if (text) {
+        const desc = document.getElementById('appDescription');
+        desc.value = text;
+        handleDescriptionInput(desc);
+        showToast("Applied blueprint: " + key.toUpperCase());
+      }
+    }
+
+    /* ====================================================================
+       3. PROMPT GENERATION ENGINE
+       ==================================================================== */
+    function buildPromptText() {
+      const appName = document.getElementById('appName').value.trim() || "Dynamic Modern Web Application";
+      const industry = document.getElementById('industrySector').value;
+      const persona = document.getElementById('userPersona').value;
+      const structure = document.getElementById('fileStructure').value;
+      const style = document.getElementById('cssStyle').value;
+      const palette = document.getElementById('colorScheme').value;
+      const layout = document.getElementById('layoutStrategy').value;
+      const navTopology = document.getElementById('navTopology').value;
+      const navLinks = document.getElementById('navLinks').value.trim();
+      const description = document.getElementById('appDescription').value.trim();
+      const guardNoPlaceholders = document.getElementById('guardNoPlaceholders').checked;
+      const guardNoAlerts = document.getElementById('guardNoAlerts').checked;
+
+      // Extract labels for active tags
+      const selectedFeatureLabels = Array.from(activeTags).map(id => {
+        const item = FEATURE_TAGS.find(t => t.id === id);
+        return item ? item.label : id;
+      });
+
+      let prompt = `Act as a world-class principal frontend software engineer and UI/UX designer. Your objective is to architect and code a complete, fully operational web application named "${appName}".\n\n`;
+
+      prompt += `### 1. High-Level Concept & Sector Context\n`;
+      prompt += `- Application Title: "${appName}"\n`;
+      prompt += `- Industry & Domain: ${industry}\n`;
+      prompt += `- Target Audience & User Persona: ${persona}\n\n`;
+
+      prompt += `### 2. Architecture & File Structure\n`;
+      prompt += `- Target Deliverable: ${structure}\n`;
+      if (structure.includes('Single-file')) {
+        prompt += `- CRITICAL CONSTRAINT: All HTML markup, styling (Tailwind CSS utility classes or semantic inline <style>), and JavaScript logic MUST reside in ONE single self-contained, fully runnable file. Do not omit code or link external unfinished scripts.\n`;
+      }
+      prompt += `\n`;
+
+      prompt += `### 3. Design System & UX Aesthetics\n`;
+      prompt += `- Aesthetic Archetype: ${style}\n`;
+      prompt += `- Color Palette System: ${palette}\n`;
+      prompt += `- Viewport Strategy: ${layout}\n`;
+      prompt += `- Navigation Structure: ${navTopology}\n`;
+      if (!navTopology.includes('Zero') && navLinks) {
+        prompt += `  - Key Navigation Routes/Tabs: ${navLinks}\n`;
+      }
+      prompt += `- Typography & Layout: Use modern, legible sans-serif fonts (e.g. Inter/Plus Jakarta Sans), crisp border radii, balanced negative space, and deep visual contrast.\n\n`;
+
+      prompt += `### 4. Required Functional Modules & Feature Integrations\n`;
+      if (selectedFeatureLabels.length > 0) {
+        selectedFeatureLabels.forEach(feature => {
+          prompt += `- [x] ${feature}\n`;
+        });
+      } else {
+        prompt += `- Standard modular architecture with interactive views and sample data.\n`;
+      }
+      prompt += `\n`;
+
+      prompt += `### 5. Detailed Scope & Behavioral Requirements\n`;
+      if (description) {
+        prompt += `${description}\n\n`;
+      } else {
+        prompt += `Implement an engaging, intuitive user flow tailored for ${persona}, featuring smooth state transitions, mock data generation, responsive interactions, and accessible controls.\n\n`;
+      }
+
+      prompt += `### 6. Engineering Standards & Strict Guardrails\n`;
+      if (guardNoPlaceholders) {
+        prompt += `- ZERO PLACEHOLDERS: Provide 100% complete, end-to-end working source code. NEVER use "// ... existing code ...", "/* insert logic here */", or placeholder comments.\n`;
+      }
+      if (guardNoAlerts) {
+        prompt += `- NO BROWSER ALERTS: Under no circumstances use alert(), prompt(), or confirm(). Implement sleek, self-dismissing custom toast banners or modern glassmorphic dialog modals for all user feedback.\n`;
+      }
+      prompt += `- Resilient Error Handling: Wrap async/event handlers in clean try/catch blocks with fallback UI states.\n`;
+      prompt += `- Responsive & Touch Friendly: Interactive targets must maintain comfortable hit areas (minimum 40x40px) with fluid mobile-adapted layouts.`;
+
+      return prompt;
+    }
+
+    function updateLivePrompt() {
+      const promptText = buildPromptText();
+      const outputElem = document.getElementById('promptOutput');
+      outputElem.innerText = promptText;
+
+      // Calculate approximate token count (~4 characters per token)
+      const approxTokens = Math.round(promptText.length / 4);
+      document.getElementById('promptWordStats').innerText = `~${approxTokens} tokens (${promptText.split(/\s+/).length} words)`;
+    }
+
+    /* ====================================================================
+       4. EXPORT & CLIPBOARD UTILITIES
+       ==================================================================== */
+    function copyGeneratedPrompt() {
+      const text = document.getElementById('promptOutput').innerText;
+      
+      // Fallback-compatible copy mechanism for iframe safety
+      const dummy = document.createElement('textarea');
+      dummy.value = text;
+      dummy.style.position = 'fixed';
+      dummy.style.opacity = '0';
+      document.body.appendChild(dummy);
+      dummy.select();
+      
+      try {
+        document.execCommand('copy');
+        showToast("Master Prompt copied to clipboard!");
+      } catch (err) {
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(text).then(() => {
+            showToast("Master Prompt copied to clipboard!");
+          });
+        } else {
+          showToast("Please copy manually from the preview box.");
+        }
+      } finally {
+        document.body.removeChild(dummy);
+      }
+    }
+
+    function downloadPromptMarkdown() {
+      const text = document.getElementById('promptOutput').innerText;
+      const appName = document.getElementById('appName').value.trim() || 'App_Prompt';
+      const cleanFileName = appName.toLowerCase().replace(/[^a-z0-9]/g, '_') + '_prompt.md';
+
+      const blob = new Blob([text], { type: 'text/markdown;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = cleanFileName;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+
+      showToast(`Exported ${cleanFileName}`);
+    }
+
+    /* ====================================================================
+       5. PERSISTENT STORAGE / SLOTS MANAGER (1 to 10)
+       ==================================================================== */
+    function renderSavedSlots() {
+      const container = document.getElementById('savedSlotsContainer');
+      container.innerHTML = '';
+
+      for (let i = 1; i <= MAX_SLOTS; i++) {
+        const data = savedSlots[i];
+        const slotCard = document.createElement('div');
+        slotCard.className = `slot-pill p-3 rounded-2xl cursor-pointer flex flex-col justify-between ${data ? 'saved' : 'bg-[var(--bg-input)] text-[var(--text-muted)]'}`;
+
+        if (data) {
+          slotCard.innerHTML = `
+            <div onclick="loadPromptSlot(${i})">
+              <div class="flex items-center justify-between">
+                <span class="font-mono text-[10px] font-bold">SLOT 0${i}</span>
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+              </div>
+              <div class="text-xs font-bold text-[var(--text-main)] truncate mt-1">${data.appName || 'Custom Setup'}</div>
+              <div class="text-[10px] text-[var(--text-muted)] truncate">${data.industry || 'Saved'}</div>
+            </div>
+            <div class="flex justify-end pt-2 border-t border-[var(--border-subtle)] mt-2">
+              <button onclick="deletePromptSlot(event, ${i})" class="text-[10px] text-rose-400 hover:text-rose-300 hover:underline">Clear</button>
+            </div>
+          `;
+        } else {
+          slotCard.onclick = () => loadPromptSlot(i);
+          slotCard.innerHTML = `
+            <div>
+              <div class="font-mono text-[10px]">SLOT 0${i}</div>
+              <div class="text-xs font-semibold mt-1">Empty Slot</div>
+              <div class="text-[10px] opacity-60">Ready to save</div>
+            </div>
+          `;
         }
 
-        document.getElementById('fileStructure').value = data.fileStructure;
-        document.getElementById('cssStyle').value = data.cssStyle;
-        document.getElementById('colorScheme').value = data.colorScheme;
-        document.getElementById('layout').value = data.layout;
-        document.getElementById('navStyle').value = data.navStyle;
-        
-        toggleNavButtons(); // trigger visibility block updates
-        document.getElementById('navButtons').value = data.navButtons || '';
-        document.getElementById('imageLayout').value = data.imageLayout;
-        document.getElementById('description').value = data.description;
-        
-        // Refresh live elements trackers
-        checkWordCount(document.getElementById('description'));
-        alert(`Loaded layout profile configuration settings from Slot ${slotNum}!`);
+        container.appendChild(slotCard);
+      }
     }
-</script>
 
+    function saveCurrentSlotPrompt() {
+      // Find first empty slot or prompt user
+      let defaultSlot = 1;
+      for (let i = 1; i <= MAX_SLOTS; i++) {
+        if (!savedSlots[i]) { defaultSlot = i; break; }
+      }
+
+      // Safe in-app slot selector prompt
+      const targetInput = window.prompt(`Select slot number to store profile (1 to ${MAX_SLOTS}):`, defaultSlot);
+      if (!targetInput) return;
+
+      const slotNum = parseInt(targetInput, 10);
+      if (isNaN(slotNum) || slotNum < 1 || slotNum > MAX_SLOTS) {
+        showToast("Invalid slot selection (1-10 only).");
+        return;
+      }
+
+      savedSlots[slotNum] = {
+        appName: document.getElementById('appName').value.trim(),
+        industry: document.getElementById('industrySector').value,
+        persona: document.getElementById('userPersona').value,
+        fileStructure: document.getElementById('fileStructure').value,
+        cssStyle: document.getElementById('cssStyle').value,
+        colorScheme: document.getElementById('colorScheme').value,
+        layout: document.getElementById('layoutStrategy').value,
+        navTopology: document.getElementById('navTopology').value,
+        navLinks: document.getElementById('navLinks').value,
+        description: document.getElementById('appDescription').value,
+        tags: Array.from(activeTags),
+        guardNoPlaceholders: document.getElementById('guardNoPlaceholders').checked,
+        guardNoAlerts: document.getElementById('guardNoAlerts').checked
+      };
+
+      localStorage.setItem('omniprompt_pro_slots', JSON.stringify(savedSlots));
+      renderSavedSlots();
+      showToast(`Saved configuration into Slot 0${slotNum}!`);
+    }
+
+    function loadPromptSlot(slotNum) {
+      const data = savedSlots[slotNum];
+      if (!data) {
+        showToast(`Slot 0${slotNum} is currently empty.`);
+        return;
+      }
+
+      document.getElementById('appName').value = data.appName || '';
+      document.getElementById('industrySector').value = data.industry || 'SaaS & Productivity';
+      document.getElementById('userPersona').value = data.persona || 'Enterprise Teams & Decision Makers';
+      document.getElementById('fileStructure').value = data.fileStructure || 'Single-file mandate (Self-contained runnable HTML + Tailwind + inline JS)';
+      document.getElementById('cssStyle').value = data.cssStyle || 'Bento-grid Modernist (Card-based layout, subtle borders, high visual hierarchy)';
+      document.getElementById('colorScheme').value = data.colorScheme || 'Electric Indigo & Violet with Obsidian Dark Backgrounds';
+      document.getElementById('layoutStrategy').value = data.layout || 'Fully fluid responsive (Mobile-first with dedicated breakpoints for tablets & ultra-wides)';
+      document.getElementById('navTopology').value = data.navTopology || 'Sticky top-bar with brand logo, quick search, and action CTA';
+      document.getElementById('navLinks').value = data.navLinks || '';
+      document.getElementById('appDescription').value = data.description || '';
+
+      if (data.tags) {
+        activeTags = new Set(data.tags);
+        renderTags();
+      }
+
+      if (data.guardNoPlaceholders !== undefined) {
+        document.getElementById('guardNoPlaceholders').checked = data.guardNoPlaceholders;
+      }
+      if (data.guardNoAlerts !== undefined) {
+        document.getElementById('guardNoAlerts').checked = data.guardNoAlerts;
+      }
+
+      toggleNavCustom();
+      handleDescriptionInput(document.getElementById('appDescription'));
+      updateLivePrompt();
+      showToast(`Loaded layout setup from Slot 0${slotNum}!`);
+    }
+
+    function deletePromptSlot(e, slotNum) {
+      e.stopPropagation();
+      delete savedSlots[slotNum];
+      localStorage.setItem('omniprompt_pro_slots', JSON.stringify(savedSlots));
+      renderSavedSlots();
+      showToast(`Cleared Slot 0${slotNum}`);
+    }
+
+    function resetAllFields() {
+      document.getElementById('appName').value = '';
+      document.getElementById('industrySector').selectedIndex = 0;
+      document.getElementById('userPersona').selectedIndex = 0;
+      document.getElementById('fileStructure').selectedIndex = 0;
+      document.getElementById('cssStyle').selectedIndex = 0;
+      document.getElementById('colorScheme').selectedIndex = 0;
+      document.getElementById('layoutStrategy').selectedIndex = 0;
+      document.getElementById('navTopology').selectedIndex = 0;
+      document.getElementById('navLinks').value = 'Dashboard, Analytics, Workspaces, Settings';
+      document.getElementById('appDescription').value = '';
+      activeTags = new Set(["dashboard", "darkmode", "search", "export"]);
+      renderTags();
+      toggleNavCustom();
+      handleDescriptionInput(document.getElementById('appDescription'));
+      updateLivePrompt();
+      showToast("Reset form to default state.");
+    }
+
+    /* ====================================================================
+       6. THEME ENGINE & NOTIFICATIONS
+       ==================================================================== */
+    function changeTheme(themeName) {
+      if (themeName === 'indigo') {
+        document.documentElement.removeAttribute('data-theme');
+      } else {
+        document.documentElement.setAttribute('data-theme', themeName);
+      }
+      showToast("Switched theme palette: " + themeName.toUpperCase());
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toastNotification');
+      const toastText = document.getElementById('toastMessage');
+      toastText.innerText = msg;
+      toast.classList.remove('translate-y-24', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+      
+      clearTimeout(window._toastTimeout);
+      window._toastTimeout = setTimeout(() => {
+        toast.classList.add('translate-y-24', 'opacity-0');
+        toast.classList.remove('translate-y-0', 'opacity-100');
+      }, 2600);
+    }
+  </script>
 </body>
 </html>
