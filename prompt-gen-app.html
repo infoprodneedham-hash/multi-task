@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EasyApp Prompt Playground • Web App Idea Studio</title>
+  <title>WebCraft • Website Template Prompt Studio</title>
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Google Fonts: Inter & JetBrains Mono -->
@@ -13,16 +13,16 @@
 
   <style>
     :root {
-      --bg-body: #0b0f19;
-      --bg-surface: rgba(17, 24, 39, 0.85);
-      --bg-input: #0f172a;
-      --border-subtle: rgba(99, 102, 241, 0.2);
+      --bg-body: #090d16;
+      --bg-surface: rgba(15, 23, 42, 0.85);
+      --bg-input: #0b1120;
+      --border-subtle: rgba(99, 102, 241, 0.18);
       --border-active: #6366f1;
       --text-main: #f8fafc;
       --text-muted: #94a3b8;
       --accent: #6366f1;
-      --accent-secondary: #8b5cf6;
-      --accent-glow: rgba(99, 102, 241, 0.3);
+      --accent-secondary: #06b6d4;
+      --accent-glow: rgba(99, 102, 241, 0.35);
       --badge-bg: rgba(99, 102, 241, 0.15);
       --badge-text: #a5b4fc;
     }
@@ -41,7 +41,7 @@
     .glass-card {
       background: var(--bg-surface);
       border: 1px solid var(--border-subtle);
-      backdrop-filter: blur(12px);
+      backdrop-filter: blur(14px);
     }
 
     .input-field {
@@ -96,17 +96,17 @@
   <header class="sticky top-0 z-40 border-b border-[var(--border-subtle)] bg-[var(--bg-body)]/90 backdrop-blur-md">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 h-18 py-3.5 flex items-center justify-between gap-4">
       <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl flex items-center justify-center font-bold text-lg text-white shadow-md" style="background: linear-gradient(135deg, var(--accent), var(--accent-secondary));">
-          ⚡
+        <div class="w-10 h-10 rounded-xl flex items-center justify-center font-bold text-lg text-white shadow-lg" style="background: linear-gradient(135deg, var(--accent), var(--accent-secondary));">
+          🌐
         </div>
         <div>
-          <h1 class="text-lg font-bold">EasyApp Playground</h1>
-          <p class="text-xs text-[var(--text-muted)]">Mix & match options to build a clean prompt for ChatGPT, Claude, or Gemini</p>
+          <h1 class="text-lg font-bold">WebCraft Template Studio</h1>
+          <p class="text-xs text-[var(--text-muted)]">Craft tailored website prompts for ChatGPT, Claude, and Gemini</p>
         </div>
       </div>
 
       <button onclick="resetAllFields()" class="px-3 py-1.5 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-input)] hover:text-rose-400 text-xs font-medium transition-colors">
-        Reset Form
+        Reset Options
       </button>
     </div>
   </header>
@@ -114,194 +114,223 @@
   <main class="max-w-6xl mx-auto px-4 sm:px-6 py-8">
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
       
-      <!-- LEFT COLUMN: Playground Controls -->
+      <!-- LEFT COLUMN: Studio Controls -->
       <div class="lg:col-span-7 space-y-6">
         
-        <!-- Step 1: The App Core -->
+        <!-- Step 1: Industry & Concept -->
         <div class="glass-card p-6 rounded-2xl space-y-4">
           <div class="flex items-center gap-2 border-b border-[var(--border-subtle)] pb-3">
             <span class="w-6 h-6 rounded-md flex items-center justify-center font-bold text-xs" style="background: var(--badge-bg); color: var(--accent);">1</span>
-            <h2 class="text-sm font-bold uppercase tracking-wider text-slate-200">The Idea & Audience</h2>
+            <h2 class="text-sm font-bold uppercase tracking-wider text-slate-200">Business Type & Site Identity</h2>
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div class="space-y-1">
-              <label class="block text-xs font-semibold text-[var(--text-muted)]">App Name</label>
-              <input type="text" id="appName" placeholder="e.g. QuickQuote, RetroRacer, PlantCare" class="w-full p-2.5 rounded-xl input-field text-sm" oninput="updateLivePrompt()">
+              <label class="block text-xs font-semibold text-[var(--text-muted)]">Website / Business Name</label>
+              <input type="text" id="siteName" placeholder="e.g. Apex Mechanics, Studio Lumière" class="w-full p-2.5 rounded-xl input-field text-sm" oninput="updateLivePrompt()">
             </div>
 
-            <!-- Expanded App Types -->
+            <!-- Business Niche / Industry -->
             <div class="space-y-1">
-              <label class="block text-xs font-semibold text-[var(--text-muted)]">What type of app is this?</label>
-              <select id="industrySector" class="w-full p-2.5 rounded-xl input-field text-sm" onchange="updateLivePrompt()">
-                <option value="Productivity & Task Tracker">📝 To-Do List & Task Board</option>
-                <option value="Personal Finance & Money Tracker">💰 Budget & Expense Tracker</option>
-                <option value="Simple Digital Shop & Cart">🛍️ Simple Store & Checkout</option>
-                <option value="Habit & Daily Routine Builder">🔥 Daily Habit & Streak Tracker</option>
-                <option value="Health, Fitness & Workout Log">🏃 Health, Workout & Fitness Log</option>
-                <option value="Flashcards & Learning Quiz">🎓 Flashcards & Study Quiz</option>
-                <option value="Recipe Book & Meal Planner">🍳 Recipe Organizer & Meal Prep</option>
-                <option value="Trade, Invoicing & Client Estimator">🔨 Trades, Quotes & Invoicing Tool</option>
-                <option value="Appointments & Booking Calendar">📅 Booking & Schedule Calendar</option>
-                <option value="Hobby, Collection & Inventory Tracker">📦 Hobby & Inventory Collector</option>
-                <option value="Retro Arcade 2D Browser Game">🕹️ 2D Retro Canvas Mini-Game</option>
-                <option value="Music, Sound Deck & Audio Tool">🎵 Soundboard & Audio Player</option>
-                <option value="Creative Notes & Journaling">📖 Personal Journal & Notebook</option>
-                <option value="Club, Roster & Community Board">👥 Community, Club or Team Roster</option>
-                <option value="Quick Reference & Cheat Sheet Desk">⚡ Quick Reference & Cheat Sheet</option>
-                <option value="Portfolio & Project Showcase">💼 Creative Portfolio & Bio Showcase</option>
+              <label class="block text-xs font-semibold text-[var(--text-muted)]">Industry & Field</label>
+              <select id="businessNiche" class="w-full p-2.5 rounded-xl input-field text-sm" onchange="handleNichePreset(this.value)">
+                <option value="Photography & Film Studio">📸 Photography & Video Studio</option>
+                <option value="Hairdressing, Barber & Beauty Salon">✂️ Hair Salon, Barber & Beauty Spa</option>
+                <option value="Motor Mechanic & Auto Repair">🔧 Motor Mechanic & Auto Workshop</option>
+                <option value="Handyman, Trade Services & Jack of All Trades">🔨 Handyman & Trade Services</option>
+                <option value="Creative Design Studio & Brand Agency">🎨 Creative Design & Branding Agency</option>
+                <option value="Editorial Blog & Online Magazine">📰 Editorial Blog & Digital Magazine</option>
+                <option value="Educational Institution, School & Academy">🎓 Academy, School & Education Center</option>
+                <option value="Artisan Bakery, Cafe & Coffee Roasters">☕ Artisan Cafe, Bakery & Bistro</option>
+                <option value="Law Firm, Accounting & Corporate Advisory">⚖️ Legal, Accounting & Advisory</option>
+                <option value="Fitness Club, Yoga Studio & Personal Training">🧘 Fitness Gym & Yoga Studio</option>
               </select>
             </div>
 
-            <!-- Expanded Personas -->
-            <div class="space-y-1">
-              <label class="block text-xs font-semibold text-[var(--text-muted)]">Who is the primary user?</label>
-              <select id="userPersona" class="w-full p-2.5 rounded-xl input-field text-sm" onchange="updateLivePrompt()">
-                <option value="Everyday people who want something fast, simple, and clutter-free">Everyday People (Simple & Easy)</option>
-                <option value="Solo freelancers and small business operators">Freelancers & Small Business Owners</option>
-                <option value="Trade workers, contractors, and field staff needing quick input">Trades & Field Contractors</option>
-                <option value="Busy parents managing family routines and schedules">Busy Families & Parents</option>
-                <option value="Students, teachers, and learners">Students & Educators</option>
-                <option value="Fitness fans, coaches, and gym-goers">Gym-goers, Athletes & Coaches</option>
-                <option value="Hobby collectors and craftspeople">Hobbyists, Makers & Collectors</option>
-                <option value="Casual gamers looking for instant fun">Casual Gamers & Kids</option>
-                <option value="Older adults who need large text, high contrast, and clear buttons">Seniors (High Legibility & Large Buttons)</option>
-                <option value="Power users who love keyboard shortcuts and deep customization">Power Users (Shortcuts & Speed)</option>
-              </select>
-            </div>
-
-            <!-- Deliverable Choices -->
-            <div class="space-y-1">
-              <label class="block text-xs font-semibold text-[var(--text-muted)]">How do you want the code built?</label>
-              <select id="fileStructure" class="w-full p-2.5 rounded-xl input-field text-sm" onchange="updateLivePrompt()">
-                <option value="One single, self-contained .html file (with Tailwind CSS and inline JS) that runs instantly in any browser">Single-File HTML (Easiest — runs anywhere)</option>
-                <option value="Single-file PWA-ready HTML (includes offline local storage caching)">Offline-Ready PWA (Works without internet)</option>
-                <option value="Three clean separate files: index.html, styles.css, and app.js">Three Separate Files (HTML, CSS, JS)</option>
-                <option value="Single-file modern React component (using Tailwind and Lucide icons)">Single-File React Component (.jsx)</option>
-              </select>
+            <div class="space-y-1 sm:col-span-2">
+              <label class="block text-xs font-semibold text-[var(--text-muted)]">Primary Mission / Business Tagline</label>
+              <input type="text" id="siteTagline" placeholder="e.g. Geelong's premier automotive and brake specialist" class="w-full p-2.5 rounded-xl input-field text-sm" oninput="updateLivePrompt()">
             </div>
           </div>
         </div>
 
-        <!-- Step 2: Styling & Visual Vibe -->
+        <!-- Step 2: Look, Style & Visual Theme -->
         <div class="glass-card p-6 rounded-2xl space-y-4">
           <div class="flex items-center gap-2 border-b border-[var(--border-subtle)] pb-3">
             <span class="w-6 h-6 rounded-md flex items-center justify-center font-bold text-xs" style="background: var(--badge-bg); color: var(--accent);">2</span>
-            <h2 class="text-sm font-bold uppercase tracking-wider text-slate-200">Look, Feel & Navigation</h2>
+            <h2 class="text-sm font-bold uppercase tracking-wider text-slate-200">Aesthetics & Typography Vibe</h2>
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <!-- Expanded Themes -->
+            <!-- Style Presets -->
             <div class="space-y-1">
-              <label class="block text-xs font-semibold text-[var(--text-muted)]">Visual Theme</label>
-              <select id="cssStyle" class="w-full p-2.5 rounded-xl input-field text-sm" onchange="updateLivePrompt()">
-                <option value="Modern dark mode with sleek frosted cards and rounded corners">Modern Dark Cards (Clean & Sleek)</option>
-                <option value="Bright, clean minimalist light mode with crisp borders">Minimalist Light (Clean White & Slate)</option>
-                <option value="Warm cozy coffee-house style with soft paper textures and rounded cards">Warm Paper & Coffee House</option>
-                <option value="Playful pastel cards with bubbly buttons and friendly icons">Playful & Friendly Pastels</option>
-                <option value="Retro 80s arcade style with neon glow and pixel accents">Retro 80s Arcade & Pixel Feel</option>
-                <option value="Neobrutalist with bold black outlines, stark drop shadows, and bright cards">Bold Pop / Chunky Outlines</option>
-                <option value="High-tech futuristic dashboard with mono fonts and subtle grid lines">Sci-Fi Terminal & Dashboard</option>
-                <option value="Clean notebook journal with lined accents and handwritten header feel">Classic Notebook / Journal</option>
-                <option value="High-contrast accessibility theme with large text and distinct outlines">Accessible High-Contrast</option>
+              <label class="block text-xs font-semibold text-[var(--text-muted)]">Design & Aesthetic Mood</label>
+              <select id="visualAesthetic" class="w-full p-2.5 rounded-xl input-field text-sm" onchange="updateLivePrompt()">
+                <option value="Minimalist Luxury (editorial typography, expansive whitespace, refined elegance)">Minimalist Luxury (Editorial & High-End)</option>
+                <option value="Modern Dark Frosted (deep charcoal, subtle neon accents, glassmorphic cards)">Modern Dark (Sleek Dark Mode)</option>
+                <option value="Warm Earth & Craft (natural tones, textured cream paper, artisanal look)">Warm Earth & Craft (Artisanal & Cozy)</option>
+                <option value="Industrial Rugged (bold heavy sans-serif, high-contrast borders, utilitarian)">Industrial & Trade (Rugged & Bold)</option>
+                <option value="Clean Academic & Editorial (structured serif titles, balanced columns, trustworthy)">Academic & Editorial (Trustworthy Serif)</option>
+                <option value="Vibrant Creative Pop (bold primary accents, playful rounded geometry, energetic)">Creative Pop (Playful & Energetic)</option>
+                <option value="Corporate Trust (crisp navy slate, sharp lines, accessible hierarchy)">Corporate Trust (Clean & Professional)</option>
               </select>
             </div>
 
-            <!-- Expanded Color Palettes -->
+            <!-- Color Palette -->
             <div class="space-y-1">
               <label class="block text-xs font-semibold text-[var(--text-muted)]">Color Palette</label>
-              <select id="colorScheme" class="w-full p-2.5 rounded-xl input-field text-sm" onchange="updateLivePrompt()">
-                <option value="Electric Indigo and deep violet">Indigo & Violet (Modern Tech)</option>
-                <option value="Emerald, mint green, and dark forest slate">Emerald & Mint Green (Fresh & Eco)</option>
-                <option value="Sunset amber, coral orange, and warm rose">Sunset Coral & Warm Amber</option>
-                <option value="Sky blue, slate gray, and crisp white">Sky Blue & Cool Steel</option>
-                <option value="Hot pink, cyan blue, and pitch dark purple">Neon Cyberpunk (Pink & Cyan)</option>
-                <option value="Earthy terracotta, sand, and warm mocha brown">Terracotta & Warm Sand (Earthy)</option>
-                <option value="Monochrome pure black, white, and subtle silver">Pure Monochrome (Black & Silver)</option>
-                <option value="Golden honey yellow and rich navy blue">Navy Blue & Honey Gold</option>
-                <option value="Deep ocean teal and seafoam green">Deep Ocean Teal & Seafoam</option>
-                <option value="Classic retro gaming green monochrome (Game Boy vibe)">Retro Monochrome Green</option>
+              <select id="colorPalette" class="w-full p-2.5 rounded-xl input-field text-sm" onchange="updateLivePrompt()">
+                <option value="Charcoal slate, warm cream, and muted brass gold">Charcoal, Cream & Muted Gold</option>
+                <option value="Pure monochrome black, pure white, and crisp platinum">Pure Monochrome Black & White</option>
+                <option value="Earthy terracotta, warm sand, and sage green">Terracotta, Sand & Sage Green</option>
+                <option value="Deep ocean navy, cobalt blue, and crisp white">Navy Blue, Cobalt & White</option>
+                <option value="Matte dark gunmetal, caution amber, and silver steel">Gunmetal, Caution Amber & Silver</option>
+                <option value="Soft blush rose, warm taupe, and champagne gold">Blush Rose, Taupe & Champagne</option>
+                <option value="Forest evergreen, rich bark brown, and ivory">Forest Green, Rich Bark & Ivory</option>
+                <option value="Electric violet, cyan highlight, and midnight obsidian">Midnight Obsidian & Electric Violet</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 3: Navigation & Page Architecture -->
+        <div class="glass-card p-6 rounded-2xl space-y-4">
+          <div class="flex items-center gap-2 border-b border-[var(--border-subtle)] pb-3">
+            <span class="w-6 h-6 rounded-md flex items-center justify-center font-bold text-xs" style="background: var(--badge-bg); color: var(--accent);">3</span>
+            <h2 class="text-sm font-bold uppercase tracking-wider text-slate-200">Navigation & Multi-Page Structure</h2>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <!-- Navbar Style -->
+            <div class="space-y-1">
+              <label class="block text-xs font-semibold text-[var(--text-muted)]">Navbar Layout Style</label>
+              <select id="navStyle" class="w-full p-2.5 rounded-xl input-field text-sm" onchange="updateLivePrompt()">
+                <option value="Horizontal sticky top header with brand logo on left and desktop links on right">Sticky Top Horizontal Bar</option>
+                <option value="Vertical left-side fixed navigation sidebar with icons and expanded labels">Left Vertical Fixed Sidebar</option>
+                <option value="Clean minimalist top bar with a slide-out drawer hamburger menu (full screen or sidebar)">Slide-Out Hamburger Menu</option>
+                <option value="Centered floating island header with rounded pill borders and blur effect">Floating Centered Pill Bar</option>
+                <option value="Transparent overlay navbar that solidifies upon scrolling down">Transparent-to-Solid Header</option>
               </select>
             </div>
 
-            <!-- Expanded Menu Bar Styles -->
+            <!-- Page Template Scope -->
             <div class="space-y-1">
-              <label class="block text-xs font-semibold text-[var(--text-muted)]">Menu & Layout Setup</label>
-              <select id="navTopology" class="w-full p-2.5 rounded-xl input-field text-sm" onchange="updateLivePrompt()">
-                <option value="Sticky top navigation header with logo and clean tab links">Sticky Top Header Menu</option>
-                <option value="Collapsible left-side menu bar with clean icons">Left Sidebar Navigation</option>
-                <option value="Bottom floating mobile app dock (iOS / phone app style)">Bottom Floating App Dock (Great on phones)</option>
-                <option value="Single-page focused dashboard without global navigation">Single Screen / No Menu (Focused Tool)</option>
+              <label class="block text-xs font-semibold text-[var(--text-muted)]">Template Scope</label>
+              <select id="templateScope" class="w-full p-2.5 rounded-xl input-field text-sm" onchange="updateLivePrompt()">
+                <option value="Single-page layout with interactive tabbed views for switching between pages seamlessly without reload">Multi-Page Single-File (Instant Tab Switcher)</option>
+                <option value="Full multi-page structure with clean semantic navigation linking between pages">Separate Semantic Pages (Ready to split)</option>
+                <option value="Long-scrolling landing page with smooth-scroll section anchors">Long Single Landing Page (Anchor Scroll)</option>
               </select>
             </div>
 
+            <!-- Page Names Input -->
+            <div class="space-y-1 sm:col-span-2">
+              <div class="flex items-center justify-between">
+                <label class="block text-xs font-semibold text-[var(--text-muted)]">Page / Section Names (3 to 5 pages recommended)</label>
+                <div class="flex gap-1 text-[11px] text-[var(--accent)]">
+                  <button type="button" onclick="setPages('Home, Services, Portfolio, About, Contact')" class="hover:underline">Standard</button> •
+                  <button type="button" onclick="setPages('Home, Articles, Categories, Newsletter, About')" class="hover:underline">Editorial/Blog</button> •
+                  <button type="button" onclick="setPages('Home, Gallery, Pricing, Bio, Bookings')" class="hover:underline">Creative/Salon</button>
+                </div>
+              </div>
+              <input type="text" id="pageNames" value="Home, Services, Gallery, About Us, Contact" class="w-full p-2.5 rounded-xl input-field text-sm font-mono" oninput="updateLivePrompt()">
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 4: Imagery & Layout Framing -->
+        <div class="glass-card p-6 rounded-2xl space-y-4">
+          <div class="flex items-center gap-2 border-b border-[var(--border-subtle)] pb-3">
+            <span class="w-6 h-6 rounded-md flex items-center justify-center font-bold text-xs" style="background: var(--badge-bg); color: var(--accent);">4</span>
+            <h2 class="text-sm font-bold uppercase tracking-wider text-slate-200">Image Placeholders & Framing Shapes</h2>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <!-- Hero Layout -->
             <div class="space-y-1">
-              <label class="block text-xs font-semibold text-[var(--text-muted)]">Page / Tab Names</label>
-              <input type="text" id="navLinks" value="Home, Dashboard, History, Settings" placeholder="e.g. Overview, Tasks, Reports, Settings" class="w-full p-2.5 rounded-xl input-field text-sm font-mono" oninput="updateLivePrompt()">
+              <label class="block text-xs font-semibold text-[var(--text-muted)]">Hero Header Presentation</label>
+              <select id="heroStyle" class="w-full p-2.5 rounded-xl input-field text-sm" onchange="updateLivePrompt()">
+                <option value="Full-screen cinematic background hero image with dark contrast overlay and centered call-to-action">Full-Screen Cinematic Hero Banner</option>
+                <option value="Split 50/50 hero layout (compelling heading and action buttons on left, featured hero photo on right)">Split 50/50 (Text Left, Image Right)</option>
+                <option value="Bold typographic headline hero with a floating offset preview card">Typographic Hero with Offset Card</option>
+                <option value="Minimalist headline with a masonry grid of showcase photos immediately below">Headline + Image Showcase Grid</option>
+              </select>
+            </div>
+
+            <!-- Image Shapes & Windows -->
+            <div class="space-y-1">
+              <label class="block text-xs font-semibold text-[var(--text-muted)]">Image Framing Shapes & Thumbnails</label>
+              <select id="imageFraming" class="w-full p-2.5 rounded-xl input-field text-sm" onchange="updateLivePrompt()">
+                <option value="Circular portal windows (rounded-full) for portraits, staff, and featured accents">Circular Window Portals (rounded-full)</option>
+                <option value="Sharp architectural rectangles with thin elegant border lines">Sharp Minimalist Rectangles (Crisp Lines)</option>
+                <option value="Softly rounded modern cards (rounded-2xl) with subtle drop shadows">Soft Rounded Rectangles (rounded-2xl)</option>
+                <option value="Mixed composition: widescreen landscape heroes paired with circular staff avatars and square gallery tiles">Mixed Dynamic (Widescreen + Circle Avatars + Squares)</option>
+                <option value="Classic square aspect-ratio tiles (aspect-square) with hover zoom effect">Square Portfolio Grid (aspect-square)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="pt-2">
+            <p class="text-xs text-[var(--text-muted)] mb-2">Image Upload & Placeholder Options:</p>
+            <div class="space-y-2">
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" id="includeUploadSlots" checked class="rounded text-[var(--accent)]" onchange="updateLivePrompt()">
+                <span class="text-xs text-[var(--text-muted)]">Add <strong>live client-side image preview uploaders</strong> (allows user to drop their own photos straight into the template)</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" id="useUnsplashUrls" checked class="rounded text-[var(--accent)]" onchange="updateLivePrompt()">
+                <span class="text-xs text-[var(--text-muted)]">Use <strong>curated, niche-relevant Unsplash photos</strong> so the template looks gorgeous right out of the box</span>
+              </label>
             </div>
           </div>
         </div>
 
-        <!-- Step 3: Interactive Features Catalog -->
-        <div class="glass-card p-6 rounded-2xl space-y-4">
-          <div class="flex items-center justify-between border-b border-[var(--border-subtle)] pb-3">
-            <div class="flex items-center gap-2">
-              <span class="w-6 h-6 rounded-md flex items-center justify-center font-bold text-xs" style="background: var(--badge-bg); color: var(--accent);">3</span>
-              <h2 class="text-sm font-bold uppercase tracking-wider text-slate-200">Interactive Features</h2>
-            </div>
-            <button onclick="toggleAllTags()" class="text-xs text-[var(--accent)] hover:underline">Toggle All</button>
-          </div>
-
-          <p class="text-xs text-[var(--text-muted)]">Pick the building blocks you want the AI to wire up:</p>
-
-          <div class="flex flex-wrap gap-2" id="tagsContainer">
-            <!-- Populated by JS -->
-          </div>
-        </div>
-
-        <!-- Step 4: Blueprint & Details -->
-        <div class="glass-card p-6 rounded-2xl space-y-4">
-          <div class="flex items-center justify-between border-b border-[var(--border-subtle)] pb-3">
-            <div class="flex items-center gap-2">
-              <span class="w-6 h-6 rounded-md flex items-center justify-center font-bold text-xs" style="background: var(--badge-bg); color: var(--accent);">4</span>
-              <h2 class="text-sm font-bold uppercase tracking-wider text-slate-200">What does it do?</h2>
-            </div>
-          </div>
-
-          <!-- Starter Blueprints Bar -->
-          <div class="flex items-center gap-2 overflow-x-auto pb-1">
-            <span class="text-xs text-[var(--text-muted)] shrink-0">Blueprints:</span>
-            <button onclick="applyBlueprint('kanban')" class="px-2.5 py-1 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-input)] hover:text-white text-xs text-[var(--text-muted)] whitespace-nowrap">📋 Drag Tasks</button>
-            <button onclick="applyBlueprint('habits')" class="px-2.5 py-1 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-input)] hover:text-white text-xs text-[var(--text-muted)] whitespace-nowrap">🔥 Daily Habits</button>
-            <button onclick="applyBlueprint('trades')" class="px-2.5 py-1 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-input)] hover:text-white text-xs text-[var(--text-muted)] whitespace-nowrap">🔨 Quick Invoicing</button>
-            <button onclick="applyBlueprint('quiz')" class="px-2.5 py-1 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-input)] hover:text-white text-xs text-[var(--text-muted)] whitespace-nowrap">🎓 Flashcard Quiz</button>
-            <button onclick="applyBlueprint('arcade')" class="px-2.5 py-1 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-input)] hover:text-white text-xs text-[var(--text-muted)] whitespace-nowrap">🕹️ Canvas Game</button>
-            <button onclick="applyBlueprint('recipes')" class="px-2.5 py-1 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-input)] hover:text-white text-xs text-[var(--text-muted)] whitespace-nowrap">🍳 Recipe Box</button>
-          </div>
-
-          <textarea id="appDescription" rows="4" class="w-full p-3 rounded-xl input-field text-sm leading-relaxed resize-y" placeholder="Describe how you want it to work in everyday words. What should users click? What should happen when they save or submit? (Or click one of the blueprints above to start!)" oninput="updateLivePrompt()"></textarea>
-
-          <div class="pt-2 border-t border-[var(--border-subtle)] space-y-2">
-            <label class="flex items-center gap-2 cursor-pointer">
-              <input type="checkbox" id="guardComplete" checked class="rounded text-[var(--accent)]" onchange="updateLivePrompt()">
-              <span class="text-xs text-[var(--text-muted)]">Remind AI to write <strong>100% complete, fully working code</strong> (no skipping code with comments)</span>
-            </label>
-            <label class="flex items-center gap-2 cursor-pointer">
-              <input type="checkbox" id="guardDummyData" checked class="rounded text-[var(--accent)]" onchange="updateLivePrompt()">
-              <span class="text-xs text-[var(--text-muted)]">Include <strong>realistic sample data</strong> so the app looks alive the moment I open it</span>
-            </label>
-          </div>
-        </div>
-
-        <!-- Step 5: Saved Ideas Slots -->
+        <!-- Step 5: Essential Website Sections -->
         <div class="glass-card p-6 rounded-2xl space-y-4">
           <div class="flex items-center justify-between border-b border-[var(--border-subtle)] pb-3">
             <div class="flex items-center gap-2">
               <span class="w-6 h-6 rounded-md flex items-center justify-center font-bold text-xs" style="background: var(--badge-bg); color: var(--accent);">5</span>
-              <h2 class="text-sm font-bold uppercase tracking-wider text-slate-200">Save Your App Setups</h2>
+              <h2 class="text-sm font-bold uppercase tracking-wider text-slate-200">Include Page Sections & Features</h2>
             </div>
-            <button onclick="saveCurrentSlotPrompt()" class="px-3 py-1.5 rounded-lg border border-emerald-500/40 bg-emerald-500/10 text-emerald-400 text-xs font-semibold hover:bg-emerald-500/20 transition-all">
-              Save Current Settings
+            <button onclick="toggleAllTags()" class="text-xs text-[var(--accent)] hover:underline">Toggle All</button>
+          </div>
+
+          <div class="flex flex-wrap gap-2" id="tagsContainer">
+            <!-- Injected by JS -->
+          </div>
+        </div>
+
+        <!-- Step 6: Custom Requests & Output Format -->
+        <div class="glass-card p-6 rounded-2xl space-y-4">
+          <div class="flex items-center gap-2 border-b border-[var(--border-subtle)] pb-3">
+            <span class="w-6 h-6 rounded-md flex items-center justify-center font-bold text-xs" style="background: var(--badge-bg); color: var(--accent);">6</span>
+            <h2 class="text-sm font-bold uppercase tracking-wider text-slate-200">Custom Details & Output Format</h2>
+          </div>
+
+          <div class="space-y-1">
+            <label class="block text-xs font-semibold text-[var(--text-muted)]">Code Deliverable Format</label>
+            <select id="codeFormat" class="w-full p-2.5 rounded-xl input-field text-sm" onchange="updateLivePrompt()">
+              <option value="Single-file HTML with Tailwind CSS CDN and vanilla JavaScript (instant double-click browser preview)">Single-File HTML + Tailwind CDN (Instant double-click preview)</option>
+              <option value="Three clean separated files (index.html, styles.css, and main.js)">Separated Clean Files (index.html, styles.css, main.js)</option>
+              <option value="Modern responsive React/Next.js component structure with Tailwind CSS">React / Next.js Component Structure</option>
+            </select>
+          </div>
+
+          <div class="space-y-1">
+            <label class="block text-xs font-semibold text-[var(--text-muted)]">Extra Details or Specific Content Requirements</label>
+            <textarea id="customNotes" rows="3" class="w-full p-3 rounded-xl input-field text-sm leading-relaxed resize-y" placeholder="e.g. Include an emergency roadside callout banner, show opening hours in the footer, or add a price list for haircuts..." oninput="updateLivePrompt()"></textarea>
+          </div>
+        </div>
+
+        <!-- Step 7: Saved Templates Slots -->
+        <div class="glass-card p-6 rounded-2xl space-y-4">
+          <div class="flex items-center justify-between border-b border-[var(--border-subtle)] pb-3">
+            <div class="flex items-center gap-2">
+              <span class="w-6 h-6 rounded-md flex items-center justify-center font-bold text-xs" style="background: var(--badge-bg); color: var(--accent);">7</span>
+              <h2 class="text-sm font-bold uppercase tracking-wider text-slate-200">Saved Template Presets</h2>
+            </div>
+            <button onclick="saveCurrentSlot()" class="px-3 py-1.5 rounded-lg border border-emerald-500/40 bg-emerald-500/10 text-emerald-400 text-xs font-semibold hover:bg-emerald-500/20 transition-all">
+              Save This Setup
             </button>
           </div>
 
@@ -314,17 +343,17 @@
 
       <!-- RIGHT COLUMN: Output Box & Actions -->
       <div class="lg:col-span-5 space-y-4 lg:sticky lg:top-24">
-        <div class="glass-card p-6 rounded-2xl space-y-4">
+        <div class="glass-card p-6 rounded-2xl space-y-4 shadow-2xl">
           <div class="flex items-center justify-between border-b border-[var(--border-subtle)] pb-3">
             <div>
-              <h2 class="text-sm font-bold">Your Ready-To-Paste AI Prompt</h2>
-              <p class="text-xs text-[var(--text-muted)]">Ready for ChatGPT, Claude 3.5, or Gemini</p>
+              <h2 class="text-sm font-bold text-white">Your Ready-To-Paste AI Prompt</h2>
+              <p class="text-xs text-[var(--text-muted)]">Optimized for ChatGPT, Claude 3.5, or Gemini</p>
             </div>
           </div>
 
           <div class="relative">
-            <div id="promptOutput" class="w-full p-4 rounded-xl input-field font-mono text-xs leading-relaxed max-h-[460px] overflow-y-auto whitespace-pre-wrap select-all">
-              <!-- Live compiled prompt goes here -->
+            <div id="promptOutput" class="w-full p-4 rounded-xl input-field font-mono text-xs leading-relaxed max-h-[480px] overflow-y-auto whitespace-pre-wrap select-all">
+              <!-- Live compiled prompt appears here -->
             </div>
           </div>
 
@@ -333,18 +362,18 @@
               📋 Copy Prompt
             </button>
 
-            <button onclick="downloadPromptMarkdown()" class="py-3 px-4 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-input)] hover:border-[var(--border-active)] text-xs font-bold transition-colors flex items-center justify-center gap-2">
-              💾 Save File (.txt)
+            <button onclick="downloadPromptText()" class="py-3 px-4 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-input)] hover:border-[var(--border-active)] text-xs font-bold transition-colors flex items-center justify-center gap-2">
+              💾 Save As (.txt)
             </button>
           </div>
 
           <div class="p-3.5 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-input)] text-xs text-[var(--text-muted)] leading-relaxed space-y-1.5">
             <div class="font-bold text-[var(--text-main)] flex items-center gap-1.5">
-              <span>🚀</span> How to run this:
+              <span>🚀</span> Fast Preview Instructions:
             </div>
-            <p>1. Copy this prompt and paste it into your AI model.</p>
-            <p>2. Copy the code the AI gives you, paste it into a blank file, and name it <code class="text-indigo-300">index.html</code>.</p>
-            <p>3. Double-click the file to run your app right in your browser!</p>
+            <p>1. Copy this prompt and paste it into Claude, ChatGPT, or Gemini.</p>
+            <p>2. Save the code as <code class="text-indigo-300 font-mono">index.html</code> on your desktop.</p>
+            <p>3. Double-click to view the full responsive website in your browser!</p>
           </div>
         </div>
       </div>
@@ -363,44 +392,138 @@
   <script>
     const MAX_SLOTS = 5;
 
-    // Rich feature catalog in beginner terms
-    const FEATURE_TAGS = [
-      { id: "savedata", label: "💾 Saves in Browser (LocalStorage)", desc: "Keeps data saved even when refreshed or closed" },
-      { id: "darkmode", label: "🌗 Dark / Light Mode Switch", desc: "A toggle button for light and dark themes" },
-      { id: "search", label: "🔍 Search & Quick Filters", desc: "Instantly search items and filter by category or tag" },
-      { id: "stats", label: "📊 Summary Cards & Totals", desc: "Visual stat cards showing totals, averages, and counts" },
-      { id: "dragdrop", label: "✋ Drag-and-Drop Cards", desc: "Drag to reorder cards or move between columns" },
-      { id: "audio", label: "🔊 Sound Effects (Web Audio)", desc: "Satisfying retro beeps, clicks, and chimes on actions" },
-      { id: "timer", label: "⏱️ Built-in Timer & Stopwatch", desc: "Countdown clock or stopwatch with start/pause" },
-      { id: "export", label: "📥 Export to CSV / Spreadsheet", desc: "Download data directly to an Excel/Sheets spreadsheet" },
-      { id: "print", label: "🖨️ Printable Receipt / Card View", desc: "Clean print-ready formatting for receipts or invoices" },
-      { id: "badges", label: "🏆 Badges & Streaks", desc: "Show fun achievement badges and day-streak counters" },
-      { id: "auth", label: "👤 Fake Login / Profile Switcher", desc: "A mock login dialog to switch user profiles" },
-      { id: "alerts", label: "🔔 Friendly In-App Toasts", desc: "Nice smooth popup banners when saving or deleting" }
+    // Website sections & layout components
+    const SECTION_TAGS = [
+      { id: "hero", label: "🌟 Hero & Banner CTA", desc: "Eye-catching intro banner with primary headline and contact buttons" },
+      { id: "services", label: "💼 Services & Offerings Grid", desc: "Clean multi-column service cards with price indicators or icons" },
+      { id: "gallery", label: "🖼️ Photo Showcase / Gallery", desc: "Grid of portfolio images with light modal previews" },
+      { id: "testimonials", label: "💬 Client Reviews & Testimonials", desc: "Quotes and star ratings from happy customers" },
+      { id: "pricing", label: "🏷️ Pricing Table / Packages", desc: "Clear tiered pricing packages with feature comparisons" },
+      { id: "contact_form", label: "📬 Interactive Contact / Quote Form", desc: "Form for name, phone, message, and date request" },
+      { id: "about_team", label: "👥 About the Owner / Team", desc: "Story section with circular portraits and credentials" },
+      { id: "faq", label: "❓ Accordion FAQ Section", desc: "Click-to-expand common customer questions" },
+      { id: "hours_location", label: "📍 Hours & Location Card", desc: "Operating hours, shop address, and styled map placeholder" },
+      { id: "blog_feed", label: "📰 Recent Articles / Tips Grid", desc: "Clean three-column article preview cards with dates and read times" },
+      { id: "newsletter", label: "✉️ Newsletter / VIP Signup", desc: "Simple email subscription box with a promise of discounts or updates" },
+      { id: "footer", label: "⚓ Complete Multi-Column Footer", desc: "Social icons, quick links, copyright, and emergency contact details" }
     ];
 
-    let activeTags = new Set(["savedata", "darkmode", "search", "alerts"]);
-    let savedSlots = JSON.parse(localStorage.getItem('easyplayground_slots')) || {};
+    let activeTags = new Set(["hero", "services", "gallery", "testimonials", "contact_form", "footer"]);
+    let savedSlots = JSON.parse(localStorage.getItem('webcraft_slots')) || {};
 
-    // Practical, varied blueprint starters
-    const BLUEPRINTS = {
-      kanban: "Build an interactive task board with columns for 'To Do', 'Doing', and 'Done'. Let me type in new tasks, choose a priority badge (Low, Medium, High), drag cards between columns, and click to edit or delete.",
-      habits: "Build a daily habit and streak tracker. Let me add habits (e.g. 'Morning Walk', 'Drink Water', 'Read 20 Mins'), click checkboxes to mark them completed today, and watch my day-streak increase. Save everything in the browser.",
-      trades: "Build a clean quotation and invoice generator for small jobs. Let me enter customer name, job description, itemized labor and materials costs, auto-calculate totals with tax, and click a button to print or export a clean quote.",
-      quiz: "Build an interactive flashcard study quiz. Show a card with a question, flip it on click to reveal the answer, let me mark 'Got it right' or 'Need practice', and show a final score card with a confetti celebration.",
-      arcade: "Build a fun, simple 2D retro arcade game rendered on an HTML5 canvas (like an endless road dodger or balloon popper). Include keyboard arrow controls, score tracker, high-score memory, and simple retro sound chimes.",
-      recipes: "Build a personal recipe box. Let me add recipes with ingredients, prep time, and instructions. Include a category filter (Breakfast, Dinner, Snacks), an instant search bar, and a button to scale ingredient amounts up or down."
+    const NICHE_PRESETS = {
+      "Photography & Film Studio": {
+        name: "Lumière Photo & Cinema",
+        tagline: "Fine art portraiture, weddings, and commercial studio sessions",
+        aesthetic: "Minimalist Luxury (editorial typography, expansive whitespace, refined elegance)",
+        palette: "Pure monochrome black, pure white, and crisp platinum",
+        nav: "Horizontal sticky top header with brand logo on left and desktop links on right",
+        pages: "Home, Portfolio, Packages, Studio Info, Inquire",
+        framing: "Mixed composition: widescreen landscape heroes paired with circular staff avatars and square gallery tiles",
+        tags: ["hero", "gallery", "pricing", "testimonials", "contact_form", "footer"]
+      },
+      "Hairdressing, Barber & Beauty Salon": {
+        name: "Velvet & Razor Co.",
+        tagline: "Bespoke hair styling, modern fades, and luxury treatments",
+        aesthetic: "Minimalist Luxury (editorial typography, expansive whitespace, refined elegance)",
+        palette: "Soft blush rose, warm taupe, and champagne gold",
+        nav: "Centered floating island header with rounded pill borders and blur effect",
+        pages: "Home, Services Menu, Lookbook, Stylists, Appointments",
+        framing: "Circular portal windows (rounded-full) for portraits, staff, and featured accents",
+        tags: ["hero", "services", "gallery", "pricing", "about_team", "contact_form", "footer"]
+      },
+      "Motor Mechanic & Auto Repair": {
+        name: "Apex Precision Auto Care",
+        tagline: "Licensed mechanical repairs, logbook servicing, brakes, and diagnostics",
+        aesthetic: "Industrial Rugged (bold heavy sans-serif, high-contrast borders, utilitarian)",
+        palette: "Matte dark gunmetal, caution amber, and silver steel",
+        nav: "Horizontal sticky top header with brand logo on left and desktop links on right",
+        pages: "Home, Repairs & Servicing, Fleet Diagnostics, About Us, Book Inspection",
+        framing: "Sharp architectural rectangles with thin elegant border lines",
+        tags: ["hero", "services", "pricing", "testimonials", "hours_location", "contact_form", "footer"]
+      },
+      "Handyman, Trade Services & Jack of All Trades": {
+        name: "Reliable Hands Trade & Property Maintenance",
+        tagline: "Prompt, honest residential repairs, carpentry, fencing, and painting",
+        aesthetic: "Industrial Rugged (bold heavy sans-serif, high-contrast borders, utilitarian)",
+        palette: "Deep ocean navy, cobalt blue, and crisp white",
+        nav: "Horizontal sticky top header with brand logo on left and desktop links on right",
+        pages: "Home, Services & Repairs, Before & After, Free Estimate, Contact",
+        framing: "Softly rounded modern cards (rounded-2xl) with subtle drop shadows",
+        tags: ["hero", "services", "gallery", "testimonials", "faq", "contact_form", "footer"]
+      },
+      "Creative Design Studio & Brand Agency": {
+        name: "Moda Brand & Digital Studio",
+        tagline: "Transforming ambitious businesses through identity design and web platforms",
+        aesthetic: "Vibrant Creative Pop (bold primary accents, playful rounded geometry, energetic)",
+        palette: "Electric violet, cyan highlight, and midnight obsidian",
+        nav: "Clean minimalist top bar with a slide-out drawer hamburger menu (full screen or sidebar)",
+        pages: "Home, Selected Work, Capabilities, Studio Philosophy, Start a Project",
+        framing: "Mixed composition: widescreen landscape heroes paired with circular staff avatars and square gallery tiles",
+        tags: ["hero", "services", "gallery", "about_team", "testimonials", "contact_form", "footer"]
+      },
+      "Editorial Blog & Online Magazine": {
+        name: "The Sunday Chronicler",
+        tagline: "Essays, cultural reviews, and investigative stories on modern life",
+        aesthetic: "Clean Academic & Editorial (structured serif titles, balanced columns, trustworthy)",
+        palette: "Charcoal slate, warm cream, and muted brass gold",
+        nav: "Horizontal sticky top header with brand logo on left and desktop links on right",
+        pages: "Home, Long Reads, Culture, Technology, Archives, About the Editor",
+        framing: "Sharp architectural rectangles with thin elegant border lines",
+        tags: ["hero", "blog_feed", "newsletter", "about_team", "footer"]
+      },
+      "Educational Institution, School & Academy": {
+        name: "Oakridge Institute & Academy",
+        tagline: "Inspiring intellectual curiosity, community leadership, and lifelong learning",
+        aesthetic: "Clean Academic & Editorial (structured serif titles, balanced columns, trustworthy)",
+        palette: "Deep ocean navy, cobalt blue, and crisp white",
+        nav: "Horizontal sticky top header with brand logo on left and desktop links on right",
+        pages: "Home, Academic Programs, Campus Life, Admissions, Faculty, Contact",
+        framing: "Softly rounded modern cards (rounded-2xl) with subtle drop shadows",
+        tags: ["hero", "services", "about_team", "testimonials", "faq", "newsletter", "footer"]
+      },
+      "Artisan Bakery, Cafe & Coffee Roasters": {
+        name: "Copper Kettle Bakery & Roastery",
+        tagline: "Sourdough breads baked fresh at dawn, single-origin coffees, and pastries",
+        aesthetic: "Warm Earth & Craft (natural tones, textured cream paper, artisanal look)",
+        palette: "Earthy terracotta, warm sand, and sage green",
+        nav: "Centered floating island header with rounded pill borders and blur effect",
+        pages: "Home, Daily Bake Menu, Specialty Coffee, Our Story, Find Us",
+        framing: "Circular portal windows (rounded-full) for portraits, staff, and featured accents",
+        tags: ["hero", "services", "gallery", "hours_location", "testimonials", "footer"]
+      },
+      "Law Firm, Accounting & Corporate Advisory": {
+        name: "Vanguard Corporate & Legal Advisory",
+        tagline: "Strategic legal counsel and financial planning for high-growth enterprises",
+        aesthetic: "Corporate Trust (crisp navy slate, sharp lines, accessible hierarchy)",
+        palette: "Deep ocean navy, cobalt blue, and crisp white",
+        nav: "Horizontal sticky top header with brand logo on left and desktop links on right",
+        pages: "Home, Practice Areas, Our Partners, Case Insights, Schedule Consultation",
+        framing: "Sharp architectural rectangles with thin elegant border lines",
+        tags: ["hero", "services", "about_team", "testimonials", "faq", "contact_form", "footer"]
+      },
+      "Fitness Club, Yoga Studio & Personal Training": {
+        name: "Kinetic Movement & Yoga Sanctuary",
+        tagline: "Strength conditioning, restorative hot yoga, and personalized wellness coaching",
+        aesthetic: "Modern Dark Frosted (deep charcoal, subtle neon accents, glassmorphic cards)",
+        palette: "Forest evergreen, rich bark brown, and ivory",
+        nav: "Clean minimalist top bar with a slide-out drawer hamburger menu (full screen or sidebar)",
+        pages: "Home, Class Timetable, Memberships, Instructors, Free Trial Pass",
+        framing: "Mixed composition: widescreen landscape heroes paired with circular staff avatars and square gallery tiles",
+        tags: ["hero", "services", "pricing", "about_team", "testimonials", "contact_form", "footer"]
+      }
     };
 
     window.onload = function() {
       renderTags();
       renderSavedSlots();
-      updateLivePrompt();
+      // Load default photography studio preset
+      handleNichePreset("Photography & Film Studio");
     };
 
     function renderTags() {
       const container = document.getElementById('tagsContainer');
-      container.innerHTML = FEATURE_TAGS.map(tag => {
+      container.innerHTML = SECTION_TAGS.map(tag => {
         const isActive = activeTags.has(tag.id);
         return `
           <button type="button" 
@@ -424,88 +547,107 @@
     }
 
     function toggleAllTags() {
-      if (activeTags.size === FEATURE_TAGS.length) {
+      if (activeTags.size === SECTION_TAGS.length) {
         activeTags.clear();
       } else {
-        FEATURE_TAGS.forEach(t => activeTags.add(t.id));
+        SECTION_TAGS.forEach(t => activeTags.add(t.id));
       }
       renderTags();
       updateLivePrompt();
     }
 
-    function applyBlueprint(key) {
-      const text = BLUEPRINTS[key];
-      if (text) {
-        document.getElementById('appDescription').value = text;
+    function setPages(csv) {
+      document.getElementById('pageNames').value = csv;
+      updateLivePrompt();
+    }
+
+    function handleNichePreset(nicheKey) {
+      const preset = NICHE_PRESETS[nicheKey];
+      if (preset) {
+        document.getElementById('siteName').value = preset.name;
+        document.getElementById('siteTagline').value = preset.tagline;
+        document.getElementById('visualAesthetic').value = preset.aesthetic;
+        document.getElementById('colorPalette').value = preset.palette;
+        document.getElementById('navStyle').value = preset.nav;
+        document.getElementById('pageNames').value = preset.pages;
+        document.getElementById('imageFraming').value = preset.framing;
+        activeTags = new Set(preset.tags);
+        renderTags();
         updateLivePrompt();
-        showToast("Blueprint loaded!");
+        showToast(`Loaded ${nicheKey} template settings!`);
       }
     }
 
     function buildPromptText() {
-      const appName = document.getElementById('appName').value.trim() || "My Web Application";
-      const sector = document.getElementById('industrySector').value;
-      const persona = document.getElementById('userPersona').value;
-      const structure = document.getElementById('fileStructure').value;
-      const style = document.getElementById('cssStyle').value;
-      const palette = document.getElementById('colorScheme').value;
-      const navTopology = document.getElementById('navTopology').value;
-      const navLinks = document.getElementById('navLinks').value.trim();
-      const description = document.getElementById('appDescription').value.trim();
-      const guardComplete = document.getElementById('guardComplete').checked;
-      const guardDummyData = document.getElementById('guardDummyData').checked;
+      const siteName = document.getElementById('siteName').value.trim() || "Bespoke Business Showcase";
+      const niche = document.getElementById('businessNiche').value;
+      const tagline = document.getElementById('siteTagline').value.trim();
+      const aesthetic = document.getElementById('visualAesthetic').value;
+      const palette = document.getElementById('colorPalette').value;
+      const navStyle = document.getElementById('navStyle').value;
+      const templateScope = document.getElementById('templateScope').value;
+      const pageNames = document.getElementById('pageNames').value.trim() || "Home, Services, About, Contact";
+      const heroStyle = document.getElementById('heroStyle').value;
+      const imageFraming = document.getElementById('imageFraming').value;
+      const includeUploadSlots = document.getElementById('includeUploadSlots').checked;
+      const useUnsplashUrls = document.getElementById('useUnsplashUrls').checked;
+      const codeFormat = document.getElementById('codeFormat').value;
+      const customNotes = document.getElementById('customNotes').value.trim();
 
-      const selectedFeatures = Array.from(activeTags).map(id => {
-        const item = FEATURE_TAGS.find(t => t.id === id);
+      const selectedSections = Array.from(activeTags).map(id => {
+        const item = SECTION_TAGS.find(t => t.id === id);
         return item ? item.label : id;
       });
 
-      let prompt = `Please build a complete, ready-to-use web application called "${appName}".\n\n`;
+      let prompt = `Please build a high-quality, fully responsive website template called "${siteName}".\n\n`;
 
-      prompt += `### 1. What This App Is:\n`;
-      prompt += `- App Type: ${sector}\n`;
-      prompt += `- Target User: ${persona}\n\n`;
+      prompt += `### 1. Website Overview & Industry Identity\n`;
+      prompt += `- Business Field: ${niche}\n`;
+      if (tagline) {
+        prompt += `- Core Tagline: "${tagline}"\n`;
+      }
+      prompt += `- Purpose: Provide an impressive, polished, client-ready website template with clear navigation, engaging visuals, and thoughtful hierarchy designed specifically for this industry.\n\n`;
 
-      prompt += `### 2. Format & Deliverable:\n`;
-      prompt += `- Deliverable: ${structure}\n`;
-      if (structure.includes('Single')) {
-        prompt += `- Put all HTML structure, CSS styling (Tailwind CSS via CDN or clean CSS), and JavaScript into ONE single file. It must run immediately when opened in any browser without needing terminal commands or build tools.\n`;
+      prompt += `### 2. Design Aesthetic, Typography & Colors\n`;
+      prompt += `- Visual Mood: ${aesthetic}\n`;
+      prompt += `- Color Palette: ${palette}\n`;
+      prompt += `- Typography: Use modern Google Fonts (e.g. elegant editorial serif headers matched with crisp geometric sans-serif body text, loaded via CDN).\n`;
+      prompt += `- Responsiveness: Flawless layout adaptivity across ultra-wide desktop screens, tablets, and mobile devices.\n\n`;
+
+      prompt += `### 3. Navigation Bar & Page Structure\n`;
+      prompt += `- Navigation Bar Style: ${navStyle}\n`;
+      prompt += `- Target Pages / Sections: ${pageNames}\n`;
+      prompt += `- Template Architecture: ${templateScope}\n`;
+      prompt += `- Navigation Behavior: Ensure all nav links are wired up. If configured as single-file tabbed pages, provide smooth vanilla JavaScript to switch active tab visibility cleanly without refreshing the browser.\n\n`;
+
+      prompt += `### 4. Hero Layout & Image Framing\n`;
+      prompt += `- Hero Presentation: ${heroStyle}\n`;
+      prompt += `- Image Framing & Windows: ${imageFraming}\n`;
+      if (useUnsplashUrls) {
+        prompt += `- Photography: Use high-resolution, relevant Unsplash images directly in the template (via URLs like https://images.unsplash.com/...) so the website looks realistic and gorgeous immediately upon loading.\n`;
+      }
+      if (includeUploadSlots) {
+        prompt += `- Interactive Image Upload: Add an intuitive client-side image replacement feature (e.g. a small upload icon or hover button on image cards that allows the user to pick an image from their local computer to preview it inside the template window using FileReader API).\n`;
       }
       prompt += `\n`;
 
-      prompt += `### 3. Visual Styling & Navigation:\n`;
-      prompt += `- Visual Style: ${style}\n`;
-      prompt += `- Color Scheme: ${palette}\n`;
-      prompt += `- Menu / Navigation Layout: ${navTopology}\n`;
-      if (navLinks && !navTopology.includes('Single-page')) {
-        prompt += `- Menu Tabs: ${navLinks}\n`;
-      }
-      prompt += `- Layout: Must look great and work smoothly on both mobile phones and desktop screens.\n\n`;
-
-      if (selectedFeatures.length > 0) {
-        prompt += `### 4. Interactive Features to Include:\n`;
-        selectedFeatures.forEach(feature => {
-          prompt += `- [x] ${feature}\n`;
+      if (selectedSections.length > 0) {
+        prompt += `### 5. Key Page Sections to Build Out\n`;
+        selectedSections.forEach(section => {
+          prompt += `- [x] ${section}\n`;
         });
         prompt += `\n`;
       }
 
-      prompt += `### 5. Detailed Behavior & Workflow:\n`;
-      if (description) {
-        prompt += `${description}\n\n`;
-      } else {
-        prompt += `Provide a smooth, intuitive workflow designed specifically for ${persona}, with clear buttons, friendly feedback, and easy data entry.\n\n`;
+      if (customNotes) {
+        prompt += `### 6. Specific Business Details & Requirements\n`;
+        prompt += `${customNotes}\n\n`;
       }
 
-      prompt += `### 6. Rules for the Code:\n`;
-      if (guardComplete) {
-        prompt += `- Full Code Only: Write 100% complete, fully working code. NEVER use placeholders or skip code with comments like "// add the rest here".\n`;
-      }
-      if (guardDummyData) {
-        prompt += `- Pre-loaded Data: Include a few realistic default items in the app so it doesn't open to an empty screen.\n`;
-      }
-      prompt += `- Clean Feedback: Avoid standard browser alert() popups. Use smooth in-page notices or toast banners instead.\n`;
-      prompt += `- Beginner Friendly: Add helpful, friendly comments throughout the JavaScript code so I can see how it works and learn from it.`;
+      prompt += `### 7. Code Standards & Deliverable Format\n`;
+      prompt += `- Deliverable Format: ${codeFormat}\n`;
+      prompt += `- Quality: Output 100% complete, fully working code. Do NOT leave empty placeholder comments like "<!-- insert services here -->" or omit content. Populate every card and section with authentic, tailored placeholder text suited to ${niche}.\n`;
+      prompt += `- Clean Structure: Well-organized semantic HTML5 tags (<header>, <nav>, <main>, <section>, <footer>) with explanatory code comments so non-technical users can easily customize text and links.`;
 
       return prompt;
     }
@@ -524,10 +666,10 @@
       });
     }
 
-    function downloadPromptMarkdown() {
+    function downloadPromptText() {
       const text = document.getElementById('promptOutput').innerText;
-      const appName = document.getElementById('appName').value.trim() || 'app_prompt';
-      const cleanFileName = appName.toLowerCase().replace(/[^a-z0-9]/g, '_') + '_prompt.txt';
+      const siteName = document.getElementById('siteName').value.trim() || 'website_template';
+      const cleanFileName = siteName.toLowerCase().replace(/[^a-z0-9]/g, '_') + '_prompt.txt';
 
       const blob = new Blob([text], { type: 'text/plain;charset=utf-8;' });
       const url = URL.createObjectURL(blob);
@@ -553,17 +695,17 @@
 
         if (data) {
           card.innerHTML = `
-            <div onclick="loadPromptSlot(${i})">
+            <div onclick="loadSlot(${i})">
               <div class="font-bold text-[10px] text-indigo-400">SLOT ${i}</div>
-              <div class="font-semibold truncate text-[var(--text-main)] mt-0.5">${data.appName || 'My Idea'}</div>
-              <div class="text-[10px] opacity-75 truncate">${data.sector || ''}</div>
+              <div class="font-semibold truncate text-[var(--text-main)] mt-0.5">${data.siteName || 'Custom Template'}</div>
+              <div class="text-[10px] opacity-75 truncate">${data.niche || ''}</div>
             </div>
             <div class="mt-2 text-right">
-              <button onclick="deletePromptSlot(event, ${i})" class="text-[10px] text-rose-400 hover:underline">Clear</button>
+              <button onclick="deleteSlot(event, ${i})" class="text-[10px] text-rose-400 hover:underline">Clear</button>
             </div>
           `;
         } else {
-          card.onclick = () => loadPromptSlot(i);
+          card.onclick = () => loadSlot(i);
           card.innerHTML = `
             <div>
               <div class="font-bold text-[10px] opacity-50">SLOT ${i}</div>
@@ -576,7 +718,7 @@
       }
     }
 
-    function saveCurrentSlotPrompt() {
+    function saveCurrentSlot() {
       let targetSlot = 1;
       for (let i = 1; i <= MAX_SLOTS; i++) {
         if (!savedSlots[i]) { targetSlot = i; break; }
@@ -587,44 +729,54 @@
 
       const slot = parseInt(input, 10);
       if (isNaN(slot) || slot < 1 || slot > MAX_SLOTS) {
-        showToast("Please pick a number between 1 and 5.");
+        showToast("Please enter a number between 1 and 5.");
         return;
       }
 
       savedSlots[slot] = {
-        appName: document.getElementById('appName').value.trim(),
-        sector: document.getElementById('industrySector').value,
-        persona: document.getElementById('userPersona').value,
-        structure: document.getElementById('fileStructure').value,
-        style: document.getElementById('cssStyle').value,
-        palette: document.getElementById('colorScheme').value,
-        navTopology: document.getElementById('navTopology').value,
-        navLinks: document.getElementById('navLinks').value,
-        description: document.getElementById('appDescription').value,
+        siteName: document.getElementById('siteName').value.trim(),
+        niche: document.getElementById('businessNiche').value,
+        tagline: document.getElementById('siteTagline').value,
+        aesthetic: document.getElementById('visualAesthetic').value,
+        palette: document.getElementById('colorPalette').value,
+        navStyle: document.getElementById('navStyle').value,
+        templateScope: document.getElementById('templateScope').value,
+        pageNames: document.getElementById('pageNames').value,
+        heroStyle: document.getElementById('heroStyle').value,
+        imageFraming: document.getElementById('imageFraming').value,
+        includeUploadSlots: document.getElementById('includeUploadSlots').checked,
+        useUnsplashUrls: document.getElementById('useUnsplashUrls').checked,
+        codeFormat: document.getElementById('codeFormat').value,
+        customNotes: document.getElementById('customNotes').value,
         tags: Array.from(activeTags)
       };
 
-      localStorage.setItem('easyplayground_slots', JSON.stringify(savedSlots));
+      localStorage.setItem('webcraft_slots', JSON.stringify(savedSlots));
       renderSavedSlots();
-      showToast(`Saved into Slot ${slot}!`);
+      showToast(`Saved to Slot ${slot}!`);
     }
 
-    function loadPromptSlot(slot) {
+    function loadSlot(slot) {
       const data = savedSlots[slot];
       if (!data) {
         showToast(`Slot ${slot} is empty.`);
         return;
       }
 
-      document.getElementById('appName').value = data.appName || '';
-      document.getElementById('industrySector').value = data.sector || 'Productivity & Task Tracker';
-      document.getElementById('userPersona').value = data.persona || 'Everyday people who want something fast, simple, and clutter-free';
-      document.getElementById('fileStructure').value = data.structure || 'One single, self-contained .html file (with Tailwind CSS and inline JS) that runs instantly in any browser';
-      document.getElementById('cssStyle').value = data.style || 'Modern dark mode with sleek frosted cards and rounded corners';
-      document.getElementById('colorScheme').value = data.palette || 'Electric Indigo and deep violet';
-      document.getElementById('navTopology').value = data.navTopology || 'Sticky top navigation header with logo and clean tab links';
-      document.getElementById('navLinks').value = data.navLinks || '';
-      document.getElementById('appDescription').value = data.description || '';
+      document.getElementById('siteName').value = data.siteName || '';
+      document.getElementById('businessNiche').value = data.niche || 'Photography & Film Studio';
+      document.getElementById('siteTagline').value = data.tagline || '';
+      document.getElementById('visualAesthetic').value = data.aesthetic || '';
+      document.getElementById('colorPalette').value = data.palette || '';
+      document.getElementById('navStyle').value = data.navStyle || '';
+      document.getElementById('templateScope').value = data.templateScope || '';
+      document.getElementById('pageNames').value = data.pageNames || 'Home, Services, About, Contact';
+      document.getElementById('heroStyle').value = data.heroStyle || '';
+      document.getElementById('imageFraming').value = data.imageFraming || '';
+      document.getElementById('includeUploadSlots').checked = data.includeUploadSlots ?? true;
+      document.getElementById('useUnsplashUrls').checked = data.useUnsplashUrls ?? true;
+      document.getElementById('codeFormat').value = data.codeFormat || '';
+      document.getElementById('customNotes').value = data.customNotes || '';
 
       if (data.tags) {
         activeTags = new Set(data.tags);
@@ -635,28 +787,21 @@
       showToast(`Loaded Slot ${slot}!`);
     }
 
-    function deletePromptSlot(e, slot) {
+    function deleteSlot(e, slot) {
       e.stopPropagation();
       delete savedSlots[slot];
-      localStorage.setItem('easyplayground_slots', JSON.stringify(savedSlots));
+      localStorage.setItem('webcraft_slots', JSON.stringify(savedSlots));
       renderSavedSlots();
       showToast(`Cleared Slot ${slot}`);
     }
 
     function resetAllFields() {
-      document.getElementById('appName').value = '';
-      document.getElementById('industrySector').selectedIndex = 0;
-      document.getElementById('userPersona').selectedIndex = 0;
-      document.getElementById('fileStructure').selectedIndex = 0;
-      document.getElementById('cssStyle').selectedIndex = 0;
-      document.getElementById('colorScheme').selectedIndex = 0;
-      document.getElementById('navTopology').selectedIndex = 0;
-      document.getElementById('navLinks').value = 'Home, Dashboard, History, Settings';
-      document.getElementById('appDescription').value = '';
-      activeTags = new Set(["savedata", "darkmode", "search", "alerts"]);
-      renderTags();
-      updateLivePrompt();
-      showToast("Reset to default playground!");
+      document.getElementById('siteName').value = '';
+      document.getElementById('siteTagline').value = '';
+      document.getElementById('customNotes').value = '';
+      document.getElementById('businessNiche').selectedIndex = 0;
+      handleNichePreset(document.getElementById('businessNiche').value);
+      showToast("Reset to defaults!");
     }
 
     function showToast(msg) {
