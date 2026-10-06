@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StoreCraft - Advanced E-Commerce Prompt Generator</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    textarea::-webkit-scrollbar {
+      width: 8px;
+    }
+    textarea::-webkit-scrollbar-thumb {
+      background-color: #334155;
+      border-radius: 4px;
+    }
+    select option {
+      background-color: #020617;
+      color: #f8fafc;
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans selection:bg-emerald-500 selection:text-slate-950">
+
+  <!-- Header -->
+  <header class="border-b border-slate-800 bg-slate-900/70 backdrop-blur px-6 py-4 sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="h-10 w-10 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-xl border border-emerald-500/30 shadow-inner">
+          <i class="fa-solid fa-cart-shopping"></i>
+        </div>
+        <div>
+          <h1 class="text-lg font-bold text-white tracking-tight flex items-center gap-2">
+            StoreCraft Prompt Studio <span class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-mono">v2.0 Pro</span>
+          </h1>
+          <p class="text-xs text-slate-400">Production-Grade E-Commerce Prompts for AI Builders</p>
+        </div>
+      </div>
+      <div class="flex items-center space-x-2">
+        <button id="resetBtn" class="px-3 py-1.5 text-xs font-medium text-slate-400 hover:text-white bg-slate-800/80 hover:bg-slate-700 rounded-md transition-all border border-slate-700 active:scale-95">
+          <i class="fa-solid fa-rotate-left mr-1.5"></i>Reset Defaults
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="max-w-7xl mx-auto p-4 sm:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 flex-1 w-full">
+
+    <!-- Left Controls Panel (7 Cols) -->
+    <div class="lg:col-span-7 space-y-6">
+
+      <!-- Industry & Store Profile -->
+      <section class="bg-slate-900/80 border border-slate-800 rounded-xl p-5 shadow-lg">
+        <h2 class="text-sm font-semibold text-emerald-400 uppercase tracking-wider mb-4 flex items-center gap-2">
+          <i class="fa-solid fa-store"></i> 1. Industry & Brand Profile
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-medium text-slate-300 mb-1.5">Store / Brand Name</label>
+            <input type="text" id="storeName" value="Apex Outdoors" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500 transition-colors" placeholder="e.g., Artisan Roast, Veloce Tech">
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-slate-300 mb-1.5">Industry Niche (30+ Options)</label>
+            <select id="industry" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500 transition-colors">
+              <optgroup label="Fashion & Apparel">
+                <option value="Minimalist Apparel & Streetwear">Minimalist Apparel & Streetwear</option>
+                <option value="Luxury Watches, Haute Horlogerie & Fine Jewelry">Luxury Watches & Fine Jewelry</option>
+                <option value="Athleisure, Activewear & Technical Performance Apparel">Athleisure & Performance Wear</option>
+                <option value="Vintage & Archival Designer Footwear">Vintage & Archival Footwear</option>
+                <option value="Bespoke Tailoring & Formal Leather Goods">Bespoke Tailoring & Leather Goods</option>
+              </optgroup>
+              <optgroup label="Technology & Hardware">
+                <option value="Consumer Electronics, Audio & Audiophile Gear">Consumer Electronics & Audiophile Gear</option>
+                <option value="Mechanical Keyboards & Custom Desk Setup Peripherals">Mechanical Keyboards & Desk Setups</option>
+                <option value="Smart Home Automation & IoT Security Hubs">Smart Home & IoT Devices</option>
+                <option value="Single-Board Computers, Microcontrollers & DIY Maker Kits">Maker Kits & Microcontrollers</option>
+                <option value="Drones, FPV Gear & Action Camera Accessories">Drones, FPV & Action Cameras</option>
+              </optgroup>
+              <optgroup label="Sporting, Outdoors & Automotive">
+                <option value="Outdoor, Mountaineering & Ultralight Camp Gear" selected>Outdoor & Adventure Gear</option>
+                <option value="Custom Motorcycles, Riding Apparel & Modular Helmets">Motorcycles & Moto Gear</option>
+                <option value="Boutique Gravel & Road Cycling Components">Boutique Gravel & Road Cycling</option>
+                <option value="Martial Arts, Boxing & Combat Fitness Equipment">Martial Arts & Combat Gear</option>
+                <option value="Surfboards, Wetsuits & Coastal Lifestyle">Surfboards & Coastal Gear</option>
+              </optgroup>
+              <optgroup label="Food, Beverage & Gastronomy">
+                <option value="Artisan Single-Origin Coffee Roastery & Brewing Hardware">Specialty Coffee & Espresso Gear</option>
+                <option value="Craft Beer, Microbrewery & Natural Wine Dispatch">Craft Beer & Natural Wine</option>
+                <option value="Gourmet Hot Sauces, Ferments & Culinary Condiments">Artisan Hot Sauces & Ferments</option>
+                <option value="Japanese Kitchen Cutlery & Chef Cookware">Japanese Cutlery & Cookware</option>
+                <option value="Artisan Bakery, Sourdough Supplies & Baking Tools">Artisan Bakery & Pastry Goods</option>
+              </optgroup>
+              <optgroup label="Health, Wellness & Personal Care">
+                <option value="Nootropics, Clean Adaptogens & Performance Supplements">Nootropics & Supplements</option>
+                <option value="Botanical Skincare, Apothecary & Organic Grooming">Botanical Skincare & Apothecary</option>
+                <option value="Recovery Tech, Cold Plunges & Infrared Therapy">Recovery Gear & Cryo/Sauna Tech</option>
+                <option value="Eco-Friendly Bamboo Toothbrushes & Zero-Waste Toiletries">Zero-Waste Personal Care</option>
+              </optgroup>
+              <optgroup label="Home, Hobbies & Collectibles">
+                <option value="Mid-Century Modern Furniture & Architectural Lighting">Mid-Century Modern Furniture</option>
+                <option value="Rare Houseplants, Terrariums & Horticultural Supplies">Rare Plants & Living Decor</option>
+                <option value="Tabletop Board Games, RPG Miniatures & Dice Vaults">Tabletop RPGs & Collectible Miniatures</option>
+                <option value="Vinyl Records, Turntables & Hi-Fi Audio Furniture">Vinyl Records & Turntables</option>
+                <option value="Independent Book Publishing, Zines & Illustrated Art Books">Indie Books & Art Zines</option>
+                <option value="Fine Art Canvas Prints, Limited Lithographs & Sculpture">Limited Edition Art Prints</option>
+                <option value="Boutique Pet Supplies, Natural Treats & Ergonomic Harnesses">Designer Pet Supplies</option>
+              </optgroup>
+            </select>
+          </div>
+          <div class="sm:col-span-2">
+            <label class="block text-xs font-medium text-slate-300 mb-1.5">Product Scope & Catalog Complexity</label>
+            <select id="productScope" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500 transition-colors">
+              <option value="Physical equipment with multi-attribute variant selectors (color, size), stock counters, and weight specifications" selected>
+                Physical Equipment: Multi-attribute variants (Color, Size), live stock levels, and weight specs
+              </option>
+              <option value="Digital downloads (PDF, ZIP, Audio) with instant unlock preview, license tier selectors, and file size badges">
+                Digital Goods: Instant download previews, license tiers (Personal/Commercial), and format badges
+              </option>
+              <option value="Subscription box & recurring delivery with frequency selector (Weekly, Bi-weekly, Monthly) and prepay discounts">
+                Subscription / Recurring: Frequency cadences (Weekly/Monthly), trial pricing, and box customizers
+              </option>
+              <option value="Custom Made-to-Order with engraving/personalization text input, material pickers, and estimated production lead times">
+                Custom Made-to-Order: Text engraving fields, material swatches, and estimated production lead time
+              </option>
+              <option value="Bundles & Configurable Kits with tiered volume quantity discounts ('Buy 2 Save 10%') and bundle component checkboxes">
+                Bundles & Multi-Packs: Dynamic bundle selectors, volume tiers, and free gift threshold indicators
+              </option>
+              <option value="High-SKU Warehouse Catalog with live inventory indicators, technical data sheets, and wholesale bulk order tables">
+                High-SKU Industrial / Technical: Spec sheets, downloadable CAD/datasheets, and tiered bulk unit pricing
+              </option>
+            </select>
+          </div>
+        </div>
+      </section>
+
+      <!-- Visual Design & Aesthetic -->
+      <section class="bg-slate-900/80 border border-slate-800 rounded-xl p-5 shadow-lg">
+        <h2 class="text-sm font-semibold text-emerald-400 uppercase tracking-wider mb-4 flex items-center gap-2">
+          <i class="fa-solid fa-palette"></i> 2. Visual Theme, Palette & Typography
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div>
+            <label class="block text-xs font-medium text-slate-300 mb-1.5">Design Style</label>
+            <select id="designStyle" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500 transition-colors">
+              <option value="Ultra-Modern High-Contrast Clean (Generous spacing, crisp cards)">Ultra-Modern High-Contrast Clean</option>
+              <option value="Nordic Minimalist (Subtle neutrals, spacious, understated serenity)">Nordic Minimalist (Serene)</option>
+              <option value="Dark Cyberpunk / Tech Stealth (Sleek slate panels, neon border highlights)">Dark Cyberpunk / Tech Stealth</option>
+              <option value="Organic Earth-Toned / Craft Natural (Soft radius, warm ivory canvases)">Organic Earth-Toned Natural</option>
+              <option value="Editorial Luxury (Serif titles, thin architectural lines, high-fashion vibe)">Editorial Luxury / Haute</option>
+              <option value="Bold Neo-Brutalist (Thick 2px borders, vibrant punch colors, raw shadows)">Bold Neo-Brutalist</option>
+              <option value="Retro Vintage / Industrial Workshop (Muted patinas, mechanical accents)">Retro Industrial / Workshop</option>
+              <option value="Glassmorphism / Frosted Acrylic (Translucent cards with backdrop blurs)">Glassmorphic / Frosted UI</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-slate-300 mb-1.5">Color Schematic</label>
+            <select id="colorPalette" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500 transition-colors">
+              <option value="Charcoal slate background with vibrant emerald/mint green accents">Emerald & Slate (Outdoor/Tech)</option>
+              <option value="Deep obsidian dark mode with electric cyan and violet neon accents">Obsidian & Neon Cyan (Cyber/Audio)</option>
+              <option value="Warm sandstone, ivory, espresso brown with burnt amber CTA">Earthy Amber & Sandstone (Craft/Coffee)</option>
+              <option value="Pure stark white, matte black typography, subtle platinum borders">Monochrome Monochrome (Luxury/Fashion)</option>
+              <option value="Deep navy blue, crisp white cards, and warm sunset coral call-to-actions">Navy & Coral (Retail/Sports)</option>
+              <option value="Olive drab, desert taupe, brass yellow, and matte black">Tactical Olive & Brass (Adventure/Tools)</option>
+              <option value="Rich burgundy wine, warm cream background, and polished gold accents">Burgundy & Gold (Gourmet/Jewelry)</option>
+              <option value="Deep forest pine green, sage wash, and warm terracotta orange">Pine Green & Terracotta (Plants/Eco)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-slate-300 mb-1.5">Typography Pairing</label>
+            <select id="typography" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500 transition-colors">
+              <option value="Inter / Plus Jakarta Sans (Clean geometric sans-serif)">Inter / Plus Jakarta Sans</option>
+              <option value="Playfair Display (Headings) + Inter (Body)">Playfair Serif + Inter</option>
+              <option value="Space Grotesk (Tech headings) + DM Sans (Body)">Space Grotesk + DM Sans</option>
+              <option value="Oswald (Bold condensed titles) + Roboto">Oswald Condensed + Roboto</option>
+              <option value="Cinzel (Luxury serif titles) + Montserrat (Body)">Cinzel Classical + Montserrat</option>
+              <option value="JetBrains Mono (Monospace headers) + Plus Jakarta Sans (Body)">JetBrains Mono + Sans</option>
+              <option value="Cabinet Grotesk (Bold eccentric titles) + Satoshi (Body)">Cabinet Grotesk + Satoshi</option>
+            </select>
+          </div>
+        </div>
+      </section>
+
+      <!-- Store Architecture & Layout -->
+      <section class="bg-slate-900/80 border border-slate-800 rounded-xl p-5 shadow-lg">
+        <h2 class="text-sm font-semibold text-emerald-400 uppercase tracking-wider mb-4 flex items-center gap-2">
+          <i class="fa-solid fa-layer-group"></i> 3. Layout Structure & Modules
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+          <label class="flex items-center gap-2.5 p-2 rounded-lg bg-slate-950/60 border border-slate-800 cursor-pointer hover:border-slate-700">
+            <input type="checkbox" id="modHero" checked class="rounded border-slate-700 text-emerald-500 focus:ring-0">
+            <span>Hero Banner with CTA & Value Props</span>
+          </label>
+          <label class="flex items-center gap-2.5 p-2 rounded-lg bg-slate-950/60 border border-slate-800 cursor-pointer hover:border-slate-700">
+            <input type="checkbox" id="modFilter" checked class="rounded border-slate-700 text-emerald-500 focus:ring-0">
+            <span>Interactive Category & Price Filter Bar</span>
+          </label>
+          <label class="flex items-center gap-2.5 p-2 rounded-lg bg-slate-950/60 border border-slate-800 cursor-pointer hover:border-slate-700">
+            <input type="checkbox" id="modGrid" checked class="rounded border-slate-700 text-emerald-500 focus:ring-0">
+            <span>Responsive 3/4-Column Product Grid</span>
+          </label>
+          <label class="flex items-center gap-2.5 p-2 rounded-lg bg-slate-950/60 border border-slate-800 cursor-pointer hover:border-slate-700">
+            <input type="checkbox" id="modModal" checked class="rounded border-slate-700 text-emerald-500 focus:ring-0">
+            <span>Product Quick-View Modal (Variants/Gallery)</span>
+          </label>
+          <label class="flex items-center gap-2.5 p-2 rounded-lg bg-slate-950/60 border border-slate-800 cursor-pointer hover:border-slate-700">
+            <input type="checkbox" id="modReviews" checked class="rounded border-slate-700 text-emerald-500 focus:ring-0">
+            <span>Customer Testimonials & Star Rating Reel</span>
+          </label>
+          <label class="flex items-center gap-2.5 p-2 rounded-lg bg-slate-950/60 border border-slate-800 cursor-pointer hover:border-slate-700">
+            <input type="checkbox" id="modNewsletter" checked class="rounded border-slate-700 text-emerald-500 focus:ring-0">
+            <span>Newsletter Signup with Promo Discount Pop</span>
+          </label>
+          <label class="flex items-center gap-2.5 p-2 rounded-lg bg-slate-950/60 border border-slate-800 cursor-pointer hover:border-slate-700">
+            <input type="checkbox" id="modAnnouncement" checked class="rounded border-slate-700 text-emerald-500 focus:ring-0">
+            <span>Sticky Top Announcement Bar with Free Shipping Meter</span>
+          </label>
+          <label class="flex items-center gap-2.5 p-2 rounded-lg bg-slate-950/60 border border-slate-800 cursor-pointer hover:border-slate-700">
+            <input type="checkbox" id="modFaq" checked class="rounded border-slate-700 text-emerald-500 focus:ring-0">
+            <span>Accordion Product FAQ & Shipping Details Section</span>
+          </label>
+        </div>
+      </section>
+
+      <!-- Cart, Checkout & Payment Gateways -->
+      <section class="bg-slate-900/80 border border-slate-800 rounded-xl p-5 shadow-lg">
+        <h2 class="text-sm font-semibold text-emerald-400 uppercase tracking-wider mb-4 flex items-center gap-2">
+          <i class="fa-solid fa-credit-card"></i> 4. Cart Engine & Payment Gateway Stubs
+        </h2>
+        <div class="space-y-4">
+          <div>
+            <label class="block text-xs font-medium text-slate-300 mb-1.5">Cart Implementation Type</label>
+            <select id="cartType" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500 transition-colors">
+              <option value="Slide-over Slide Drawer with dynamic subtotal, tax calculation, and shipping progress bar">Slide-Over Cart Drawer with Live Subtotal & Shipping Goal Meter</option>
+              <option value="Floating Sticky Bottom Cart Bar with Accordion Modal">Sticky Bottom Bar Cart (Mobile-first)</option>
+              <option value="Dedicated Multi-step Single-Page Checkout accordion">Full Embedded Single-Page Checkout (Shipping > Billing > Pay)</option>
+              <option value="Minimalist Dropdown Menu Cart from Navbar with quick checkout modal">Navbar Header Dropdown Mini-Cart with Inline Checkout Trigger</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-slate-300 mb-2">Ready-to-Plug Payment Gateways (Include UI & Stubs)</label>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+              <label class="flex items-center gap-2 p-2 rounded-lg bg-slate-950/60 border border-slate-800 cursor-pointer">
+                <input type="checkbox" id="payStripe" checked class="rounded text-emerald-500 focus:ring-0">
+                <span>Stripe Elements</span>
+              </label>
+              <label class="flex items-center gap-2 p-2 rounded-lg bg-slate-950/60 border border-slate-800 cursor-pointer">
+                <input type="checkbox" id="payPayPal" checked class="rounded text-emerald-500 focus:ring-0">
+                <span>PayPal Smart Buttons</span>
+              </label>
+              <label class="flex items-center gap-2 p-2 rounded-lg bg-slate-950/60 border border-slate-800 cursor-pointer">
+                <input type="checkbox" id="payAppleGoogle" checked class="rounded text-emerald-500 focus:ring-0">
+                <span>Apple / Google Pay</span>
+              </label>
+              <label class="flex items-center gap-2 p-2 rounded-lg bg-slate-950/60 border border-slate-800 cursor-pointer">
+                <input type="checkbox" id="payBNPL" checked class="rounded text-emerald-500 focus:ring-0">
+                <span>Klarna / Afterpay</span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Trust, Security, Forms & Legal -->
+      <section class="bg-slate-900/80 border border-slate-800 rounded-xl p-5 shadow-lg">
+        <h2 class="text-sm font-semibold text-emerald-400 uppercase tracking-wider mb-4 flex items-center gap-2">
+          <i class="fa-solid fa-shield-halved"></i> 5. Trust, Compliance, Forms & Social
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs mb-4">
+          <label class="flex items-center gap-2.5 p-2 rounded-lg bg-slate-950/60 border border-slate-800 cursor-pointer hover:border-slate-700">
+            <input type="checkbox" id="secTrustBadges" checked class="rounded text-emerald-500 focus:ring-0">
+            <span>Security Badges (256-Bit SSL, PCI-DSS, Money Back)</span>
+          </label>
+          <label class="flex items-center gap-2.5 p-2 rounded-lg bg-slate-950/60 border border-slate-800 cursor-pointer hover:border-slate-700">
+            <input type="checkbox" id="secLegalPages" checked class="rounded text-emerald-500 focus:ring-0">
+            <span>Modal / Tabbed Legal (Terms, Privacy, Refund Policy)</span>
+          </label>
+          <label class="flex items-center gap-2.5 p-2 rounded-lg bg-slate-950/60 border border-slate-800 cursor-pointer hover:border-slate-700">
+            <input type="checkbox" id="secContactForm" checked class="rounded text-emerald-500 focus:ring-0">
+            <span>Contact Form with Order # Inquiry Dropdown</span>
+          </label>
+          <label class="flex items-center gap-2.5 p-2 rounded-lg bg-slate-950/60 border border-slate-800 cursor-pointer hover:border-slate-700">
+            <input type="checkbox" id="secFeedbackForm" checked class="rounded text-emerald-500 focus:ring-0">
+            <span>Interactive Customer Feedback & Star Rating Form</span>
+          </label>
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-slate-300 mb-1.5">Social Channels Integration Suite</label>
+          <select id="socialLinks" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500 transition-colors">
+            <option value="Instagram, TikTok, YouTube, and Pinterest (Visual & Lifestyle Commerce Suite)" selected>
+              Visual & Lifestyle: Instagram, TikTok, YouTube, Pinterest
+            </option>
+            <option value="X (Twitter), GitHub, Discord, and YouTube (Tech & Developer Hardware Suite)">
+              Tech & Community: X (Twitter), GitHub, Discord, YouTube
+            </option>
+            <option value="Instagram, Facebook, Pinterest, and TikTok (General Consumer Retail Suite)">
+              General Retail: Instagram, Facebook, Pinterest, TikTok
+            </option>
+            <option value="LinkedIn, X (Twitter), and YouTube (B2B, Wholesale & Professional Hardware)">
+              B2B & Wholesale: LinkedIn, X (Twitter), YouTube
+            </option>
+            <option value="Substack, Instagram, and Discord (Creator Brand, Editorial & Community)">
+              Creator / Community: Substack, Instagram, Discord
+            </option>
+          </select>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- Right Output Panel (5 Cols) -->
+    <div class="lg:col-span-5 flex flex-col space-y-4">
+      <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-5 shadow-2xl flex-1 flex flex-col sticky top-24">
+        <div class="flex items-center justify-between mb-3 pb-3 border-b border-slate-800">
+          <div>
+            <h3 class="text-sm font-bold text-white flex items-center gap-2">
+              <i class="fa-solid fa-terminal text-emerald-400"></i> Generated Master Prompt
+            </h3>
+            <p class="text-[11px] text-slate-400">Feed this directly into your target AI model</p>
+          </div>
+          <button id="copyBtn" class="px-3 py-1.5 text-xs font-semibold bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg shadow-sm flex items-center gap-1.5 transition-all active:scale-95">
+            <i class="fa-regular fa-copy"></i>
+            <span id="copyText">Copy Prompt</span>
+          </button>
+        </div>
+
+        <!-- Output Textarea -->
+        <textarea id="outputPrompt" readonly class="w-full flex-1 min-h-[500px] bg-slate-950 text-slate-300 font-mono text-xs p-4 rounded-lg border border-slate-800 focus:outline-none focus:border-emerald-500 resize-none leading-relaxed"></textarea>
+
+        <!-- Stats Bar -->
+        <div class="mt-3 pt-3 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-slate-500">
+          <span id="charCount">0 characters</span>
+          <span class="flex items-center gap-1.5"><i class="fa-brands fa-html5 text-emerald-400"></i> Single-file HTML5/Tailwind/JS</span>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    // Elements
+    const storeNameEl = document.getElementById('storeName');
+    const industryEl = document.getElementById('industry');
+    const productScopeEl = document.getElementById('productScope');
+    const designStyleEl = document.getElementById('designStyle');
+    const colorPaletteEl = document.getElementById('colorPalette');
+    const typographyEl = document.getElementById('typography');
+
+    const modHeroEl = document.getElementById('modHero');
+    const modFilterEl = document.getElementById('modFilter');
+    const modGridEl = document.getElementById('modGrid');
+    const modModalEl = document.getElementById('modModal');
+    const modReviewsEl = document.getElementById('modReviews');
+    const modNewsletterEl = document.getElementById('modNewsletter');
+    const modAnnouncementEl = document.getElementById('modAnnouncement');
+    const modFaqEl = document.getElementById('modFaq');
+
+    const cartTypeEl = document.getElementById('cartType');
+    const payStripeEl = document.getElementById('payStripe');
+    const payPayPalEl = document.getElementById('payPayPal');
+    const payAppleGoogleEl = document.getElementById('payAppleGoogle');
+    const payBNPLEl = document.getElementById('payBNPL');
+
+    const secTrustBadgesEl = document.getElementById('secTrustBadges');
+    const secLegalPagesEl = document.getElementById('secLegalPages');
+    const secContactFormEl = document.getElementById('secContactForm');
+    const secFeedbackFormEl = document.getElementById('secFeedbackForm');
+    const socialLinksEl = document.getElementById('socialLinks');
+
+    const outputPromptEl = document.getElementById('outputPrompt');
+    const copyBtn = document.getElementById('copyBtn');
+    const copyText = document.getElementById('copyText');
+    const charCountEl = document.getElementById('charCount');
+    const resetBtn = document.getElementById('resetBtn');
+
+    function generatePrompt() {
+      // Gather selected modules
+      const modules = [];
+      if (modAnnouncementEl.checked) modules.push("- Top dismissible announcement bar highlighting active promos and dynamic free-shipping progress");
+      if (modHeroEl.checked) modules.push("- Hero section with high-impact headline, category badges, primary action button, and trust bullets");
+      if (modFilterEl.checked) modules.push("- Instant live search and category/price filtering toolbar with tag toggles (rendered via reactive JS)");
+      if (modGridEl.checked) modules.push("- Responsive product grid (3-4 columns) with item cards showing image, title, price, star ratings, stock tag, and 'Add to Cart' / 'Quick View' buttons");
+      if (modModalEl.checked) modules.push("- Interactive 'Quick View' modal with multi-angle image gallery preview, SKU, variant selector (size/color/style), and quantity stepper");
+      if (modReviewsEl.checked) modules.push("- Customer testimonial section / social proof reel with verified buyer stars and photo reviews");
+      if (modFaqEl.checked) modules.push("- Collapsible accordion FAQ covering common questions regarding shipping, returns, and product care");
+      if (modNewsletterEl.checked) modules.push("- Newsletter subscription footer banner with instant interactive feedback and discount code reveal state");
+
+      // Gather Gateways
+      const gateways = [];
+      if (payStripeEl.checked) gateways.push("Stripe Elements (Card Number, Expiry, CVC fields stubbed)");
+      if (payPayPalEl.checked) gateways.push("PayPal Express Checkout button mockup with modal handler");
+      if (payAppleGoogleEl.checked) gateways.push("Apple Pay / Google Pay one-click payment button triggers");
+      if (payBNPLEl.checked) gateways.push("Klarna / Afterpay installment teaser (e.g., 'or 4 interest-free payments of $X')");
+
+      // Gather Trust & Legal
+      const trustFeatures = [];
+      if (secTrustBadgesEl.checked) trustFeatures.push("- Prominent security badges in checkout and footer (256-Bit SSL Encryption, PCI-DSS Compliant, 30-Day Money-Back Guarantee)");
+      if (secLegalPagesEl.checked) trustFeatures.push("- Accessible footer links with clean sliding modal views for: Terms & Conditions, Privacy Policy, Shipping Policy, and Refund Policy");
+      if (secContactFormEl.checked) trustFeatures.push("- Complete Contact Us section/form with Name, Email, Order #, Topic selector, and message fields");
+      if (secFeedbackFormEl.checked) trustFeatures.push("- Interactive Post-Purchase Customer Feedback Form with 5-star rating selector and comments");
+
+      const prompt = `Act as an expert senior frontend engineer and e-commerce UI/UX designer.
+
+Build a complete, production-ready, fully responsive e-commerce storefront template for an online store selling physical goods. Deliver the entire solution inside a single, self-contained HTML file (using Tailwind CSS via CDN and modern vanilla JavaScript). No external bundler or Node runtime required.
+
+### 1. STORE PROFILE & INDUSTRY
+- Brand Name: "${storeNameEl.value.trim() || 'ModernStore'}"
+- Industry / Niche: ${industryEl.value}
+- Product Catalog Architecture: ${productScopeEl.value}
+
+### 2. DESIGN & STYLING SPECIFICATIONS
+- Visual Theme: ${designStyleEl.value}
+- Color Schematic: ${colorPaletteEl.value}
+- Typography Styling: ${typographyEl.value}
+- Iconography: FontAwesome 6 (CDN) or clean inline SVGs
+- Image Assets: High quality Unsplash placeholder images with responsive object-fit styling matching the industry niche
+
+### 3. PAGE ARCHITECTURE & KEY MODULES
+The single-page store must include:
+${modules.join('\n')}
+
+### 4. CART SYSTEM & CHECKOUT FLOW
+- Cart UI: ${cartTypeEl.value}
+- Cart Engine: Full vanilla JavaScript state management handling:
+  * Add to cart, quantity increment/decrement, item removal.
+  * Real-time calculation of subtotal, estimated shipping, tax (10%), and final order total.
+  * Cart count badge updating automatically in the navigation header.
+  * LocalStorage persistence so the cart remains intact upon page refresh.
+- Ready-to-Plug Payment Gateways:
+  * Provide clean, selectable tabbed payment options for: ${gateways.length > 0 ? gateways.join(', ') : 'Credit Card and Cash on Delivery'}.
+  * Include clearly commented placeholder JavaScript functions (e.g., 'initStripeCheckout()', 'processPayPalPayment()') showing exactly where to plug in API keys or backend webhook endpoints.
+
+### 5. TRUST, SECURITY & LEGAL COMPLIANCE
+${trustFeatures.join('\n')}
+- Social Media Integration: Icons linking to ${socialLinksEl.value}.
+
+### 6. CODE QUALITY REQUIREMENTS
+- Write 100% clean, semantic HTML5, well-organized Tailwind utility classes, and thoroughly commented JavaScript.
+- Ensure full mobile responsiveness with mobile hamburger navigation and accessible ARIA attributes.
+- Include dummy product mock data (at least 6-8 diverse physical products with realistic titles, images, and prices tailored to ${industryEl.value}) directly in a JS array to make the store immediately interactive on page load.`;
+
+      outputPromptEl.value = prompt;
+      charCountEl.textContent = `${prompt.length} characters`;
+    }
+
+    // Event listeners
+    const inputs = document.querySelectorAll('input, select');
+    inputs.forEach(input => input.addEventListener('input', generatePrompt));
+
+    copyBtn.addEventListener('click', () => {
+      outputPromptEl.select();
+      navigator.clipboard.writeText(outputPromptEl.value).then(() => {
+        copyText.textContent = "Copied!";
+        copyBtn.classList.replace('bg-emerald-600', 'bg-slate-700');
+        setTimeout(() => {
+          copyText.textContent = "Copy Prompt";
+          copyBtn.classList.replace('bg-slate-700', 'bg-emerald-600');
+        }, 2000);
+      });
+    });
+
+    resetBtn.addEventListener('click', () => {
+      storeNameEl.value = 'Apex Outdoors';
+      industryEl.value = 'Outdoor, Mountaineering & Ultralight Camp Gear';
+      productScopeEl.value = 'Physical equipment with multi-attribute variant selectors (color, size), stock counters, and weight specifications';
+      designStyleEl.value = 'Ultra-Modern High-Contrast Clean (Generous spacing, crisp cards)';
+      colorPaletteEl.value = 'Charcoal slate background with vibrant emerald/mint green accents';
+      typographyEl.value = 'Inter / Plus Jakarta Sans (Clean geometric sans-serif)';
+      socialLinksEl.value = 'Instagram, TikTok, YouTube, and Pinterest (Visual & Lifestyle Commerce Suite)';
+      cartTypeEl.selectedIndex = 0;
+
+      document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = true);
+      generatePrompt();
+    });
+
+    // Initial run
+    generatePrompt();
+  </script>
+</body>
+</html>
