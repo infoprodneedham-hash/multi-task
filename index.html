@@ -1,47 +1,3456 @@
-<!-- Four Link Buttons Snippet -->
-<div class="button-group">
-  <a href="https://multi-task-alpha.vercel.app/prompt-gen-app.html" target="_blank" rel="noopener noreferrer" class="link-btn">
-Web App Prompt Generator  </a>
-  <a href="https://multi-task-alpha.vercel.app/character.html" target="_blank" rel="noopener noreferrer" class="link-btn">
-Character Prompt Generator   </a>
-  <a href="https://multi-task-alpha.vercel.app/interior.html" target="_blank" rel="noopener noreferrer" class="link-btn">
-interior Prompt Generator   </a>
-  <a href="https://multi-task-alpha.vercel.app/sole-trader.html" target="_blank" rel="noopener noreferrer" class="link-btn">
-Sole Trader Diary  </a>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SoloTrack AU - Sole Trader Vehicle Daybook & Admin (FY 2026–27)</title>
 
-<style>
-  .button-group {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    align-items: center;
-  }
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#ecfdf5',
+              100: '#d1fae5',
+              500: '#10b981',
+              600: '#059669',
+              700: '#047857',
+              800: '#065f46',
+              900: '#064e3b',
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
 
-  .link-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 10px 18px;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    font-size: 14px;
-    font-weight: 600;
-    color: #ffffff;
-    background-color: #2563eb;
-    text-decoration: none;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-    transition: background-color 0.2s ease, transform 0.1s ease;
-  }
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
 
-  .link-btn:hover {
-    background-color: #1d4ed8;
-    transform: translateY(-1px);
-  }
+  <style>
+    /* Print Specific Styles for Tax Invoices */
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      #printableInvoice, #printableInvoice * {
+        visibility: visible;
+      }
+      #printableInvoice {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        margin: 0;
+        padding: 24px;
+        background: white;
+        color: #0f172a;
+      }
+      .no-print {
+        display: none !important;
+      }
+    }
 
-  .link-btn:active {
-    transform: translateY(0);
-  }
-</style>
+    /* Subtle custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+  </style>
+</head>
+
+<body class="bg-slate-100 text-slate-800 antialiased min-h-screen flex flex-col md:flex-row font-sans relative overflow-x-hidden">
+
+  <!-- Mobile Top Bar -->
+  <header class="md:hidden bg-slate-900 text-white p-3.5 flex items-center justify-between sticky top-0 z-40 shadow-sm">
+    <div class="flex items-center gap-2.5">
+      <div class="w-8 h-8 rounded-lg bg-emerald-600 flex items-center justify-center font-bold text-white shadow-sm">
+        <i data-lucide="compass" class="w-4 h-4"></i>
+      </div>
+      <div>
+        <span class="font-bold text-sm tracking-tight text-white">SoloTrack <span class="text-emerald-400">AU</span></span>
+        <span class="block text-[10px] text-slate-400 leading-none">Vehicle 7-Day Daybook (FY26–27)</span>
+      </div>
+    </div>
+    <div class="flex items-center gap-1.5">
+      <button onclick="app.openSnapshotModal()" class="p-2 text-emerald-400 hover:text-white rounded-lg" title="Snapshot Transfer">
+        <i data-lucide="share-2" class="w-5 h-5"></i>
+      </button>
+      <button onclick="app.toggleMetricsDrawer()" class="p-2 text-amber-400 hover:text-white rounded-lg relative" title="Toggle Financials Drawer">
+        <i data-lucide="wallet" class="w-5 h-5"></i>
+        <span id="mobileReminderBadge" class="hidden absolute top-1 right-1 w-2.5 h-2.5 bg-rose-500 rounded-full animate-ping"></span>
+      </button>
+      <button id="mobileMenuBtn" class="p-2 text-slate-300 hover:text-white rounded-lg focus:outline-none">
+        <i data-lucide="menu" class="w-5 h-5"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- Sidebar Navigation -->
+  <aside id="sidebar" class="w-full md:w-64 bg-slate-900 text-slate-200 flex-shrink-0 flex flex-col fixed md:sticky top-0 h-auto md:h-screen z-30 transition-transform -translate-x-full md:translate-x-0 overflow-y-auto border-r border-slate-800">
+    <!-- Brand / Profile Header -->
+    <div class="p-5 border-b border-slate-800 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center text-white shadow-md">
+          <i data-lucide="compass" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <h1 class="font-black text-base text-white tracking-tight">SoloTrack <span class="text-emerald-400">AU</span></h1>
+          <p class="text-[11px] text-emerald-400 font-semibold">FY 2026–2027 Edition</p>
+        </div>
+      </div>
+      <button id="closeSidebarBtn" class="md:hidden text-slate-400 hover:text-white p-1">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+    </div>
+
+    <!-- Active Business Snippet Card -->
+    <div class="px-3.5 py-3 mx-3 my-3 bg-slate-800/80 rounded-xl border border-slate-700/60">
+      <div class="flex items-center justify-between mb-1">
+        <span class="text-[10px] font-bold tracking-wider uppercase text-emerald-400">Sole Trader Profile</span>
+        <button onclick="app.openSettingsModal()" class="text-slate-400 hover:text-white transition" title="Edit Business Settings">
+          <i data-lucide="settings" class="w-3.5 h-3.5"></i>
+        </button>
+      </div>
+      <p id="sidebarBizName" class="text-xs font-semibold text-white truncate">Apex Trade & Services</p>
+      <p id="sidebarABN" class="text-[11px] text-slate-400 font-mono">ABN: 52 123 456 789</p>
+    </div>
+
+    <!-- Navigation Menu -->
+    <nav class="flex-1 px-3 space-y-1 py-1">
+      <button onclick="app.switchTab('dashboard')" class="nav-item w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium transition text-white bg-emerald-700/90 shadow-sm" data-tab="dashboard">
+        <span class="flex items-center gap-3"><i data-lucide="calendar-range" class="w-4 h-4"></i> 7-Day Horizon</span>
+        <span class="text-[10px] font-mono bg-emerald-900/60 px-1.5 py-0.5 rounded text-emerald-200">Today</span>
+      </button>
+      <button onclick="app.switchTab('calendar')" class="nav-item w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium transition text-slate-300 hover:bg-slate-800 hover:text-white" data-tab="calendar">
+        <i data-lucide="calendar" class="w-4 h-4"></i> Full Calendar & Planner
+      </button>
+      <button onclick="app.switchTab('clients')" class="nav-item w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium transition text-slate-300 hover:bg-slate-800 hover:text-white" data-tab="clients">
+        <span class="flex items-center gap-3"><i data-lucide="users" class="w-4 h-4"></i> Client Directory</span>
+        <span id="navInvoiceRemindersPill" class="hidden text-[10px] font-mono bg-rose-600 text-white font-bold px-1.5 py-0.5 rounded-full">0</span>
+      </button>
+      <button onclick="app.switchTab('invoices')" class="nav-item w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium transition text-slate-300 hover:bg-slate-800 hover:text-white" data-tab="invoices">
+        <i data-lucide="file-text" class="w-4 h-4"></i> Tax Invoices
+      </button>
+      <button onclick="app.switchTab('worklog')" class="nav-item w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium transition text-slate-300 hover:bg-slate-800 hover:text-white" data-tab="worklog">
+        <i data-lucide="clipboard-list" class="w-4 h-4"></i> Work Hours Log
+      </button>
+      <button onclick="app.switchTab('taxcalc')" class="nav-item w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium transition text-slate-300 hover:bg-slate-800 hover:text-white" data-tab="taxcalc">
+        <i data-lucide="calculator" class="w-4 h-4"></i> AU Tax Guide (FY26–27)
+      </button>
+      <button onclick="app.switchTab('diary')" class="nav-item w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium transition text-slate-300 hover:bg-slate-800 hover:text-white" data-tab="diary">
+        <i data-lucide="book-marked" class="w-4 h-4"></i> Glovebox Memo Slots
+      </button>
+      <button onclick="app.switchTab('vehicle')" class="nav-item w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium transition text-slate-300 hover:bg-slate-800 hover:text-white" data-tab="vehicle">
+        <i data-lucide="car" class="w-4 h-4"></i> Vehicle Km & Trips
+      </button>
+    </nav>
+
+    <!-- Drawer Quick Trigger in Sidebar -->
+    <div class="p-3 mx-3 my-2 bg-slate-800/50 rounded-xl border border-slate-700/50 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <i data-lucide="wallet" class="w-4 h-4 text-emerald-400"></i>
+        <span class="text-[11px] font-medium text-slate-300">Financials & Records</span>
+      </div>
+      <button onclick="app.toggleMetricsDrawer()" class="px-2 py-1 bg-slate-700 hover:bg-emerald-600 text-white rounded text-[10px] font-semibold transition flex items-center gap-1">
+        Drawer <i data-lucide="chevron-right" class="w-3 h-3"></i>
+      </button>
+    </div>
+
+    <!-- Snapshot Device Transfer Component -->
+    <div class="p-3.5 border-t border-slate-800 space-y-2.5">
+      <div class="flex items-center justify-between text-[11px] text-slate-300 px-1">
+        <span class="font-bold text-white flex items-center gap-1">
+          <i data-lucide="database" class="w-3.5 h-3.5 text-emerald-400"></i> Device Snapshot
+        </span>
+        <span class="inline-flex items-center text-emerald-400 gap-1 text-[10px]">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Offline Cache
+        </span>
+      </div>
+      <button onclick="app.openSnapshotModal()" class="w-full py-2 px-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-md">
+        <i data-lucide="share-2" class="w-3.5 h-3.5"></i> Export / Email / Transfer
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main View Area -->
+  <main class="flex-1 flex flex-col min-w-0 overflow-y-auto">
+    <!-- Top Reference / Operational Bar -->
+    <div class="bg-amber-50 border-b border-amber-200/80 px-4 py-2 text-xs text-amber-900 flex items-center justify-between flex-wrap gap-2">
+      <div class="flex items-center gap-2">
+        <i data-lucide="shield-check" class="w-4 h-4 text-emerald-700 flex-shrink-0"></i>
+        <span><strong>Sole Trader Vehicle Daybook:</strong> 7-day field schedule & on-site active client tracker. (Self-contained guide).</span>
+      </div>
+      <div class="flex items-center gap-2.5">
+        <button onclick="app.openSnapshotModal()" class="inline-flex items-center gap-1 px-2.5 py-1 bg-white hover:bg-slate-50 text-slate-800 rounded-lg text-[11px] font-bold border border-amber-300 transition shadow-xs">
+          <i data-lucide="download" class="w-3 h-3 text-emerald-600"></i>
+          <span>Save / Transfer Snapshot</span>
+        </button>
+        <button onclick="app.toggleMetricsDrawer()" class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-amber-100/90 hover:bg-amber-200 text-amber-900 rounded-lg text-[11px] font-bold border border-amber-300 transition">
+          <i data-lucide="bar-chart-2" class="w-3.5 h-3.5 text-amber-800"></i>
+          <span>Financials Drawer</span>
+          <span id="topDrawerAlert" class="w-2 h-2 rounded-full bg-rose-500 hidden"></span>
+        </button>
+        <span class="font-mono bg-emerald-800 text-white px-2.5 py-0.5 rounded text-[11px] font-bold tracking-wide">AU FY 2026–2027</span>
+      </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 bg-slate-900 text-white text-xs px-4 py-3 rounded-xl shadow-2xl flex items-center gap-2.5 transform translate-y-24 opacity-0 transition duration-300 pointer-events-none">
+      <i id="toastIcon" data-lucide="check-circle" class="w-4 h-4 text-emerald-400"></i>
+      <span id="toastMsg">Operation successful</span>
+    </div>
+
+    <!-- Main Container Content -->
+    <div class="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto w-full space-y-6">
+
+      <!-- ================= SECTION 1: PRIMARY 7-DAY ROLLING HORIZON DASHBOARD ================= -->
+      <section id="view-dashboard" class="tab-view space-y-6">
+        
+        <!-- ACTIVE JOB / CURRENT CLIENT FOCUS PANEL -->
+        <div id="activeClientPanel" class="bg-gradient-to-r from-slate-900 via-slate-800 to-emerald-950 text-white rounded-2xl p-5 sm:p-6 shadow-md border border-slate-800 relative overflow-hidden">
+          <div class="absolute -right-8 -bottom-8 opacity-10 pointer-events-none text-emerald-400">
+            <i data-lucide="hard-hat" class="w-48 h-48"></i>
+          </div>
+
+          <div class="relative z-10 space-y-4">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-700/60">
+              <div class="flex items-center gap-2.5">
+                <span class="flex h-3 w-3 relative">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+                </span>
+                <span class="text-xs uppercase tracking-wider font-extrabold text-emerald-400">Active On-Site Job & Client Focus</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <select id="activeClientSelector" onchange="app.changeActiveJob(this.value)" class="text-xs bg-slate-800 text-slate-200 border border-slate-700 rounded-lg px-2.5 py-1.5 focus:ring-1 focus:ring-emerald-500 focus:outline-none">
+                  <option value="">-- Choose active job or client --</option>
+                </select>
+                <button onclick="app.clearActiveClient()" class="text-xs text-slate-400 hover:text-white px-2 py-1 transition" title="Clear on-site focus">
+                  Clear
+                </button>
+              </div>
+            </div>
+
+            <!-- Active Client Details Grid -->
+            <div id="activeClientDetails" class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+              <div class="space-y-1">
+                <span class="text-[11px] font-semibold text-emerald-400 uppercase tracking-wider" id="activeClientJobSubtitle">Current Scheduled Work</span>
+                <h3 class="text-lg sm:text-xl font-bold text-white tracking-tight" id="activeClientName">No active job selected</h3>
+                <p class="text-xs text-slate-300" id="activeJobTaskName">Select an appointment below to load site directions, contact info, and start work.</p>
+              </div>
+
+              <div class="space-y-1 text-xs text-slate-300 bg-slate-800/60 p-3 rounded-xl border border-slate-700/50">
+                <div class="flex items-center gap-2">
+                  <i data-lucide="phone" class="w-3.5 h-3.5 text-emerald-400"></i>
+                  <a id="activeClientPhoneLink" href="#" class="hover:underline font-mono text-emerald-300">--</a>
+                </div>
+                <div class="flex items-start gap-2">
+                  <i data-lucide="map-pin" class="w-3.5 h-3.5 text-emerald-400 flex-shrink-0 mt-0.5"></i>
+                  <span id="activeClientLocation" class="truncate">--</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <i data-lucide="key" class="w-3.5 h-3.5 text-amber-400 flex-shrink-0"></i>
+                  <span id="activeClientAccessNote" class="text-amber-200 truncate">No gate or access code recorded</span>
+                </div>
+              </div>
+
+              <div class="flex flex-col sm:items-end justify-center gap-2">
+                <div class="text-right">
+                  <span class="text-[10px] text-slate-400 uppercase font-semibold">Agreed Trade Rate</span>
+                  <div class="text-xl font-black font-mono text-emerald-400" id="activeClientRateDisplay">$85.00/hr</div>
+                </div>
+                <div class="flex flex-wrap items-center gap-2">
+                  <button id="btnActiveLogHours" onclick="app.openWorkLogForActive()" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
+                    <i data-lucide="check" class="w-3.5 h-3.5"></i> Log Shift
+                  </button>
+                  <button id="btnActiveInvoice" onclick="app.invoiceActiveClient()" class="px-3 py-1.5 bg-amber-600 hover:bg-amber-500 text-white rounded-lg text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
+                    <i data-lucide="receipt" class="w-3.5 h-3.5"></i> Create Invoice
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 7-DAY ROLLING HORIZON HEADER -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <h2 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight flex items-center gap-2">
+              <i data-lucide="calendar-range" class="w-6 h-6 text-emerald-600"></i> 7-Day Rolling Horizon
+            </h2>
+            <p class="text-xs text-slate-500">Your upcoming week at a glance. Tap any appointment to make it your active on-site job.</p>
+          </div>
+
+          <!-- Controls: Date offsets and Add Job -->
+          <div class="flex items-center gap-2">
+            <button onclick="app.shiftSevenDay(-7)" class="p-2 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 text-slate-700 transition" title="Previous 7 Days">
+              <i data-lucide="chevron-left" class="w-4 h-4"></i>
+            </button>
+            <button onclick="app.resetSevenDayToToday()" class="px-3 py-1.5 bg-white border border-slate-300 rounded-lg text-xs font-bold text-slate-800 hover:bg-slate-50 transition">
+              Today
+            </button>
+            <button onclick="app.shiftSevenDay(7)" class="p-2 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 text-slate-700 transition" title="Next 7 Days">
+              <i data-lucide="chevron-right" class="w-4 h-4"></i>
+            </button>
+            <button onclick="app.openScheduleModal()" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-lg shadow-sm transition ml-1">
+              <i data-lucide="calendar-plus" class="w-3.5 h-3.5"></i> + Schedule Job
+            </button>
+          </div>
+        </div>
+
+        <!-- 7-DAY COLUMN CONTAINER -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3" id="sevenDayContainer">
+          <!-- Dynamically populated 7 day cards -->
+        </div>
+
+        <!-- LOWER SECTION: QUICK GLOVEBOX SCRATCHPAD & SLIDE-OUT TEASER -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 pt-2">
+          <!-- Glovebox Slot 1 Run-sheet -->
+          <div class="lg:col-span-8 bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-3">
+            <div class="flex items-center justify-between pb-2 border-b border-slate-100">
+              <div class="flex items-center gap-2">
+                <i data-lucide="book-marked" class="w-4 h-4 text-amber-600"></i>
+                <h3 class="font-bold text-slate-900 text-sm">Vehicle Glovebox Run-Sheet (Slot 1)</h3>
+              </div>
+              <div class="flex items-center gap-2">
+                <button onclick="app.saveDashQuickNote()" class="text-xs text-emerald-700 hover:text-emerald-800 font-bold flex items-center gap-1">
+                  <i data-lucide="save" class="w-3.5 h-3.5"></i> Save Slot
+                </button>
+                <button onclick="app.switchTab('diary')" class="text-xs text-slate-500 hover:text-slate-800 font-medium">
+                  All 5 Slots →
+                </button>
+              </div>
+            </div>
+            <textarea id="dashSlotTextarea" class="w-full min-h-[110px] p-3 text-xs bg-amber-50/40 border border-amber-200/80 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:outline-none placeholder-slate-400 font-sans" placeholder="e.g. 07:15 Middy's for 25mm conduit and Clipsal RCDs. Site induction key #4492. Call Dave on arrival."></textarea>
+          </div>
+
+          <!-- Tucked Records Teaser Card -->
+          <div class="lg:col-span-4 bg-slate-900 text-white rounded-2xl p-5 shadow-sm flex flex-col justify-between space-y-3">
+            <div>
+              <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+                <span class="text-xs uppercase font-extrabold tracking-wider text-emerald-400">Financials & Records</span>
+                <span class="text-[10px] text-slate-400">Tucked in Drawer</span>
+              </div>
+              <p class="text-xs text-slate-300 mt-2">Logged hours totals, tax invoices, vehicle km deductions, and FY26–27 tax rates are tucked away to keep your daybook clean.</p>
+              
+              <div class="mt-3 grid grid-cols-2 gap-2 text-xs">
+                <div class="bg-slate-800/80 p-2.5 rounded-lg border border-slate-700">
+                  <span class="text-[10px] text-slate-400 block">Logged Hours</span>
+                  <span class="font-bold font-mono text-emerald-400 text-sm" id="teaserHours">0.00 hrs</span>
+                </div>
+                <div class="bg-slate-800/80 p-2.5 rounded-lg border border-slate-700">
+                  <span class="text-[10px] text-slate-400 block">Invoices Sent</span>
+                  <span class="font-bold font-mono text-emerald-400 text-sm" id="teaserInvoices">$0.00</span>
+                </div>
+              </div>
+            </div>
+
+            <button onclick="app.toggleMetricsDrawer()" class="w-full py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-xl transition flex items-center justify-center gap-1.5 shadow-sm">
+              <i data-lucide="sidebar-open" class="w-4 h-4"></i> Open Financials & Records Drawer
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= SECTION 2: FULL CALENDAR & PLANNER ================= -->
+      <section id="view-calendar" class="tab-view hidden space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          <div>
+            <h2 class="text-2xl font-bold text-slate-900 tracking-tight">Full Calendar & Planner</h2>
+            <p class="text-xs text-slate-500">Plan shifts, client appointments, site inductions, and quote deadlines.</p>
+          </div>
+          <div class="flex flex-wrap items-center gap-2">
+            <div class="bg-slate-200/80 p-0.5 rounded-lg flex text-xs">
+              <button id="calViewGridBtn" onclick="app.setScheduleView('calendar')" class="px-3 py-1.5 rounded-md font-semibold transition bg-white text-slate-900 shadow-sm">
+                Month Grid
+              </button>
+              <button id="calViewAgendaBtn" onclick="app.setScheduleView('agenda')" class="px-3 py-1.5 rounded-md font-semibold transition text-slate-600 hover:text-slate-900">
+                Agenda List
+              </button>
+            </div>
+            <button onclick="app.openScheduleModal()" class="inline-flex items-center gap-1.5 px-3 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded-lg shadow-sm transition">
+              <i data-lucide="plus" class="w-3.5 h-3.5"></i> Schedule Appointment
+            </button>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-3">
+          <div class="flex items-center gap-2">
+            <h3 id="calendarMonthHeading" class="text-lg font-bold text-slate-900 min-w-[180px]">Month Year</h3>
+            <button onclick="app.jumpCalendarToday()" class="px-2.5 py-1 text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg transition">
+              Today
+            </button>
+          </div>
+          <div class="flex items-center gap-1">
+            <button onclick="app.changeMonth(-1)" class="p-2 text-slate-600 hover:bg-slate-100 rounded-lg transition">
+              <i data-lucide="chevron-left" class="w-4 h-4"></i>
+            </button>
+            <button onclick="app.changeMonth(1)" class="p-2 text-slate-600 hover:bg-slate-100 rounded-lg transition">
+              <i data-lucide="chevron-right" class="w-4 h-4"></i>
+            </button>
+          </div>
+        </div>
+
+        <div id="calendarGridContainer" class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+          <div class="grid grid-cols-7 text-center py-2.5 bg-slate-100/70 border-b border-slate-200 text-[11px] font-bold uppercase text-slate-600 tracking-wider">
+            <div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div><div>Sun</div>
+          </div>
+          <div id="calendarDaysGrid" class="grid grid-cols-7 divide-x divide-y divide-slate-100">
+            <!-- Dynamically populated month cells -->
+          </div>
+        </div>
+
+        <!-- Selected Day Details -->
+        <div id="selectedDayPanel" class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-slate-100">
+            <div class="flex items-center gap-2">
+              <i data-lucide="calendar-days" class="w-4 h-4 text-emerald-600"></i>
+              <h3 id="selectedDateTitle" class="font-bold text-slate-900 text-sm">Schedule for Selected Date</h3>
+            </div>
+            <button onclick="app.openScheduleModal(app.state.calendar.selectedDate)" class="inline-flex items-center gap-1 text-xs text-emerald-700 hover:text-emerald-800 font-bold">
+              <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add Appointment on this date
+            </button>
+          </div>
+          <div id="selectedDayEventsList" class="mt-3 space-y-2"></div>
+        </div>
+
+        <!-- Agenda List View -->
+        <div id="calendarAgendaContainer" class="hidden bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+          <div class="p-4 border-b border-slate-200 bg-slate-50/60 flex items-center justify-between">
+            <h3 class="font-bold text-slate-900 text-sm flex items-center gap-2">
+              <i data-lucide="list" class="w-4 h-4 text-slate-600"></i> All Upcoming Scheduled Appointments
+            </h3>
+            <span class="text-xs text-slate-400 font-mono" id="agendaTotalBadge">0 Appointments</span>
+          </div>
+          <div class="divide-y divide-slate-100" id="agendaListContent"></div>
+        </div>
+      </section>
+
+      <!-- ================= SECTION 3: CLIENT DIRECTORY (CRM) ================= -->
+      <section id="view-clients" class="tab-view hidden space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          <div>
+            <h2 class="text-2xl font-bold text-slate-900 tracking-tight">Client Directory & CRM</h2>
+            <p class="text-xs text-slate-500">Categorize contacts as Leads, New Clients, or Active Accounts. Trigger 1-click invoice reminders.</p>
+          </div>
+          <button onclick="app.openClientModal()" class="inline-flex items-center gap-1.5 px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded-lg shadow-sm transition">
+            <i data-lucide="user-plus" class="w-4 h-4"></i> Add New Client
+          </button>
+        </div>
+
+        <!-- Filter and Search Row -->
+        <div class="grid grid-cols-1 sm:grid-cols-12 gap-3">
+          <div class="sm:col-span-8 bg-white p-3 rounded-xl border border-slate-200 shadow-sm flex items-center gap-2">
+            <i data-lucide="search" class="w-4 h-4 text-slate-400"></i>
+            <input type="text" id="clientSearchInput" placeholder="Search clients by name, contact person, phone, suburb, or notes..." class="w-full text-xs focus:outline-none bg-transparent" oninput="app.renderClients()">
+          </div>
+          <div class="sm:col-span-4 bg-white p-2 rounded-xl border border-slate-200 shadow-sm">
+            <select id="clientStatusFilter" onchange="app.renderClients()" class="w-full text-xs bg-transparent border-0 focus:outline-none font-semibold text-slate-700">
+              <option value="ALL">All Clients & Leads</option>
+              <option value="LEAD">Leads / Inquiries</option>
+              <option value="NEW">New Clients (No Work Yet)</option>
+              <option value="ACTIVE">Active Clients (Work Done)</option>
+              <option value="INVOICE_PENDING">⚠️ Invoice Reminder Pending</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="clientsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+
+        <div id="emptyClientsState" class="bg-white rounded-2xl border border-slate-200 p-12 text-center text-slate-400 hidden">
+          <i data-lucide="users" class="w-10 h-10 mx-auto text-slate-300 mb-2"></i>
+          <p class="text-xs font-medium text-slate-600">No matching clients found.</p>
+          <p class="text-[11px] text-slate-400 mt-1">Add new clients or clear your search filters.</p>
+        </div>
+      </section>
+
+      <!-- ================= SECTION 4: TAX INVOICES ================= -->
+      <section id="view-invoices" class="tab-view hidden space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          <div>
+            <h2 class="text-2xl font-bold text-slate-900 tracking-tight">Tax Invoice Generator</h2>
+            <p class="text-xs text-slate-500">Australian standard Tax Invoices (FY 2026–2027) with GST toggle, live print-to-PDF, and saved history.</p>
+          </div>
+          <button onclick="app.resetInvoiceForm()" class="inline-flex items-center gap-1.5 px-3.5 py-2 bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold rounded-lg shadow-sm transition">
+            <i data-lucide="plus" class="w-4 h-4"></i> New Blank Invoice
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <div class="lg:col-span-7 bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+              <h3 class="font-bold text-slate-900 text-sm flex items-center gap-2">
+                <i data-lucide="edit" class="w-4 h-4 text-emerald-600"></i> Invoice Details
+              </h3>
+              <label class="text-xs text-slate-700 font-semibold flex items-center gap-1.5 cursor-pointer">
+                <input type="checkbox" id="invGstToggle" class="rounded text-emerald-600 focus:ring-emerald-500" checked onchange="app.renderInvoicePreview()">
+                Include 10% GST (Tax Invoice)
+              </label>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div>
+                <label class="block text-xs font-semibold text-slate-600 mb-1">Invoice Number</label>
+                <input type="text" id="invNumber" class="w-full text-xs border border-slate-300 rounded-lg p-2.5 font-mono" value="INV-1001" oninput="app.renderInvoicePreview()">
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-slate-600 mb-1">Date of Issue</label>
+                <input type="date" id="invDate" class="w-full text-xs border border-slate-300 rounded-lg p-2.5" onchange="app.renderInvoicePreview()">
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-slate-600 mb-1">Due Date</label>
+                <input type="date" id="invDueDate" class="w-full text-xs border border-slate-300 rounded-lg p-2.5" onchange="app.renderInvoicePreview()">
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-slate-600 mb-1">Bill To Client</label>
+              <select id="invClientSelect" class="w-full text-xs border border-slate-300 rounded-lg p-2.5" onchange="app.onInvoiceClientChange()">
+                <option value="">-- Choose Existing Client or Enter Details Below --</option>
+              </select>
+            </div>
+
+            <div id="invCustomClientBlock" class="space-y-2">
+              <input type="text" id="invClientName" placeholder="Client or Company Name" class="w-full text-xs border border-slate-300 rounded-lg p-2.5" oninput="app.renderInvoicePreview()">
+              <input type="text" id="invClientAddress" placeholder="Client Address, Email, or ABN" class="w-full text-xs border border-slate-300 rounded-lg p-2.5" oninput="app.renderInvoicePreview()">
+            </div>
+
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Line Items</span>
+                <button onclick="app.addInvoiceItem()" class="text-xs text-emerald-700 hover:text-emerald-800 font-bold flex items-center gap-1">
+                  <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add Line Item
+                </button>
+              </div>
+              <div id="invItemsContainer" class="space-y-2"></div>
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-slate-600 mb-1">Payment EFT / Direct Bank Details</label>
+              <textarea id="invBankDetails" class="w-full p-2.5 text-xs border border-slate-300 rounded-lg font-mono" rows="2" oninput="app.renderInvoicePreview()">Bank: Commonwealth Bank of Australia
+BSB: 062-000  Account: 1234 5678
+Account Name: Apex Trade & Services
+Reference: [Invoice Number]</textarea>
+            </div>
+
+            <div class="flex items-center justify-end gap-3 pt-2">
+              <button onclick="app.saveCurrentInvoiceRecord()" class="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition flex items-center gap-2 shadow-sm">
+                <i data-lucide="save" class="w-4 h-4"></i> Save to Invoice History
+              </button>
+            </div>
+          </div>
+
+          <!-- Preview & Print -->
+          <div class="lg:col-span-5 flex flex-col">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Live Preview & Print Layout</span>
+              <button onclick="window.print()" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold rounded-lg shadow-sm transition">
+                <i data-lucide="printer" class="w-3.5 h-3.5"></i> Print / PDF
+              </button>
+            </div>
+
+            <div id="printableInvoice" class="bg-white rounded-2xl border border-slate-300 p-6 shadow-sm flex-1 flex flex-col justify-between text-slate-800 text-xs">
+              <div>
+                <div class="flex justify-between items-start border-b border-slate-200 pb-4">
+                  <div>
+                    <h1 class="text-base font-black tracking-tight text-slate-900" id="prevBizName">Apex Trade & Services</h1>
+                    <p class="text-slate-500" id="prevBizABN">ABN: 52 123 456 789</p>
+                    <p class="text-slate-500" id="prevBizContact">admin@apextrades.com.au</p>
+                  </div>
+                  <div class="text-right">
+                    <span id="prevTaxInvoiceHeader" class="text-[11px] font-black tracking-wider uppercase bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded">TAX INVOICE</span>
+                    <p class="mt-2 font-mono font-bold text-slate-900 text-sm" id="prevInvNumber">INV-1001</p>
+                    <p class="text-slate-500">Date: <span id="prevInvDate"></span></p>
+                    <p class="text-slate-500">Due: <span id="prevInvDueDate"></span></p>
+                  </div>
+                </div>
+
+                <div class="my-4">
+                  <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Bill To:</span>
+                  <div class="font-bold text-slate-800 text-sm" id="prevClientName">Client Name</div>
+                  <div class="text-slate-500 whitespace-pre-line" id="prevClientDetails">Client Address Details</div>
+                </div>
+
+                <table class="w-full my-3 border-t border-b border-slate-200">
+                  <thead>
+                    <tr class="border-b border-slate-200 text-[10px] font-bold text-slate-500 uppercase">
+                      <th class="py-1 text-left">Description</th>
+                      <th class="py-1 text-right">Qty/Hrs</th>
+                      <th class="py-1 text-right">Rate</th>
+                      <th class="py-1 text-right">Amount</th>
+                    </tr>
+                  </thead>
+                  <tbody id="prevItemsBody" class="divide-y divide-slate-100"></tbody>
+                </table>
+
+                <div class="flex justify-end pt-2">
+                  <div class="w-48 space-y-1 text-right">
+                    <div class="flex justify-between text-slate-600">
+                      <span>Subtotal:</span>
+                      <span id="prevSubtotal" class="font-mono">$0.00</span>
+                    </div>
+                    <div id="prevGstRow" class="flex justify-between text-slate-600">
+                      <span>GST (10%):</span>
+                      <span id="prevGstAmount" class="font-mono">$0.00</span>
+                    </div>
+                    <div class="flex justify-between font-bold text-sm text-slate-900 border-t border-slate-200 pt-1">
+                      <span>Total AUD:</span>
+                      <span id="prevTotalAmount" class="font-mono">$0.00</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mt-8 pt-4 border-t border-slate-200 text-[11px] text-slate-600">
+                <span class="font-bold block mb-1">Direct Bank Deposit Details:</span>
+                <div id="prevBankDetails" class="whitespace-pre-line font-mono text-[10px] bg-slate-50 p-2 rounded border border-slate-100">
+                  BSB: 062-000 Acc: 1234 5678
+                </div>
+                <p class="mt-2 text-center text-[10px] text-slate-400">Thank you for your business! (Issued under AU FY26–27 Rules)</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Saved Invoices Archive Table -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+          <h3 class="font-bold text-slate-900 text-sm mb-3 flex items-center gap-2">
+            <i data-lucide="archive" class="w-4 h-4 text-slate-500"></i> Local Invoices Archive
+          </h3>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-slate-50 text-slate-600 uppercase font-semibold">
+                <tr>
+                  <th class="px-3 py-2">Invoice #</th>
+                  <th class="px-3 py-2">Date</th>
+                  <th class="px-3 py-2">Client</th>
+                  <th class="px-3 py-2 text-right">Total AUD</th>
+                  <th class="px-3 py-2 text-center">Status</th>
+                  <th class="px-3 py-2 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="savedInvoicesTableBody" class="divide-y divide-slate-100"></tbody>
+            </table>
+          </div>
+          <div id="emptyInvoiceHistoryState" class="py-6 text-center text-slate-400 text-xs">
+            No saved invoice records yet.
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= SECTION 5: WORK HOURS & SHIFT LOG ================= -->
+      <section id="view-worklog" class="tab-view hidden space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          <div>
+            <h2 class="text-2xl font-bold text-slate-900 tracking-tight">Work Hours & Shift Log</h2>
+            <p class="text-xs text-slate-500">Record billable client hours, shift summaries, and calculate labour value.</p>
+          </div>
+          <button onclick="app.openWorkLogModal()" class="inline-flex items-center gap-1.5 px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded-lg shadow-sm transition">
+            <i data-lucide="plus-circle" class="w-4 h-4"></i> Add Work Log Entry
+          </button>
+        </div>
+
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+          <div class="p-4 border-b border-slate-200 bg-slate-50/50 flex items-center justify-between">
+            <h3 class="font-bold text-slate-900 text-sm flex items-center gap-2">
+              <i data-lucide="clipboard-list" class="w-4 h-4 text-emerald-600"></i> Work Entries History (FY 2026–27)
+            </h3>
+            <button onclick="app.clearWorkLogs()" class="text-xs text-rose-600 hover:text-rose-700 font-medium">Clear All Work Logs</button>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-slate-100/70 text-slate-600 uppercase font-semibold border-b border-slate-200">
+                <tr>
+                  <th class="px-4 py-3">Date</th>
+                  <th class="px-4 py-3">Client</th>
+                  <th class="px-4 py-3">Shift Notes</th>
+                  <th class="px-4 py-3 text-right">Hours</th>
+                  <th class="px-4 py-3 text-right">Rate ($)</th>
+                  <th class="px-4 py-3 text-right">Total ($ AUD)</th>
+                  <th class="px-4 py-3 text-center">Action</th>
+                </tr>
+              </thead>
+              <tbody id="workLogsTableBody" class="divide-y divide-slate-100"></tbody>
+            </table>
+          </div>
+          <div id="emptyWorkLogState" class="p-8 text-center text-slate-400 text-xs">
+            No work logs recorded yet.
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= SECTION 6: AU TAX GUIDE (FY 2026–2027) ================= -->
+      <section id="view-taxcalc" class="tab-view hidden space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          <div>
+            <h2 class="text-2xl font-bold text-slate-900 tracking-tight">Australian Sole Trader Tax Guide (FY 2026–2027)</h2>
+            <p class="text-xs text-slate-500">ATO individual resident brackets (FY26–27), 2% Medicare levy, and quarterly PAYG buffers.</p>
+          </div>
+          <span class="inline-flex items-center gap-1 text-xs text-emerald-800 bg-emerald-100 font-bold px-3 py-1 rounded-full border border-emerald-200">
+            <i data-lucide="check" class="w-3.5 h-3.5"></i> FY 2026–2027 Tax Brackets
+          </span>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <div class="lg:col-span-6 bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-4">
+            <h3 class="font-bold text-slate-900 text-sm flex items-center gap-2">
+              <i data-lucide="sliders" class="w-4 h-4 text-emerald-600"></i> Financial Estimates (1 July 2026 – 30 June 2027)
+            </h3>
+            
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Gross Annual Turnover ($ AUD)</label>
+              <div class="relative">
+                <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400 font-mono text-xs">$</span>
+                <input type="number" id="taxGrossIncome" class="w-full text-sm font-semibold border border-slate-300 rounded-lg pl-8 pr-3 py-2.5" value="95000" min="0" step="1000" oninput="app.calculateTax()">
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Allowable Business Deductions ($ AUD)</label>
+              <div class="relative">
+                <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400 font-mono text-xs">$</span>
+                <input type="number" id="taxExpenses" class="w-full text-sm font-semibold border border-slate-300 rounded-lg pl-8 pr-3 py-2.5" value="18000" min="0" step="500" oninput="app.calculateTax()">
+              </div>
+            </div>
+
+            <div class="pt-2 border-t border-slate-100 space-y-2">
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" id="taxGstRegistered" class="rounded text-emerald-600" checked onchange="app.calculateTax()">
+                <span class="text-xs font-semibold text-slate-700">Registered for GST ($75k ATO turnover threshold)</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" id="taxMedicareLevy" class="rounded text-emerald-600" checked onchange="app.calculateTax()">
+                <span class="text-xs font-semibold text-slate-700">Include standard 2.0% Medicare Levy</span>
+              </label>
+            </div>
+
+            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 text-[11px] text-slate-600 space-y-1">
+              <span class="font-bold text-slate-800">FY 2026–27 Statutory Tax Brackets:</span>
+              <ul class="list-disc pl-4 space-y-0.5 text-slate-500 font-mono text-[10px]">
+                <li>$0 – $18,200: Nil (Tax-free threshold)</li>
+                <li>$18,201 – $45,000: 16c for each $1 over $18,200</li>
+                <li>$45,001 – $135,000: $4,288 + 30c for each $1 over $45,000</li>
+                <li>$135,001 – $190,000: $31,288 + 37c for each $1 over $135,000</li>
+                <li>$190,001+: $51,638 + 45c for each $1 over $190,000</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="lg:col-span-6 bg-gradient-to-br from-slate-900 to-slate-800 text-white rounded-2xl p-6 shadow-sm flex flex-col justify-between">
+            <div>
+              <span class="text-xs uppercase font-bold tracking-wider text-emerald-400">Estimated Annual Guide (FY 2026–2027)</span>
+              <div class="py-2">
+                <span class="text-xs text-slate-300">Estimated Net Taxable Income</span>
+                <div class="text-3xl font-black font-mono text-white mt-0.5" id="outTaxableIncome">$77,000.00</div>
+              </div>
+
+              <div class="space-y-2 py-2 border-t border-slate-700/60 text-xs">
+                <div class="flex justify-between items-center text-slate-300">
+                  <span>Gross Income Tax:</span>
+                  <span class="font-mono font-semibold text-rose-300" id="outIncomeTax">$13,888.00</span>
+                </div>
+                <div class="flex justify-between items-center text-slate-300">
+                  <span>Medicare Levy (2%):</span>
+                  <span class="font-mono font-semibold text-rose-300" id="outMedicare">$1,540.00</span>
+                </div>
+                <div class="flex justify-between items-center text-slate-300">
+                  <span>Total Tax Obligation:</span>
+                  <span class="font-mono font-bold text-rose-400" id="outTotalTaxObligation">$15,428.00</span>
+                </div>
+                <div class="flex justify-between items-center text-slate-300 pt-1 border-t border-slate-800">
+                  <span class="font-medium text-emerald-300">Estimated Take-Home (Net):</span>
+                  <span class="font-mono font-black text-base text-emerald-400" id="outTakeHome">$61,572.00</span>
+                </div>
+                <div id="outGstBlock" class="flex justify-between items-center text-amber-300 bg-slate-800/80 p-2 rounded-lg border border-slate-700">
+                  <span>Est. Net GST to set aside:</span>
+                  <span class="font-mono font-bold" id="outGstSetAside">$7,000.00</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-4 pt-3 border-t border-slate-700 text-[11px] text-slate-400">
+              <span class="text-slate-200 font-semibold block mb-0.5">Vehicle Bank Buffer Advice:</span>
+              <p>Set aside roughly <strong class="text-emerald-300 font-mono text-xs" id="outRecommendedBufferRate">25%</strong> of every client deposit into a separate savings account for quarterly PAYG.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= SECTION 7: GLOVEBOX MEMORANDUM SLOTS ================= -->
+      <section id="view-diary" class="tab-view hidden space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          <div>
+            <h2 class="text-2xl font-bold text-slate-900 tracking-tight">Memorandum & Slot Diary</h2>
+            <p class="text-xs text-slate-500">Dedicated vehicle scratchpad. 5 separate named slots for site codes, run sheets, and parts.</p>
+          </div>
+          <button onclick="app.addNewMemoSlot()" class="inline-flex items-center gap-1.5 px-3 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded-lg shadow-sm transition">
+            <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add Custom Slot
+          </button>
+        </div>
+
+        <div class="flex items-center gap-2 overflow-x-auto pb-2 border-b border-slate-200" id="memoSlotTabs"></div>
+
+        <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-4">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
+            <div class="flex items-center gap-2 flex-1">
+              <i data-lucide="bookmark" class="w-4 h-4 text-emerald-600"></i>
+              <input type="text" id="activeSlotTitleInput" class="font-bold text-slate-800 text-sm border-b border-transparent hover:border-slate-300 focus:border-emerald-500 focus:outline-none px-1 py-0.5 w-full sm:w-auto" onchange="app.updateActiveSlotTitle(this.value)">
+            </div>
+            <div class="flex items-center gap-2">
+              <button onclick="app.clearActiveSlot()" class="px-2.5 py-1 text-xs text-rose-600 hover:text-rose-700 font-semibold border border-rose-200 rounded-lg hover:bg-rose-50 transition">
+                Clear Text
+              </button>
+              <button onclick="app.deleteActiveSlot()" id="deleteSlotBtn" class="px-2.5 py-1 text-xs text-slate-400 hover:text-rose-600 rounded-lg transition" title="Delete Slot">
+                <i data-lucide="trash-2" class="w-4 h-4"></i>
+              </button>
+            </div>
+          </div>
+
+          <textarea id="activeSlotContent" class="w-full min-h-[280px] p-4 text-xs font-sans bg-slate-50/70 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:bg-white focus:outline-none placeholder-slate-400 transition" placeholder="Type vehicle notes, gate combinations, urgent callback lists, or materials..." oninput="app.onActiveSlotContentChange()"></textarea>
+
+          <div class="flex flex-wrap items-center justify-between text-[11px] text-slate-400 gap-2">
+            <span>Stored in browser memory.</span>
+            <div class="flex items-center gap-2 font-mono">
+              <span id="slotWordCount">0 words</span> | <span id="slotCharCount">0 characters</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= SECTION 8: VEHICLE KM & TRIPS ================= -->
+      <section id="view-vehicle" class="tab-view hidden space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          <div>
+            <h2 class="text-2xl font-bold text-slate-900 tracking-tight">Vehicle Trip & Kilometre Log</h2>
+            <p class="text-xs text-slate-500">Log work travel for your ute or work vehicle (ATO FY 2026–2027 Cents-per-km).</p>
+          </div>
+          <button onclick="app.openVehicleTripModal()" class="inline-flex items-center gap-1.5 px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded-lg shadow-sm transition">
+            <i data-lucide="plus" class="w-4 h-4"></i> Log New Trip
+          </button>
+        </div>
+
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+          <div class="p-4 border-b border-slate-200 bg-slate-50/50 flex items-center justify-between">
+            <h3 class="font-bold text-slate-900 text-sm flex items-center gap-2">
+              <i data-lucide="route" class="w-4 h-4 text-emerald-600"></i> Trip Logbook Entries
+            </h3>
+            <button onclick="app.clearVehicleTrips()" class="text-xs text-rose-600 hover:text-rose-700 font-medium">Clear All Trips</button>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-slate-100/70 text-slate-600 uppercase font-semibold border-b border-slate-200">
+                <tr>
+                  <th class="px-4 py-3">Date</th>
+                  <th class="px-4 py-3">Purpose / Client / Destination</th>
+                  <th class="px-4 py-3 text-right">Start Odo</th>
+                  <th class="px-4 py-3 text-right">End Odo</th>
+                  <th class="px-4 py-3 text-right">Distance</th>
+                  <th class="px-4 py-3 text-right">Guide Deduction (88c/km)</th>
+                  <th class="px-4 py-3 text-center">Action</th>
+                </tr>
+              </thead>
+              <tbody id="vehicleTripsTableBody" class="divide-y divide-slate-100"></tbody>
+            </table>
+          </div>
+          <div id="emptyTripsState" class="p-8 text-center text-slate-400 text-xs">
+            No vehicle trips recorded yet.
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- ================= RIGHT-HAND SLIDE-OUT DRAWER (FINANCIALS & RECORDS) ================= -->
+  <div id="metricsDrawerOverlay" onclick="app.toggleMetricsDrawer()" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-40 transition-opacity opacity-0 pointer-events-none"></div>
+
+  <aside id="metricsDrawer" class="fixed top-0 right-0 h-full w-full sm:w-96 bg-white shadow-2xl z-50 transform translate-x-full transition-transform duration-300 flex flex-col border-l border-slate-200">
+    <div class="p-5 border-b border-slate-200 bg-slate-900 text-white flex items-center justify-between">
+      <div class="flex items-center gap-2.5">
+        <div class="p-1.5 rounded-lg bg-emerald-600 text-white">
+          <i data-lucide="bar-chart-3" class="w-4 h-4"></i>
+        </div>
+        <div>
+          <h3 class="font-bold text-sm">Financials & Records</h3>
+          <p class="text-[10px] text-slate-400">Tucked FY 2026–2027 Totals</p>
+        </div>
+      </div>
+      <button onclick="app.toggleMetricsDrawer()" class="text-slate-400 hover:text-white p-1">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+    </div>
+
+    <div class="flex-1 overflow-y-auto p-5 space-y-5 text-xs">
+      
+      <!-- Pending Invoice Alerts -->
+      <div id="drawerInvoiceAlertBox" class="p-3 bg-rose-50 border border-rose-200 rounded-xl space-y-1.5 hidden">
+        <div class="flex items-center gap-2 text-rose-800 font-bold">
+          <i data-lucide="bell" class="w-4 h-4 text-rose-600"></i>
+          <span>Invoice Reminders Pending (<span id="drawerPendingInvoiceCount">0</span>)</span>
+        </div>
+        <p class="text-[11px] text-rose-700">You have completed work or flagged clients waiting for an invoice to be issued.</p>
+        <button onclick="app.switchTab('clients'); app.toggleMetricsDrawer();" class="text-[11px] font-bold text-rose-800 underline block pt-1">
+          Review Client Reminders →
+        </button>
+      </div>
+
+      <!-- Logged Work Hours -->
+      <div class="bg-slate-50 border border-slate-200 p-4 rounded-xl space-y-2">
+        <div class="flex items-center justify-between text-slate-500">
+          <span class="text-[10px] font-bold uppercase tracking-wider">Logged Work Hours</span>
+          <i data-lucide="clock" class="w-4 h-4 text-blue-600"></i>
+        </div>
+        <div class="flex items-baseline justify-between">
+          <h4 class="text-2xl font-bold text-slate-900" id="drawerTotalHours">0.00 hrs</h4>
+          <span class="font-bold font-mono text-blue-600 text-sm" id="drawerHoursValue">$0.00</span>
+        </div>
+        <p class="text-[11px] text-slate-400">Total billable labour value recorded in shift logs.</p>
+        <button onclick="app.switchTab('worklog'); app.toggleMetricsDrawer();" class="w-full py-1.5 text-center bg-white border border-slate-200 rounded-lg hover:bg-slate-100 font-semibold text-slate-700 transition">
+          View Work Logbook →
+        </button>
+      </div>
+
+      <!-- Invoices Summary -->
+      <div class="bg-slate-50 border border-slate-200 p-4 rounded-xl space-y-2">
+        <div class="flex items-center justify-between text-slate-500">
+          <span class="text-[10px] font-bold uppercase tracking-wider">Invoices Issued Total</span>
+          <i data-lucide="receipt" class="w-4 h-4 text-purple-600"></i>
+        </div>
+        <div class="flex items-baseline justify-between">
+          <h4 class="text-2xl font-bold font-mono text-slate-900" id="drawerInvoicedTotal">$0.00</h4>
+          <span class="text-xs text-purple-700 font-semibold" id="drawerInvoicedCount">0 Invoices</span>
+        </div>
+        <p class="text-[11px] text-slate-400">Issued & archived Australian Tax Invoices.</p>
+        <button onclick="app.switchTab('invoices'); app.toggleMetricsDrawer();" class="w-full py-1.5 text-center bg-white border border-slate-200 rounded-lg hover:bg-slate-100 font-semibold text-slate-700 transition">
+          Open Invoice Generator →
+        </button>
+      </div>
+
+      <!-- Vehicle Kilometres -->
+      <div class="bg-slate-50 border border-slate-200 p-4 rounded-xl space-y-2">
+        <div class="flex items-center justify-between text-slate-500">
+          <span class="text-[10px] font-bold uppercase tracking-wider">Vehicle Kilometres Logged</span>
+          <i data-lucide="car" class="w-4 h-4 text-amber-600"></i>
+        </div>
+        <div class="flex items-baseline justify-between">
+          <h4 class="text-2xl font-bold font-mono text-slate-900" id="drawerTotalKm">0 km</h4>
+          <span class="font-bold font-mono text-amber-700 text-sm" id="drawerKmDeduction">$0.00</span>
+        </div>
+        <p class="text-[11px] text-slate-400">Calculated at ATO 88c/km cents-per-km guide rate.</p>
+        <button onclick="app.switchTab('vehicle'); app.toggleMetricsDrawer();" class="w-full py-1.5 text-center bg-white border border-slate-200 rounded-lg hover:bg-slate-100 font-semibold text-slate-700 transition">
+          View Vehicle Diary →
+        </button>
+      </div>
+
+      <!-- Quick ATO Tax Estimator Pill in Drawer -->
+      <div class="bg-slate-900 text-white p-4 rounded-xl space-y-2">
+        <div class="flex items-center justify-between text-emerald-400">
+          <span class="text-[10px] font-bold uppercase tracking-wider">ATO Tax Buffer Guide (FY26–27)</span>
+          <i data-lucide="calculator" class="w-4 h-4"></i>
+        </div>
+        <div class="flex items-center justify-between text-xs">
+          <span class="text-slate-300">Recommended Set-Aside:</span>
+          <span class="font-mono font-bold text-emerald-400" id="drawerTaxBufferRate">25%</span>
+        </div>
+        <p class="text-[11px] text-slate-400">Keep approx. 25% of all client revenue in a high-interest buffer account for tax & GST.</p>
+        <button onclick="app.switchTab('taxcalc'); app.toggleMetricsDrawer();" class="w-full py-1.5 text-center bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg font-semibold transition">
+          Full Tax Calculator →
+        </button>
+      </div>
+
+    </div>
+
+    <div class="p-3 border-t border-slate-200 bg-slate-50 text-center text-[11px] text-slate-400">
+      Self-contained vehicle reference data (FY26–27)
+    </div>
+  </aside>
+
+  <!-- ================= SNAPSHOT DATA TRANSFER MODAL ================= -->
+  <div id="snapshotModal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-5">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-lg bg-emerald-600 text-white flex items-center justify-center">
+            <i data-lucide="share-2" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <h3 class="text-base font-bold text-slate-900">Device Snapshot & Transfer</h3>
+            <p class="text-[11px] text-slate-500 font-medium">Download or email your data to load on your phone, ute laptop, or desktop</p>
+          </div>
+        </div>
+        <button onclick="app.closeSnapshotModal()" class="text-slate-400 hover:text-slate-600">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="space-y-4 text-xs text-slate-600">
+        <!-- Export Box -->
+        <div class="p-4 bg-emerald-50/70 border border-emerald-200 rounded-xl space-y-2.5">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-slate-900 text-xs flex items-center gap-1.5">
+              <i data-lucide="download" class="w-4 h-4 text-emerald-700"></i> Step 1: Download Snapshot File
+            </span>
+            <span class="text-[10px] bg-emerald-200 text-emerald-900 font-mono font-bold px-2 py-0.5 rounded">.JSON</span>
+          </div>
+          <p class="text-[11px] text-slate-600">Creates a clean, timestamped file containing all your clients, 7-day schedule, hours, invoices, vehicle km, and 5-slot memos.</p>
+          <div class="flex flex-wrap items-center gap-2 pt-1">
+            <button onclick="app.downloadSnapshotFile()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg transition flex items-center gap-1.5 shadow-sm">
+              <i data-lucide="file-down" class="w-4 h-4"></i> Download Snapshot File (.json)
+            </button>
+            <button onclick="app.composeEmailWithInstructions()" class="px-3 py-2 bg-white border border-emerald-300 hover:bg-emerald-100/60 text-emerald-800 font-semibold rounded-lg transition flex items-center gap-1.5">
+              <i data-lucide="mail" class="w-3.5 h-3.5 text-emerald-700"></i> Email Snapshot Helper
+            </button>
+          </div>
+        </div>
+
+        <!-- Import Box -->
+        <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-2.5">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-slate-900 text-xs flex items-center gap-1.5">
+              <i data-lucide="upload" class="w-4 h-4 text-blue-600"></i> Step 2: Load on Another Device
+            </span>
+            <span class="text-[10px] bg-slate-200 text-slate-700 font-mono font-bold px-2 py-0.5 rounded">Restore</span>
+          </div>
+          <p class="text-[11px] text-slate-600">Open SoloTrack on your other device, open this modal, and select your downloaded JSON snapshot file.</p>
+          <div>
+            <label class="inline-flex items-center gap-2 px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-lg cursor-pointer transition shadow-sm">
+              <i data-lucide="file-up" class="w-4 h-4 text-emerald-400"></i>
+              <span>Select & Load Snapshot File</span>
+              <input type="file" id="modalSnapshotFileInput" class="hidden" accept=".json" onchange="app.importSnapshotFile(event)">
+            </label>
+          </div>
+        </div>
+
+        <div class="p-3 bg-amber-50 rounded-xl border border-amber-200 text-[11px] text-amber-900 flex items-start gap-2">
+          <i data-lucide="info" class="w-4 h-4 text-amber-700 flex-shrink-0 mt-0.5"></i>
+          <span><strong>Tip for mobile email:</strong> After clicking Download, send the JSON file to your own email address as an attachment, open the email on your phone, download the file, and tap 'Select & Load Snapshot File' above.</span>
+        </div>
+      </div>
+
+      <div class="flex justify-end pt-2 border-t border-slate-100">
+        <button onclick="app.closeSnapshotModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-semibold">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 1: Schedule / Appointment Modal -->
+  <div id="scheduleModal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <h3 id="scheduleModalTitle" class="text-base font-bold text-slate-900">Schedule Job / Shift</h3>
+        <button onclick="app.closeScheduleModal()" class="text-slate-400 hover:text-slate-600">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <input type="hidden" id="modalScheduleId">
+      <div class="space-y-3 text-xs">
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Job Title / Task Summary *</label>
+          <input type="text" id="modalSchedTitle" class="w-full border border-slate-300 rounded-lg p-2.5" placeholder="e.g. Rough-in stage 2 electrical and check circuit breakers" required>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Client</label>
+            <select id="modalSchedClient" class="w-full border border-slate-300 rounded-lg p-2.5" onchange="app.onModalSchedClientChange()">
+              <option value="">-- General / No Client --</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Date</label>
+            <input type="date" id="modalSchedDate" class="w-full border border-slate-300 rounded-lg p-2.5">
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Start Time</label>
+            <input type="time" id="modalSchedStartTime" class="w-full border border-slate-300 rounded-lg p-2.5" value="08:30">
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">End Time</label>
+            <input type="time" id="modalSchedEndTime" class="w-full border border-slate-300 rounded-lg p-2.5" value="12:00">
+          </div>
+        </div>
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Location / Site Address</label>
+          <input type="text" id="modalSchedLocation" class="w-full border border-slate-300 rounded-lg p-2.5" placeholder="e.g. 18 Seaside Ave, Ocean Grove VIC">
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Status</label>
+            <select id="modalSchedStatus" class="w-full border border-slate-300 rounded-lg p-2.5">
+              <option value="Scheduled">Scheduled</option>
+              <option value="In Progress">In Progress (Active)</option>
+              <option value="Completed">Completed</option>
+              <option value="Invoice Needed">Invoice Needed</option>
+              <option value="Cancelled">Cancelled</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Rate ($/hr)</label>
+            <input type="number" id="modalSchedRate" class="w-full border border-slate-300 rounded-lg p-2.5" value="85">
+          </div>
+        </div>
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Notes / Gate Codes / Materials</label>
+          <textarea id="modalSchedNotes" class="w-full border border-slate-300 rounded-lg p-2.5" rows="2" placeholder="Key safe code, dog on premises, high-vis required..."></textarea>
+        </div>
+      </div>
+      <div class="flex justify-end gap-2 pt-2 border-t border-slate-100">
+        <button onclick="app.closeScheduleModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-semibold">Cancel</button>
+        <button onclick="app.saveScheduleItem()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold">Save Appointment</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 2: Work Log Modal -->
+  <div id="workLogModal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <h3 class="text-base font-bold text-slate-900">Record Work Shift Entry</h3>
+        <button onclick="app.closeWorkLogModal()" class="text-slate-400 hover:text-slate-600">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <div class="space-y-3 text-xs">
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Date</label>
+          <input type="date" id="wlDate" class="w-full border border-slate-300 rounded-lg p-2.5">
+        </div>
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Client</label>
+          <select id="wlClientSelect" class="w-full border border-slate-300 rounded-lg p-2.5" onchange="app.onWorkLogClientChange()">
+            <option value="">-- General / No Client --</option>
+          </select>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Hours Logged</label>
+            <input type="number" id="wlHours" step="0.25" min="0.1" value="3.5" class="w-full border border-slate-300 rounded-lg p-2.5">
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Hourly Rate ($ AUD)</label>
+            <input type="number" id="wlRate" step="5" min="0" value="85" class="w-full border border-slate-300 rounded-lg p-2.5">
+          </div>
+        </div>
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Work Description / Shift Notes</label>
+          <textarea id="wlDesc" rows="2.5" class="w-full border border-slate-300 rounded-lg p-2.5" placeholder="e.g. 08:30–12:00 Rough-in electrical cabling and safety testing"></textarea>
+        </div>
+      </div>
+      <div class="flex justify-end gap-2 pt-2 border-t border-slate-100">
+        <button onclick="app.closeWorkLogModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-semibold">Cancel</button>
+        <button onclick="app.saveWorkLogEntry()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold">Save Work Entry</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 3: Client CRM Modal -->
+  <div id="clientModal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <h3 id="clientModalTitle" class="text-base font-bold text-slate-900">Add New Client</h3>
+        <button onclick="app.closeClientModal()" class="text-slate-400 hover:text-slate-600">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <input type="hidden" id="modalClientId">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+        <div class="sm:col-span-2">
+          <label class="block font-semibold text-slate-700 mb-1">Company or Client Name *</label>
+          <input type="text" id="modalClientName" class="w-full border border-slate-300 rounded-lg p-2.5" required>
+        </div>
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Client Stage / Status *</label>
+          <select id="modalClientStage" class="w-full border border-slate-300 rounded-lg p-2.5 font-semibold text-slate-800">
+            <option value="ACTIVE">Active Client (Work Completed)</option>
+            <option value="NEW">New Client (No Work Done Yet)</option>
+            <option value="LEAD">Lead / Inquiring Prospect</option>
+          </select>
+        </div>
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Invoice Reminder Status</label>
+          <select id="modalClientInvoiceReminder" class="w-full border border-slate-300 rounded-lg p-2.5 font-semibold">
+            <option value="NONE">No Invoice Pending</option>
+            <option value="PENDING">⚠️ Send Invoice Reminder</option>
+          </select>
+        </div>
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Contact Person</label>
+          <input type="text" id="modalClientContact" class="w-full border border-slate-300 rounded-lg p-2.5">
+        </div>
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Phone Number (Tel)</label>
+          <input type="tel" id="modalClientPhone" class="w-full border border-slate-300 rounded-lg p-2.5" placeholder="0400 000 000">
+        </div>
+        <div class="sm:col-span-2">
+          <label class="block font-semibold text-slate-700 mb-1">Email Address</label>
+          <input type="email" id="modalClientEmail" class="w-full border border-slate-300 rounded-lg p-2.5">
+        </div>
+        <div class="sm:col-span-2">
+          <label class="block font-semibold text-slate-700 mb-1">Site / Billing Address</label>
+          <input type="text" id="modalClientAddress" class="w-full border border-slate-300 rounded-lg p-2.5" placeholder="e.g. 42 Moorabool St, Geelong VIC">
+        </div>
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Agreed Hourly Rate ($ AUD)</label>
+          <input type="number" id="modalClientRate" class="w-full border border-slate-300 rounded-lg p-2.5" value="85">
+        </div>
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Client ABN</label>
+          <input type="text" id="modalClientABN" class="w-full border border-slate-300 rounded-lg p-2.5" placeholder="11 digits">
+        </div>
+        <div class="sm:col-span-2">
+          <label class="block font-semibold text-slate-700 mb-1">Gate / Key Codes & Site Notes</label>
+          <textarea id="modalClientNotes" class="w-full border border-slate-300 rounded-lg p-2.5" rows="2" placeholder="Key safe #1982, side gate padlock, dog on premises..."></textarea>
+        </div>
+      </div>
+      <div class="flex justify-end gap-2 pt-2 border-t border-slate-100">
+        <button onclick="app.closeClientModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-semibold">Cancel</button>
+        <button onclick="app.saveClientFromModal()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold">Save Client</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 4: Vehicle Trip Modal -->
+  <div id="tripModal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <h3 class="text-base font-bold text-slate-900">Record Vehicle Trip (FY 2026–27)</h3>
+        <button onclick="app.closeVehicleTripModal()" class="text-slate-400 hover:text-slate-600">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <div class="space-y-3 text-xs">
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Trip Date</label>
+          <input type="date" id="tripDate" class="w-full border border-slate-300 rounded-lg p-2.5">
+        </div>
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Client or Purpose</label>
+          <input type="text" id="tripPurpose" class="w-full border border-slate-300 rounded-lg p-2.5" placeholder="e.g. Travel to client site / Bunnings pickup">
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Start Odometer</label>
+            <input type="number" id="tripStartOdo" class="w-full border border-slate-300 rounded-lg p-2.5" placeholder="48200" oninput="app.calcTripModalKm()">
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">End Odometer</label>
+            <input type="number" id="tripEndOdo" class="w-full border border-slate-300 rounded-lg p-2.5" placeholder="48265" oninput="app.calcTripModalKm()">
+          </div>
+        </div>
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Total Distance (km)</label>
+          <input type="number" id="tripTotalKm" class="w-full border border-slate-300 rounded-lg p-2.5 font-bold text-emerald-700" placeholder="65">
+        </div>
+      </div>
+      <div class="flex justify-end gap-2 pt-2 border-t border-slate-100">
+        <button onclick="app.closeVehicleTripModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-semibold">Cancel</button>
+        <button onclick="app.saveVehicleTrip()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold">Save Trip</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 5: Business Settings Modal -->
+  <div id="settingsModal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <h3 class="text-base font-bold text-slate-900">Sole Trader Profile & Defaults</h3>
+        <button onclick="app.closeSettingsModal()" class="text-slate-400 hover:text-slate-600">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <div class="space-y-3 text-xs">
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Trading Name / Business Name</label>
+          <input type="text" id="setBizName" class="w-full border border-slate-300 rounded-lg p-2.5">
+        </div>
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Australian Business Number (ABN)</label>
+          <input type="text" id="setBizABN" class="w-full border border-slate-300 rounded-lg p-2.5" placeholder="52 123 456 789">
+        </div>
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Email / Phone</label>
+          <input type="text" id="setBizContact" class="w-full border border-slate-300 rounded-lg p-2.5">
+        </div>
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Default Hourly Rate ($ AUD)</label>
+          <input type="number" id="setDefaultRate" class="w-full border border-slate-300 rounded-lg p-2.5">
+        </div>
+      </div>
+      <div class="flex justify-between items-center pt-2 border-t border-slate-100">
+        <button onclick="app.openSnapshotModal(); app.closeSettingsModal();" class="text-xs text-emerald-700 hover:underline font-bold flex items-center gap-1">
+          <i data-lucide="share-2" class="w-3.5 h-3.5"></i> Device Snapshot Backup
+        </button>
+        <div class="flex gap-2">
+          <button onclick="app.closeSettingsModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-semibold">Cancel</button>
+          <button onclick="app.saveSettings()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold">Save Settings</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= APPLICATION LOGIC SCRIPT ================= -->
+  <script>
+    const app = {
+      state: {
+        financialYear: 'FY 2026–2027',
+        fyKey: 'FY26-27',
+        currentTab: 'dashboard',
+        sevenDayStartDate: '2026-10-06',
+        activeJobId: 'sch_1',
+        activeClientId: 'c1',
+        metricsDrawerOpen: false,
+        settings: {
+          bizName: 'Apex Trade & Contracting',
+          abn: '52 123 456 789',
+          contact: 'craig@apextrades.com.au | 0400 123 456',
+          defaultRate: 85
+        },
+        calendar: {
+          viewYear: 2026,
+          viewMonth: 9, // October 2026
+          selectedDate: '2026-10-06',
+          viewMode: 'calendar'
+        },
+        schedule: [
+          {
+            id: 'sch_1',
+            title: 'Commercial Rough-in Stage 1',
+            clientId: 'c1',
+            clientName: 'Summit Residential Builders',
+            date: '2026-10-06',
+            startTime: '07:30',
+            endTime: '12:00',
+            location: '42 Moorabool St, Geelong VIC',
+            rate: 90,
+            status: 'In Progress',
+            notes: 'High-vis required. Induction card with site manager Mark.'
+          },
+          {
+            id: 'sch_2',
+            title: 'Switchboard Inspection & RCD Test',
+            clientId: 'c2',
+            clientName: 'Sarah & Ben Miller',
+            date: '2026-10-06',
+            startTime: '13:30',
+            endTime: '15:30',
+            location: '18 Seaside Ave, Ocean Grove VIC',
+            rate: 85,
+            status: 'Invoice Needed',
+            notes: 'Gate keypad code #1982. Friendly retriever in yard.'
+          },
+          {
+            id: 'sch_3',
+            title: 'Warehouse 3-Phase Power Measure',
+            clientId: 'c3',
+            clientName: 'Geelong Freight Hub',
+            date: '2026-10-07',
+            startTime: '09:00',
+            endTime: '11:00',
+            location: 'Geelong Industrial Park Unit 4',
+            rate: 95,
+            status: 'Scheduled',
+            notes: 'Meet depot manager Dave at bay 2.'
+          },
+          {
+            id: 'sch_4',
+            title: 'LED Downlight Upgrade & Dimmer Modules',
+            clientId: 'c4',
+            clientName: 'Highland Dental Clinic',
+            date: '2026-10-08',
+            startTime: '08:00',
+            endTime: '13:00',
+            location: '12 Belmont St, Belmont VIC',
+            rate: 85,
+            status: 'Scheduled',
+            notes: 'Surgery closed on Thursdays. Key with pharmacy next door.'
+          },
+          {
+            id: 'sch_5',
+            title: 'Emergency Generator Interlock Test',
+            clientId: 'c1',
+            clientName: 'Summit Residential Builders',
+            date: '2026-10-09',
+            startTime: '14:00',
+            endTime: '16:30',
+            location: '42 Moorabool St, Geelong VIC',
+            rate: 90,
+            status: 'Scheduled',
+            notes: 'Safety sign-off certificate needed.'
+          },
+          {
+            id: 'sch_6',
+            title: 'Weekend Urgent Callout - Cold Room Tripping',
+            clientId: 'c3',
+            clientName: 'Geelong Freight Hub',
+            date: '2026-10-10',
+            startTime: '10:00',
+            endTime: '12:00',
+            location: 'Bay 4 Cold Storage',
+            rate: 110,
+            status: 'Scheduled',
+            notes: 'Weekend emergency loading dock gate access.'
+          }
+        ],
+        clients: [
+          {
+            id: 'c1',
+            name: 'Summit Residential Builders',
+            contact: 'Mark Henderson',
+            phone: '0412 889 112',
+            email: 'accounts@summitbuilders.com.au',
+            address: '42 Moorabool St, Geelong VIC 3220',
+            rate: 90,
+            abn: '33 890 123 444',
+            stage: 'ACTIVE',
+            invoiceReminder: 'PENDING',
+            notes: 'Commercial site rules. Hardhat & induction card mandatory.'
+          },
+          {
+            id: 'c2',
+            name: 'Sarah & Ben Miller',
+            contact: 'Sarah Miller',
+            phone: '0423 555 981',
+            email: 'ben.miller@gmail.com',
+            address: '18 Seaside Ave, Ocean Grove VIC 3226',
+            rate: 85,
+            abn: '',
+            stage: 'ACTIVE',
+            invoiceReminder: 'PENDING',
+            notes: 'Front gate keypad code #1982. Friendly golden retriever on property.'
+          },
+          {
+            id: 'c3',
+            name: 'Geelong Freight Hub',
+            contact: 'Dave Reynolds',
+            phone: '0433 111 222',
+            email: 'operations@geelongfreight.com.au',
+            address: 'Industrial Park Unit 4, North Geelong VIC',
+            rate: 95,
+            abn: '77 444 888 123',
+            stage: 'NEW',
+            invoiceReminder: 'NONE',
+            notes: 'Loading dock gate 2. Hi-vis vest and steel-cap boots required.'
+          },
+          {
+            id: 'c4',
+            name: 'Highland Dental Clinic',
+            contact: 'Dr. Emily Foster',
+            phone: '03 5221 4455',
+            email: 'reception@highlanddental.com.au',
+            address: '12 Belmont St, Belmont VIC 3216',
+            rate: 85,
+            abn: '',
+            stage: 'ACTIVE',
+            invoiceReminder: 'NONE',
+            notes: 'Key safe at back staff entry code 6612.'
+          },
+          {
+            id: 'c5',
+            name: 'Coastal View Bakery Cafe',
+            contact: 'Liam O’Connor',
+            phone: '0450 789 456',
+            email: 'liam@coastalcafe.com.au',
+            address: '88 The Esplanade, Torquay VIC',
+            rate: 85,
+            abn: '',
+            stage: 'LEAD',
+            invoiceReminder: 'NONE',
+            notes: 'Called regarding 3-phase oven hook-up quote. Follow up Thursday.'
+          }
+        ],
+        workLogs: [
+          {
+            id: 'wl_1',
+            date: '2026-10-02',
+            clientId: 'c1',
+            clientName: 'Summit Residential Builders',
+            desc: 'Sub-board pre-wire and conduit feed',
+            hours: 4.5,
+            rate: 90,
+            total: 405.00
+          },
+          {
+            id: 'wl_2',
+            date: '2026-10-03',
+            clientId: 'c2',
+            clientName: 'Sarah & Ben Miller',
+            desc: 'Weatherproof outdoor GPO installation & testing',
+            hours: 2.5,
+            rate: 85,
+            total: 212.50
+          }
+        ],
+        invoices: [
+          {
+            id: 'inv_1001',
+            number: 'INV-1001',
+            date: '2026-10-02',
+            client: 'Summit Residential Builders',
+            total: '445.50',
+            status: 'Paid'
+          }
+        ],
+        invoiceDraft: {
+          items: [
+            { desc: 'Trade Consultation & Electrical Service', qty: 4, rate: 85 }
+          ]
+        },
+        memoSlots: [
+          {
+            id: 'slot_1',
+            title: 'Slot 1: Vehicle Glovebox Run-Sheet',
+            content: "• 07:15 - Pick up 25mm conduit & RCD breakers at Middy's\n• 07:30 - Summit Builders site (Induction card)\n• 13:30 - Miller residence Ocean Grove (Key code #1982)\n• Note: Check tyre pressure on passenger rear ute tyre"
+          },
+          {
+            id: 'slot_2',
+            title: 'Slot 2: Gate Codes & Site Access',
+            content: "• Ocean Grove Seaside Ave: Gate #1982\n• Highland Dental rear door key safe: 6612\n• North Geelong Depot: Gate 2 code 4492"
+          },
+          {
+            id: 'slot_3',
+            title: 'Slot 3: Materials & Wholesaler Orders',
+            content: "• 4x 16A Clipsal RCBO safety switches\n• 2 rolls 2.5mm twin & earth cable\n• Bunnings PowerPass Account: #931000213"
+          },
+          {
+            id: 'slot_4',
+            title: 'Slot 4: Quotes & Follow-Ups',
+            content: "• Liam from Coastal Bakery: Quote 3-phase oven circuit\n• Summit Builders: Check progress payment on stage 1\n• Renew electrical contractor insurance before Nov 2026"
+          },
+          {
+            id: 'slot_5',
+            title: 'Slot 5: Freeform Field Notes',
+            content: "• Ute 50,000km logbook service due\n• Clean multimeter leads\n• Restock cable ties and wall plugs in toolbox"
+          }
+        ],
+        activeSlotIndex: 0,
+        vehicleTrips: [
+          {
+            id: 'vt_1',
+            date: '2026-10-06',
+            purpose: 'Site visit Summit Residential & Middys wholesaler',
+            startOdo: 48200,
+            endOdo: 48265,
+            km: 65,
+            deduction: 57.20
+          }
+        ]
+      },
+
+      init() {
+        this.loadStorage();
+
+        const now = new Date();
+        const dateStr = now.toISOString().split('T')[0];
+        if (!this.state.sevenDayStartDate) {
+          this.state.sevenDayStartDate = dateStr;
+        }
+
+        this.applySettingsToUI();
+        this.setupEventListeners();
+        this.populateClientDropdowns();
+        this.renderAll();
+
+        const invDateInput = document.getElementById('invDate');
+        const invDueDateInput = document.getElementById('invDueDate');
+        if (invDateInput && !invDateInput.value) invDateInput.value = dateStr;
+        if (invDueDateInput && !invDueDateInput.value) {
+          const due = new Date();
+          due.setDate(due.getDate() + 14);
+          invDueDateInput.value = due.toISOString().split('T')[0];
+        }
+
+        this.calculateTax();
+        this.renderInvoicePreview();
+        lucide.createIcons();
+      },
+
+      /* ================= SNAPSHOT EXPORT & IMPORT ENGINE ================= */
+      openSnapshotModal() {
+        document.getElementById('snapshotModal').classList.remove('hidden');
+        lucide.createIcons();
+      },
+
+      closeSnapshotModal() {
+        document.getElementById('snapshotModal').classList.add('hidden');
+      },
+
+      downloadSnapshotFile() {
+        const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+        const filename = `trade-diary-snapshot-FY26-27-${timestamp.slice(0, 10)}.json`;
+        
+        const payload = {
+          app: "SoloTrack AU",
+          financialYear: "FY 2026–2027",
+          exportedAt: new Date().toISOString(),
+          version: "4.0.0",
+          state: this.state
+        };
+
+        const jsonStr = JSON.stringify(payload, null, 2);
+        const blob = new Blob([jsonStr], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+
+        this.showToast(`Snapshot downloaded: ${filename}`);
+      },
+
+      composeEmailWithInstructions() {
+        const sub = encodeURIComponent(`Sole Trader Daybook Snapshot (FY 2026–27) - ${new Date().toLocaleDateString('en-AU')}`);
+        const body = encodeURIComponent(
+          `G'day,\n\nHere is my SoloTrack AU browser snapshot export for FY 2026–2027.\n\n` +
+          `[ATTACH YOUR DOWNLOADED .JSON FILE TO THIS EMAIL]\n\n` +
+          `How to load this snapshot on another device:\n` +
+          `1. Open SoloTrack AU on your target phone, tablet or ute laptop.\n` +
+          `2. Tap 'Save / Transfer Snapshot' or 'Export / Email / Transfer'.\n` +
+          `3. Click 'Select & Load Snapshot File' and choose the attached .json file.\n` +
+          `4. All clients, 7-day schedule, work logs, invoices, and vehicle trips will instantly restore.\n\n` +
+          `Exported from SoloTrack AU.`
+        );
+        window.location.href = `mailto:?subject=${sub}&body=${body}`;
+        this.showToast('Email client opened. Remember to attach your downloaded JSON snapshot!');
+      },
+
+      importSnapshotFile(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          try {
+            const parsed = JSON.parse(e.target.result);
+            let importedState = null;
+
+            if (parsed.state) {
+              importedState = parsed.state;
+            } else if (parsed.clients || parsed.schedule || parsed.workLogs) {
+              importedState = parsed;
+            }
+
+            if (!importedState || !importedState.clients) {
+              this.showToast('Unrecognized snapshot format', false);
+              return;
+            }
+
+            // Merge safely
+            if (importedState.settings) this.state.settings = importedState.settings;
+            if (importedState.schedule) this.state.schedule = importedState.schedule;
+            if (importedState.clients) this.state.clients = importedState.clients;
+            if (importedState.workLogs) this.state.workLogs = importedState.workLogs;
+            if (importedState.invoices) this.state.invoices = importedState.invoices;
+            if (importedState.memoSlots) this.state.memoSlots = importedState.memoSlots;
+            if (importedState.vehicleTrips) this.state.vehicleTrips = importedState.vehicleTrips;
+            if (importedState.activeJobId !== undefined) this.state.activeJobId = importedState.activeJobId;
+            if (importedState.activeClientId !== undefined) this.state.activeClientId = importedState.activeClientId;
+            if (importedState.sevenDayStartDate) this.state.sevenDayStartDate = importedState.sevenDayStartDate;
+
+            this.saveStorage();
+            this.applySettingsToUI();
+            this.renderAll();
+            this.closeSnapshotModal();
+            this.showToast('Snapshot successfully loaded from file! All device data restored.');
+          } catch (err) {
+            console.error(err);
+            this.showToast('Failed to parse snapshot file', false);
+          }
+        };
+        reader.readAsText(file);
+      },
+
+      /* ================= LOCAL STORAGE PERSISTENCE ================= */
+      saveStorage() {
+        try {
+          const payload = {
+            settings: this.state.settings,
+            schedule: this.state.schedule,
+            clients: this.state.clients,
+            workLogs: this.state.workLogs,
+            invoices: this.state.invoices,
+            memoSlots: this.state.memoSlots,
+            vehicleTrips: this.state.vehicleTrips,
+            activeJobId: this.state.activeJobId,
+            activeClientId: this.state.activeClientId,
+            sevenDayStartDate: this.state.sevenDayStartDate,
+            financialYear: this.state.financialYear
+          };
+          localStorage.setItem('solotrack_au_fy26_27', JSON.stringify(payload));
+        } catch (e) {
+          console.warn('Storage save failed:', e);
+        }
+      },
+
+      loadStorage() {
+        try {
+          const raw = localStorage.getItem('solotrack_au_fy26_27') || localStorage.getItem('solotrack_au_v3');
+          if (raw) {
+            const data = JSON.parse(raw);
+            if (data.settings) this.state.settings = data.settings;
+            if (data.schedule) this.state.schedule = data.schedule;
+            if (data.clients) this.state.clients = data.clients;
+            if (data.workLogs) this.state.workLogs = data.workLogs;
+            if (data.invoices) this.state.invoices = data.invoices;
+            if (data.memoSlots) this.state.memoSlots = data.memoSlots;
+            if (data.vehicleTrips) this.state.vehicleTrips = data.vehicleTrips;
+            if (data.activeJobId !== undefined) this.state.activeJobId = data.activeJobId;
+            if (data.activeClientId !== undefined) this.state.activeClientId = data.activeClientId;
+            if (data.sevenDayStartDate) this.state.sevenDayStartDate = data.sevenDayStartDate;
+          }
+        } catch (e) {
+          console.error('Failed reading localStorage', e);
+        }
+      },
+
+      showToast(message, isSuccess = true) {
+        const toast = document.getElementById('toast');
+        const msg = document.getElementById('toastMsg');
+        const icon = document.getElementById('toastIcon');
+        msg.textContent = message;
+        icon.setAttribute('data-lucide', isSuccess ? 'check-circle' : 'alert-triangle');
+        icon.className = isSuccess ? 'w-4 h-4 text-emerald-400' : 'w-4 h-4 text-amber-400';
+        lucide.createIcons();
+
+        toast.classList.remove('translate-y-24', 'opacity-0');
+        toast.classList.add('translate-y-0', 'opacity-100');
+        setTimeout(() => {
+          toast.classList.add('translate-y-24', 'opacity-0');
+          toast.classList.remove('translate-y-0', 'opacity-100');
+        }, 2800);
+      },
+
+      switchTab(tabId) {
+        this.state.currentTab = tabId;
+        document.querySelectorAll('.tab-view').forEach(view => view.classList.add('hidden'));
+
+        const activeSection = document.getElementById(`view-${tabId}`);
+        if (activeSection) activeSection.classList.remove('hidden');
+
+        document.querySelectorAll('.nav-item').forEach(btn => {
+          const btnTab = btn.getAttribute('data-tab');
+          if (btnTab === tabId) {
+            btn.className = 'nav-item w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium transition text-white bg-emerald-700/90 shadow-sm';
+          } else {
+            btn.className = 'nav-item w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium transition text-slate-300 hover:bg-slate-800 hover:text-white';
+          }
+        });
+
+        document.getElementById('sidebar').classList.add('-translate-x-full');
+        this.renderAll();
+        lucide.createIcons();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      },
+
+      setupEventListeners() {
+        const mobileBtn = document.getElementById('mobileMenuBtn');
+        const closeSidebarBtn = document.getElementById('closeSidebarBtn');
+        const sidebar = document.getElementById('sidebar');
+
+        if (mobileBtn && sidebar) {
+          mobileBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('-translate-x-full');
+          });
+        }
+        if (closeSidebarBtn && sidebar) {
+          closeSidebarBtn.addEventListener('click', () => {
+            sidebar.classList.add('-translate-x-full');
+          });
+        }
+      },
+
+      renderAll() {
+        this.renderActiveJobPanel();
+        this.renderSevenDayHorizon();
+        this.renderDrawerMetrics();
+        this.populateClientDropdowns();
+        this.renderClients();
+        this.renderCalendar();
+        this.renderWorkLogs();
+        this.renderMemoSlots();
+        this.renderVehicleTrips();
+        this.renderSavedInvoices();
+      },
+
+      renderActiveJobPanel() {
+        const selector = document.getElementById('activeClientSelector');
+        const titleEl = document.getElementById('activeClientName');
+        const subtitleEl = document.getElementById('activeClientJobSubtitle');
+        const taskEl = document.getElementById('activeJobTaskName');
+        const phoneLink = document.getElementById('activeClientPhoneLink');
+        const locationEl = document.getElementById('activeClientLocation');
+        const accessEl = document.getElementById('activeClientAccessNote');
+        const rateEl = document.getElementById('activeClientRateDisplay');
+
+        selector.innerHTML = `<option value="">-- Choose active job or client --</option>`;
+        
+        const jobGroup = document.createElement('optgroup');
+        jobGroup.label = "Today / Scheduled Jobs";
+        this.state.schedule.forEach(job => {
+          const opt = document.createElement('option');
+          opt.value = `job:${job.id}`;
+          opt.textContent = `${job.date.slice(5)}: ${job.title} (${job.clientName || 'General'})`;
+          if (this.state.activeJobId === job.id) opt.selected = true;
+          jobGroup.appendChild(opt);
+        });
+        selector.appendChild(jobGroup);
+
+        const clientGroup = document.createElement('optgroup');
+        clientGroup.label = "All Registered Clients";
+        this.state.clients.forEach(c => {
+          const opt = document.createElement('option');
+          opt.value = `client:${c.id}`;
+          opt.textContent = `${c.name} (${c.contact || c.address || 'Client'})`;
+          if (!this.state.activeJobId && this.state.activeClientId === c.id) opt.selected = true;
+          clientGroup.appendChild(opt);
+        });
+        selector.appendChild(clientGroup);
+
+        let activeJob = this.state.schedule.find(s => s.id === this.state.activeJobId);
+        let activeClient = null;
+
+        if (activeJob) {
+          activeClient = this.state.clients.find(c => c.id === activeJob.clientId);
+          titleEl.textContent = activeClient ? activeClient.name : (activeJob.clientName || 'General Trade Client');
+          subtitleEl.textContent = `ACTIVE JOB: ${activeJob.startTime || ''} - ${activeJob.endTime || ''}`;
+          taskEl.textContent = `${activeJob.title}${activeJob.notes ? ' — ' + activeJob.notes : ''}`;
+          locationEl.textContent = activeJob.location || (activeClient ? activeClient.address : 'On-site');
+          rateEl.textContent = `$${activeJob.rate || 85}.00/hr`;
+          
+          if (activeClient && activeClient.phone) {
+            phoneLink.textContent = activeClient.phone;
+            phoneLink.href = `tel:${activeClient.phone.replace(/\s+/g, '')}`;
+          } else {
+            phoneLink.textContent = 'No phone recorded';
+            phoneLink.removeAttribute('href');
+          }
+
+          if (activeClient && activeClient.notes) {
+            accessEl.textContent = activeClient.notes;
+          } else {
+            accessEl.textContent = activeJob.notes || 'No key code / access notes recorded';
+          }
+        } else if (this.state.activeClientId) {
+          activeClient = this.state.clients.find(c => c.id === this.state.activeClientId);
+          if (activeClient) {
+            titleEl.textContent = activeClient.name;
+            subtitleEl.textContent = `ON-SITE CLIENT FOCUS`;
+            taskEl.textContent = `Working on-site for ${activeClient.name} (${activeClient.contact || 'Direct contact'})`;
+            locationEl.textContent = activeClient.address || 'Client site';
+            rateEl.textContent = `$${activeClient.rate || 85}.00/hr`;
+            if (activeClient.phone) {
+              phoneLink.textContent = activeClient.phone;
+              phoneLink.href = `tel:${activeClient.phone.replace(/\s+/g, '')}`;
+            } else {
+              phoneLink.textContent = 'No phone recorded';
+              phoneLink.removeAttribute('href');
+            }
+            accessEl.textContent = activeClient.notes || 'No access code recorded';
+          }
+        } else {
+          titleEl.textContent = 'No Active Job Selected';
+          subtitleEl.textContent = 'ON-SITE HUD';
+          taskEl.textContent = 'Select an appointment below to load site directions, contact info, and start work.';
+          locationEl.textContent = 'No location set';
+          accessEl.textContent = 'No site access notes';
+          phoneLink.textContent = '--';
+          phoneLink.removeAttribute('href');
+          rateEl.textContent = `$${this.state.settings.defaultRate || 85}.00/hr`;
+        }
+
+        if (this.state.memoSlots.length > 0) {
+          document.getElementById('dashSlotTextarea').value = this.state.memoSlots[0].content;
+        }
+      },
+
+      changeActiveJob(val) {
+        if (!val) {
+          this.clearActiveClient();
+          return;
+        }
+        if (val.startsWith('job:')) {
+          const jid = val.replace('job:', '');
+          this.state.activeJobId = jid;
+          const job = this.state.schedule.find(s => s.id === jid);
+          if (job) {
+            this.state.activeClientId = job.clientId;
+            job.status = 'In Progress';
+          }
+        } else if (val.startsWith('client:')) {
+          this.state.activeJobId = null;
+          this.state.activeClientId = val.replace('client:', '');
+        }
+        this.saveStorage();
+        this.renderAll();
+        this.showToast('Active on-site job loaded');
+      },
+
+      setActiveJob(jobId) {
+        this.state.activeJobId = jobId;
+        const job = this.state.schedule.find(s => s.id === jobId);
+        if (job) {
+          this.state.activeClientId = job.clientId;
+          job.status = 'In Progress';
+        }
+        this.saveStorage();
+        this.renderAll();
+        this.showToast('Loaded into Active Job banner');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      },
+
+      clearActiveClient() {
+        this.state.activeJobId = null;
+        this.state.activeClientId = null;
+        this.saveStorage();
+        this.renderActiveJobPanel();
+        this.showToast('Active focus cleared');
+      },
+
+      openWorkLogForActive() {
+        let job = this.state.schedule.find(s => s.id === this.state.activeJobId);
+        if (job) {
+          this.openWorkLogModal({
+            date: job.date,
+            clientId: job.clientId,
+            hours: 3.5,
+            rate: job.rate || 85,
+            desc: `${job.title} on-site completed`
+          });
+          job.status = 'Completed';
+          this.saveStorage();
+          this.renderSevenDayHorizon();
+        } else if (this.state.activeClientId) {
+          const client = this.state.clients.find(c => c.id === this.state.activeClientId);
+          this.openWorkLogModal({
+            date: new Date().toISOString().split('T')[0],
+            clientId: client.id,
+            hours: 3.5,
+            rate: client.rate || 85,
+            desc: `On-site trade work for ${client.name}`
+          });
+        } else {
+          this.openWorkLogModal();
+        }
+      },
+
+      invoiceActiveClient() {
+        let clientId = this.state.activeClientId;
+        if (!clientId && this.state.activeJobId) {
+          const job = this.state.schedule.find(s => s.id === this.state.activeJobId);
+          if (job) clientId = job.clientId;
+        }
+        if (clientId) {
+          this.invoiceThisClient(clientId);
+        } else {
+          this.switchTab('invoices');
+        }
+      },
+
+      shiftSevenDay(deltaDays) {
+        const current = new Date(this.state.sevenDayStartDate + 'T00:00:00');
+        current.setDate(current.getDate() + deltaDays);
+        this.state.sevenDayStartDate = current.toISOString().split('T')[0];
+        this.saveStorage();
+        this.renderSevenDayHorizon();
+      },
+
+      resetSevenDayToToday() {
+        this.state.sevenDayStartDate = new Date().toISOString().split('T')[0];
+        this.saveStorage();
+        this.renderSevenDayHorizon();
+      },
+
+      renderSevenDayHorizon() {
+        const container = document.getElementById('sevenDayContainer');
+        if (!container) return;
+        container.innerHTML = '';
+
+        const startDate = new Date(this.state.sevenDayStartDate + 'T00:00:00');
+        const todayStr = new Date().toISOString().split('T')[0];
+
+        const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+        for (let i = 0; i < 7; i++) {
+          const d = new Date(startDate);
+          d.setDate(startDate.getDate() + i);
+
+          const isoDate = d.toISOString().split('T')[0];
+          const isToday = isoDate === todayStr;
+          const dayName = dayNames[d.getDay()];
+          const dayNum = d.getDate();
+          const monthName = monthNames[d.getMonth()];
+
+          const jobsForDay = this.state.schedule.filter(s => s.date === isoDate);
+
+          const dayCard = document.createElement('div');
+          dayCard.className = `rounded-2xl border transition flex flex-col justify-between p-3.5 shadow-sm min-h-[300px] ${
+            isToday 
+              ? 'bg-emerald-50/70 border-emerald-300 ring-2 ring-emerald-500/80 shadow-md' 
+              : 'bg-white border-slate-200 hover:border-slate-300'
+          }`;
+
+          let headerHtml = `
+            <div>
+              <div class="flex items-center justify-between pb-2 border-b ${isToday ? 'border-emerald-200' : 'border-slate-100'}">
+                <div>
+                  <span class="text-xs font-extrabold uppercase ${isToday ? 'text-emerald-800' : 'text-slate-600'}">${dayName}</span>
+                  <div class="flex items-baseline gap-1">
+                    <span class="text-lg font-black text-slate-900">${dayNum}</span>
+                    <span class="text-[10px] text-slate-400 font-semibold">${monthName}</span>
+                  </div>
+                </div>
+                <div class="flex flex-col items-end">
+                  ${isToday ? `<span class="bg-emerald-600 text-white font-extrabold text-[9px] uppercase px-1.5 py-0.5 rounded-full">Today</span>` : ''}
+                  <span class="text-[10px] text-slate-400 font-mono mt-0.5">${jobsForDay.length} ${jobsForDay.length === 1 ? 'job' : 'jobs'}</span>
+                </div>
+              </div>
+          `;
+
+          let itemsHtml = `<div class="space-y-2 mt-2.5 flex-1 overflow-y-auto max-h-[380px]">`;
+          if (jobsForDay.length === 0) {
+            itemsHtml += `
+              <div class="py-8 text-center text-slate-300 text-xs">
+                <i data-lucide="sun" class="w-6 h-6 mx-auto mb-1 opacity-40"></i>
+                <span>No jobs</span>
+              </div>
+            `;
+          } else {
+            jobsForDay.forEach(job => {
+              const isActive = this.state.activeJobId === job.id;
+              
+              let badgeColor = 'bg-blue-100 text-blue-800';
+              if (job.status === 'In Progress') badgeColor = 'bg-amber-100 text-amber-800 ring-1 ring-amber-400';
+              if (job.status === 'Completed') badgeColor = 'bg-slate-200 text-slate-700 line-through';
+              if (job.status === 'Invoice Needed') badgeColor = 'bg-rose-100 text-rose-800 font-bold';
+
+              itemsHtml += `
+                <div onclick="app.setActiveJob('${job.id}')" class="p-2.5 rounded-xl border text-xs cursor-pointer transition relative group ${
+                  isActive 
+                    ? 'bg-slate-900 text-white border-slate-900 shadow-md ring-2 ring-emerald-500' 
+                    : 'bg-slate-50 hover:bg-emerald-50/50 border-slate-200 text-slate-800'
+                }">
+                  <div class="flex items-center justify-between gap-1 mb-1">
+                    <span class="font-mono text-[10px] font-bold ${isActive ? 'text-emerald-400' : 'text-slate-500'}">
+                      ${job.startTime || 'All day'}
+                    </span>
+                    <span class="text-[9px] px-1.5 py-0.2 rounded-full font-medium ${badgeColor}">
+                      ${job.status}
+                    </span>
+                  </div>
+
+                  <h4 class="font-bold text-xs truncate leading-tight ${isActive ? 'text-white' : 'text-slate-900'}">${job.title}</h4>
+                  <p class="text-[11px] truncate mt-0.5 ${isActive ? 'text-slate-300' : 'text-slate-500'}">${job.clientName || 'General Client'}</p>
+
+                  ${job.location ? `
+                    <div class="flex items-center gap-1 text-[10px] mt-1 truncate ${isActive ? 'text-slate-400' : 'text-slate-400'}">
+                      <i data-lucide="map-pin" class="w-3 h-3 flex-shrink-0"></i>
+                      <span class="truncate">${job.location}</span>
+                    </div>
+                  ` : ''}
+
+                  <div class="mt-2 pt-2 border-t ${isActive ? 'border-slate-800' : 'border-slate-200/60'} flex items-center justify-between">
+                    <button onclick="event.stopPropagation(); app.convertScheduleToWorkLog('${job.id}')" class="text-[10px] font-bold ${isActive ? 'text-emerald-400 hover:text-emerald-300' : 'text-emerald-700 hover:text-emerald-800'}">
+                      + Log Shift
+                    </button>
+                    <button onclick="event.stopPropagation(); app.deleteScheduleItem('${job.id}')" class="text-slate-400 hover:text-rose-500">
+                      <i data-lucide="trash-2" class="w-3 h-3"></i>
+                    </button>
+                  </div>
+                </div>
+              `;
+            });
+          }
+          itemsHtml += `</div></div>`;
+
+          let footerHtml = `
+            <div class="mt-3 pt-2 border-t ${isToday ? 'border-emerald-200' : 'border-slate-100'}">
+              <button onclick="app.openScheduleModal('${isoDate}')" class="w-full py-1.5 px-2 bg-slate-100/90 hover:bg-emerald-600 hover:text-white text-slate-700 rounded-lg text-[11px] font-bold transition flex items-center justify-center gap-1">
+                <i data-lucide="plus" class="w-3 h-3"></i> Add Job
+              </button>
+            </div>
+          `;
+
+          dayCard.innerHTML = headerHtml + itemsHtml + footerHtml;
+          container.appendChild(dayCard);
+        }
+
+        lucide.createIcons();
+      },
+
+      toggleMetricsDrawer() {
+        const drawer = document.getElementById('metricsDrawer');
+        const overlay = document.getElementById('metricsDrawerOverlay');
+        const isOpen = !drawer.classList.contains('translate-x-full');
+
+        if (isOpen) {
+          drawer.classList.add('translate-x-full');
+          overlay.classList.add('opacity-0', 'pointer-events-none');
+        } else {
+          drawer.classList.remove('translate-x-full');
+          overlay.classList.remove('opacity-0', 'pointer-events-none');
+          this.renderDrawerMetrics();
+        }
+        lucide.createIcons();
+      },
+
+      renderDrawerMetrics() {
+        const totalHours = this.state.workLogs.reduce((acc, log) => acc + (parseFloat(log.hours) || 0), 0);
+        const totalHoursVal = this.state.workLogs.reduce((acc, log) => acc + (parseFloat(log.total) || 0), 0);
+        document.getElementById('drawerTotalHours').textContent = `${totalHours.toFixed(2)} hrs`;
+        document.getElementById('drawerHoursValue').textContent = `$${totalHoursVal.toFixed(2)}`;
+        document.getElementById('teaserHours').textContent = `${totalHours.toFixed(1)} hrs`;
+
+        const totalInvoiced = this.state.invoices.reduce((acc, inv) => acc + (parseFloat(inv.total) || 0), 0);
+        document.getElementById('drawerInvoicedTotal').textContent = `$${totalInvoiced.toLocaleString('en-AU', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+        document.getElementById('drawerInvoicedCount').textContent = `${this.state.invoices.length} Invoices`;
+        document.getElementById('teaserInvoices').textContent = `$${totalInvoiced.toFixed(0)}`;
+
+        const totalKm = this.state.vehicleTrips.reduce((acc, trip) => acc + (parseFloat(trip.km) || 0), 0);
+        document.getElementById('drawerTotalKm').textContent = `${totalKm.toLocaleString()} km`;
+        document.getElementById('drawerKmDeduction').textContent = `$${(totalKm * 0.88).toFixed(2)}`;
+
+        const pendingClients = this.state.clients.filter(c => c.invoiceReminder === 'PENDING');
+        const alertBox = document.getElementById('drawerInvoiceAlertBox');
+        const countEl = document.getElementById('drawerPendingInvoiceCount');
+        const navPill = document.getElementById('navInvoiceRemindersPill');
+        const topAlert = document.getElementById('topDrawerAlert');
+        const mobileBadge = document.getElementById('mobileReminderBadge');
+
+        if (pendingClients.length > 0) {
+          alertBox.classList.remove('hidden');
+          countEl.textContent = pendingClients.length;
+          navPill.classList.remove('hidden');
+          navPill.textContent = pendingClients.length;
+          topAlert.classList.remove('hidden');
+          mobileBadge.classList.remove('hidden');
+        } else {
+          alertBox.classList.add('hidden');
+          navPill.classList.add('hidden');
+          topAlert.classList.add('hidden');
+          mobileBadge.classList.add('hidden');
+        }
+      },
+
+      renderClients() {
+        const grid = document.getElementById('clientsGrid');
+        const emptyState = document.getElementById('emptyClientsState');
+        const search = (document.getElementById('clientSearchInput')?.value || '').toLowerCase().trim();
+        const filter = document.getElementById('clientStatusFilter')?.value || 'ALL';
+
+        if (!grid) return;
+        grid.innerHTML = '';
+
+        const filtered = this.state.clients.filter(c => {
+          const matchSearch = c.name.toLowerCase().includes(search) ||
+            (c.contact && c.contact.toLowerCase().includes(search)) ||
+            (c.phone && c.phone.includes(search)) ||
+            (c.address && c.address.toLowerCase().includes(search)) ||
+            (c.notes && c.notes.toLowerCase().includes(search));
+
+          if (!matchSearch) return false;
+
+          if (filter === 'ALL') return true;
+          if (filter === 'LEAD') return c.stage === 'LEAD';
+          if (filter === 'NEW') return c.stage === 'NEW';
+          if (filter === 'ACTIVE') return c.stage === 'ACTIVE';
+          if (filter === 'INVOICE_PENDING') return c.invoiceReminder === 'PENDING';
+          return true;
+        });
+
+        if (filtered.length === 0) {
+          if (emptyState) emptyState.classList.remove('hidden');
+          return;
+        }
+        if (emptyState) emptyState.classList.add('hidden');
+
+        filtered.forEach(client => {
+          const clientWorkCount = this.state.workLogs.filter(w => w.clientId === client.id).length;
+
+          let stageBadge = `<span class="bg-blue-100 text-blue-800 text-[10px] font-bold px-2 py-0.5 rounded-full">New Client</span>`;
+          if (client.stage === 'ACTIVE') {
+            stageBadge = `<span class="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded-full">Active Client (${clientWorkCount} shifts done)</span>`;
+          } else if (client.stage === 'LEAD') {
+            stageBadge = `<span class="bg-purple-100 text-purple-800 text-[10px] font-bold px-2 py-0.5 rounded-full">Lead / Inquiry</span>`;
+          }
+
+          const hasReminder = client.invoiceReminder === 'PENDING';
+
+          const card = document.createElement('div');
+          card.className = `bg-white rounded-2xl border p-5 shadow-sm transition flex flex-col justify-between ${
+            hasReminder ? 'border-rose-300 ring-2 ring-rose-200' : 'border-slate-200 hover:shadow-md'
+          }`;
+
+          card.innerHTML = `
+            <div>
+              <div class="flex items-start justify-between gap-2">
+                <div>
+                  <h4 class="font-bold text-slate-900 text-sm">${client.name}</h4>
+                  <p class="text-xs text-slate-500 font-medium">${client.contact || 'Direct contact'}</p>
+                </div>
+                <span class="text-xs font-mono font-bold bg-emerald-50 text-emerald-700 px-2 py-1 rounded-lg border border-emerald-100">$${client.rate || 85}/hr</span>
+              </div>
+
+              <div class="mt-2 flex flex-wrap items-center gap-1.5">
+                ${stageBadge}
+                ${hasReminder ? `
+                  <span class="bg-rose-100 text-rose-800 text-[10px] font-black px-2 py-0.5 rounded-full flex items-center gap-1">
+                    <i data-lucide="bell" class="w-3 h-3 text-rose-600"></i> Send Invoice Reminder
+                  </span>
+                ` : ''}
+              </div>
+
+              <div class="mt-3 space-y-1.5 text-xs text-slate-600">
+                ${client.phone ? `<p class="flex items-center gap-1.5"><i data-lucide="phone" class="w-3.5 h-3.5 text-slate-400"></i> <a href="tel:${client.phone.replace(/\s+/g,'')}" class="text-emerald-700 hover:underline font-mono">${client.phone}</a></p>` : ''}
+                ${client.email ? `<p class="flex items-center gap-1.5 truncate"><i data-lucide="mail" class="w-3.5 h-3.5 text-slate-400"></i> ${client.email}</p>` : ''}
+                ${client.address ? `<p class="flex items-center gap-1.5"><i data-lucide="map-pin" class="w-3.5 h-3.5 text-slate-400"></i> ${client.address}</p>` : ''}
+                ${client.abn ? `<p class="font-mono text-slate-400 text-[11px]">ABN: ${client.abn}</p>` : ''}
+              </div>
+
+              ${client.notes ? `<div class="mt-2.5 p-2 bg-amber-50/70 border border-amber-200/60 rounded-lg text-[11px] text-amber-900">${client.notes}</div>` : ''}
+            </div>
+
+            <div class="mt-4 pt-3 border-t border-slate-100 space-y-2">
+              <div class="flex items-center justify-between text-xs">
+                <button onclick="app.toggleClientInvoiceReminder('${client.id}')" class="text-[11px] font-semibold text-slate-500 hover:text-slate-800 flex items-center gap-1">
+                  <i data-lucide="${hasReminder ? 'bell-off' : 'bell'}" class="w-3.5 h-3.5"></i>
+                  ${hasReminder ? 'Clear Reminder' : 'Set Invoice Reminder'}
+                </button>
+                <div class="flex items-center gap-1">
+                  <button onclick="app.editClient('${client.id}')" class="p-1.5 text-slate-400 hover:text-slate-700" title="Edit Client">
+                    <i data-lucide="edit-2" class="w-3.5 h-3.5"></i>
+                  </button>
+                  <button onclick="app.deleteClient('${client.id}')" class="p-1.5 text-slate-400 hover:text-rose-600" title="Delete Client">
+                    <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-2 gap-2 text-xs">
+                <button onclick="app.scheduleForClient('${client.id}')" class="py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold rounded-lg text-center transition flex items-center justify-center gap-1">
+                  <i data-lucide="calendar-plus" class="w-3.5 h-3.5"></i> Schedule Job
+                </button>
+                <button onclick="app.invoiceThisClient('${client.id}')" class="py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg text-center transition flex items-center justify-center gap-1 shadow-sm">
+                  <i data-lucide="file-plus" class="w-3.5 h-3.5"></i> Draft Invoice
+                </button>
+              </div>
+            </div>
+          `;
+          grid.appendChild(card);
+        });
+
+        lucide.createIcons();
+      },
+
+      toggleClientInvoiceReminder(clientId) {
+        const client = this.state.clients.find(c => c.id === clientId);
+        if (client) {
+          client.invoiceReminder = client.invoiceReminder === 'PENDING' ? 'NONE' : 'PENDING';
+          this.saveStorage();
+          this.renderClients();
+          this.renderDrawerMetrics();
+          this.showToast(client.invoiceReminder === 'PENDING' ? `Invoice reminder flagged for ${client.name}` : `Reminder cleared`);
+        }
+      },
+
+      openClientModal(editingId = null) {
+        const modal = document.getElementById('clientModal');
+        const title = document.getElementById('clientModalTitle');
+        const idField = document.getElementById('modalClientId');
+
+        if (editingId) {
+          const client = this.state.clients.find(c => c.id === editingId);
+          if (client) {
+            title.textContent = 'Edit Client Profile';
+            idField.value = client.id;
+            document.getElementById('modalClientName').value = client.name || '';
+            document.getElementById('modalClientStage').value = client.stage || 'ACTIVE';
+            document.getElementById('modalClientInvoiceReminder').value = client.invoiceReminder || 'NONE';
+            document.getElementById('modalClientContact').value = client.contact || '';
+            document.getElementById('modalClientPhone').value = client.phone || '';
+            document.getElementById('modalClientEmail').value = client.email || '';
+            document.getElementById('modalClientAddress').value = client.address || '';
+            document.getElementById('modalClientRate').value = client.rate || 85;
+            document.getElementById('modalClientABN').value = client.abn || '';
+            document.getElementById('modalClientNotes').value = client.notes || '';
+          }
+        } else {
+          title.textContent = 'Add New Client Profile';
+          idField.value = '';
+          document.getElementById('modalClientName').value = '';
+          document.getElementById('modalClientStage').value = 'NEW';
+          document.getElementById('modalClientInvoiceReminder').value = 'NONE';
+          document.getElementById('modalClientContact').value = '';
+          document.getElementById('modalClientPhone').value = '';
+          document.getElementById('modalClientEmail').value = '';
+          document.getElementById('modalClientAddress').value = '';
+          document.getElementById('modalClientRate').value = this.state.settings.defaultRate || 85;
+          document.getElementById('modalClientABN').value = '';
+          document.getElementById('modalClientNotes').value = '';
+        }
+        modal.classList.remove('hidden');
+      },
+
+      closeClientModal() {
+        document.getElementById('clientModal').classList.add('hidden');
+      },
+
+      saveClientFromModal() {
+        const name = document.getElementById('modalClientName').value.trim();
+        if (!name) {
+          this.showToast('Client Name is required', false);
+          return;
+        }
+
+        const id = document.getElementById('modalClientId').value;
+        const newObj = {
+          id: id || ('c_' + Date.now()),
+          name: name,
+          stage: document.getElementById('modalClientStage').value,
+          invoiceReminder: document.getElementById('modalClientInvoiceReminder').value,
+          contact: document.getElementById('modalClientContact').value.trim(),
+          phone: document.getElementById('modalClientPhone').value.trim(),
+          email: document.getElementById('modalClientEmail').value.trim(),
+          address: document.getElementById('modalClientAddress').value.trim(),
+          rate: parseFloat(document.getElementById('modalClientRate').value) || 85,
+          abn: document.getElementById('modalClientABN').value.trim(),
+          notes: document.getElementById('modalClientNotes').value.trim()
+        };
+
+        if (id) {
+          const index = this.state.clients.findIndex(c => c.id === id);
+          if (index !== -1) this.state.clients[index] = newObj;
+        } else {
+          this.state.clients.push(newObj);
+        }
+
+        this.saveStorage();
+        this.closeClientModal();
+        this.populateClientDropdowns();
+        this.renderClients();
+        this.renderActiveJobPanel();
+        this.renderDrawerMetrics();
+        this.showToast('Client profile updated');
+      },
+
+      editClient(id) {
+        this.openClientModal(id);
+      },
+
+      deleteClient(id) {
+        this.state.clients = this.state.clients.filter(c => c.id !== id);
+        this.saveStorage();
+        this.populateClientDropdowns();
+        this.renderClients();
+        this.renderActiveJobPanel();
+        this.renderDrawerMetrics();
+        this.showToast('Client profile deleted');
+      },
+
+      scheduleForClient(clientId) {
+        this.switchTab('dashboard');
+        this.openScheduleModal(null, null, clientId);
+      },
+
+      invoiceThisClient(clientId) {
+        const client = this.state.clients.find(c => c.id === clientId);
+        this.switchTab('invoices');
+        const sel = document.getElementById('invClientSelect');
+        if (sel) {
+          sel.value = clientId;
+          this.onInvoiceClientChange();
+        }
+        if (client) {
+          client.invoiceReminder = 'NONE';
+          this.saveStorage();
+          this.renderClients();
+          this.renderDrawerMetrics();
+        }
+      },
+
+      openScheduleModal(prefillDate = null, editingId = null, prefillClientId = null) {
+        this.populateClientDropdowns();
+        const modal = document.getElementById('scheduleModal');
+        const title = document.getElementById('scheduleModalTitle');
+        const idField = document.getElementById('modalScheduleId');
+
+        if (editingId) {
+          const item = this.state.schedule.find(s => s.id === editingId);
+          if (item) {
+            title.textContent = 'Edit Scheduled Appointment';
+            idField.value = item.id;
+            document.getElementById('modalSchedTitle').value = item.title || '';
+            document.getElementById('modalSchedClient').value = item.clientId || '';
+            document.getElementById('modalSchedDate').value = item.date || '';
+            document.getElementById('modalSchedStartTime').value = item.startTime || '08:30';
+            document.getElementById('modalSchedEndTime').value = item.endTime || '12:00';
+            document.getElementById('modalSchedLocation').value = item.location || '';
+            document.getElementById('modalSchedRate').value = item.rate || 85;
+            document.getElementById('modalSchedStatus').value = item.status || 'Scheduled';
+            document.getElementById('modalSchedNotes').value = item.notes || '';
+          }
+        } else {
+          title.textContent = 'Schedule Job / Shift';
+          idField.value = '';
+          document.getElementById('modalSchedTitle').value = '';
+          document.getElementById('modalSchedClient').value = prefillClientId || '';
+          document.getElementById('modalSchedDate').value = prefillDate || this.state.calendar.selectedDate || new Date().toISOString().split('T')[0];
+          document.getElementById('modalSchedStartTime').value = '08:30';
+          document.getElementById('modalSchedEndTime').value = '12:00';
+          document.getElementById('modalSchedLocation').value = '';
+          document.getElementById('modalSchedRate').value = this.state.settings.defaultRate || 85;
+          document.getElementById('modalSchedStatus').value = 'Scheduled';
+          document.getElementById('modalSchedNotes').value = '';
+
+          if (prefillClientId) {
+            const c = this.state.clients.find(x => x.id === prefillClientId);
+            if (c) {
+              if (c.address) document.getElementById('modalSchedLocation').value = c.address;
+              if (c.rate) document.getElementById('modalSchedRate').value = c.rate;
+            }
+          }
+        }
+
+        modal.classList.remove('hidden');
+      },
+
+      closeScheduleModal() {
+        document.getElementById('scheduleModal').classList.add('hidden');
+      },
+
+      onModalSchedClientChange() {
+        const cid = document.getElementById('modalSchedClient').value;
+        const client = this.state.clients.find(c => c.id === cid);
+        if (client) {
+          if (client.address) document.getElementById('modalSchedLocation').value = client.address;
+          if (client.rate) document.getElementById('modalSchedRate').value = client.rate;
+        }
+      },
+
+      saveScheduleItem() {
+        const title = document.getElementById('modalSchedTitle').value.trim();
+        if (!title) {
+          this.showToast('Please provide a job title or task summary', false);
+          return;
+        }
+
+        const id = document.getElementById('modalScheduleId').value;
+        const clientId = document.getElementById('modalSchedClient').value;
+        let clientName = 'General Task';
+        if (clientId) {
+          const client = this.state.clients.find(c => c.id === clientId);
+          if (client) clientName = client.name;
+        }
+
+        const obj = {
+          id: id || ('sch_' + Date.now()),
+          title: title,
+          clientId: clientId,
+          clientName: clientName,
+          date: document.getElementById('modalSchedDate').value || new Date().toISOString().split('T')[0],
+          startTime: document.getElementById('modalSchedStartTime').value,
+          endTime: document.getElementById('modalSchedEndTime').value,
+          location: document.getElementById('modalSchedLocation').value.trim(),
+          rate: parseFloat(document.getElementById('modalSchedRate').value) || 85,
+          status: document.getElementById('modalSchedStatus').value,
+          notes: document.getElementById('modalSchedNotes').value.trim()
+        };
+
+        if (id) {
+          const idx = this.state.schedule.findIndex(s => s.id === id);
+          if (idx !== -1) this.state.schedule[idx] = obj;
+        } else {
+          this.state.schedule.push(obj);
+        }
+
+        this.saveStorage();
+        this.closeScheduleModal();
+        this.renderSevenDayHorizon();
+        this.renderCalendar();
+        this.renderActiveJobPanel();
+        this.showToast('Appointment successfully saved to schedule!');
+      },
+
+      deleteScheduleItem(id) {
+        this.state.schedule = this.state.schedule.filter(s => s.id !== id);
+        if (this.state.activeJobId === id) this.state.activeJobId = null;
+        this.saveStorage();
+        this.renderSevenDayHorizon();
+        this.renderCalendar();
+        this.renderActiveJobPanel();
+        this.showToast('Appointment removed from schedule');
+      },
+
+      convertScheduleToWorkLog(schedId) {
+        const item = this.state.schedule.find(s => s.id === schedId);
+        if (!item) return;
+
+        let hours = 3.5;
+        if (item.startTime && item.endTime) {
+          const [sh, sm] = item.startTime.split(':').map(Number);
+          const [eh, em] = item.endTime.split(':').map(Number);
+          const diff = (eh * 60 + em) - (sh * 60 + sm);
+          if (diff > 0) hours = parseFloat((diff / 60).toFixed(2));
+        }
+
+        this.openWorkLogModal({
+          date: item.date,
+          clientId: item.clientId,
+          hours: hours,
+          rate: item.rate || 85,
+          desc: `${item.title} (${item.startTime || ''}–${item.endTime || ''})`
+        });
+
+        item.status = 'Completed';
+        if (item.clientId) {
+          const c = this.state.clients.find(x => x.id === item.clientId);
+          if (c) {
+            c.stage = 'ACTIVE';
+            c.invoiceReminder = 'PENDING';
+          }
+        }
+
+        this.saveStorage();
+        this.renderSevenDayHorizon();
+        this.renderClients();
+        this.renderDrawerMetrics();
+      },
+
+      changeMonth(delta) {
+        let m = this.state.calendar.viewMonth + delta;
+        let y = this.state.calendar.viewYear;
+        if (m < 0) {
+          m = 11;
+          y--;
+        } else if (m > 11) {
+          m = 0;
+          y++;
+        }
+        this.state.calendar.viewMonth = m;
+        this.state.calendar.viewYear = y;
+        this.renderCalendar();
+      },
+
+      jumpCalendarToday() {
+        const now = new Date();
+        this.state.calendar.viewYear = now.getFullYear();
+        this.state.calendar.viewMonth = now.getMonth();
+        this.state.calendar.selectedDate = now.toISOString().split('T')[0];
+        this.renderCalendar();
+      },
+
+      setScheduleView(mode) {
+        this.state.calendar.viewMode = mode;
+        const gridContainer = document.getElementById('calendarGridContainer');
+        const agendaContainer = document.getElementById('calendarAgendaContainer');
+        const selectedDayPanel = document.getElementById('selectedDayPanel');
+        const gridBtn = document.getElementById('calViewGridBtn');
+        const agendaBtn = document.getElementById('calViewAgendaBtn');
+
+        if (mode === 'agenda') {
+          gridContainer.classList.add('hidden');
+          selectedDayPanel.classList.add('hidden');
+          agendaContainer.classList.remove('hidden');
+          agendaBtn.className = 'px-3 py-1.5 rounded-md font-semibold transition bg-white text-slate-900 shadow-sm';
+          gridBtn.className = 'px-3 py-1.5 rounded-md font-semibold transition text-slate-600 hover:text-slate-900';
+          this.renderAgenda();
+        } else {
+          gridContainer.classList.remove('hidden');
+          selectedDayPanel.classList.remove('hidden');
+          agendaContainer.classList.add('hidden');
+          gridBtn.className = 'px-3 py-1.5 rounded-md font-semibold transition bg-white text-slate-900 shadow-sm';
+          agendaBtn.className = 'px-3 py-1.5 rounded-md font-semibold transition text-slate-600 hover:text-slate-900';
+          this.renderCalendar();
+        }
+        lucide.createIcons();
+      },
+
+      renderCalendar() {
+        const year = this.state.calendar.viewYear;
+        const month = this.state.calendar.viewMonth;
+
+        const monthNames = [
+          'January', 'February', 'March', 'April', 'May', 'June',
+          'July', 'August', 'September', 'October', 'November', 'December'
+        ];
+        document.getElementById('calendarMonthHeading').textContent = `${monthNames[month]} ${year}`;
+
+        const grid = document.getElementById('calendarDaysGrid');
+        if (!grid) return;
+        grid.innerHTML = '';
+
+        const firstDayObj = new Date(year, month, 1);
+        let firstDayIndex = firstDayObj.getDay();
+        firstDayIndex = (firstDayIndex === 0) ? 6 : firstDayIndex - 1; // Mon = 0
+
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+        const daysInPrevMonth = new Date(year, month, 0).getDate();
+
+        for (let i = firstDayIndex - 1; i >= 0; i--) {
+          const d = daysInPrevMonth - i;
+          const cell = document.createElement('div');
+          cell.className = 'min-h-[75px] sm:min-h-[90px] p-1.5 bg-slate-50/50 text-slate-300 text-xs select-none';
+          cell.innerHTML = `<span class="font-mono text-[11px]">${d}</span>`;
+          grid.appendChild(cell);
+        }
+
+        const todayStr = new Date().toISOString().split('T')[0];
+
+        for (let day = 1; day <= daysInMonth; day++) {
+          const mStr = String(month + 1).padStart(2, '0');
+          const dStr = String(day).padStart(2, '0');
+          const dateIso = `${year}-${mStr}-${dStr}`;
+
+          const isToday = dateIso === todayStr;
+          const isSelected = dateIso === this.state.calendar.selectedDate;
+          const eventsForDay = this.state.schedule.filter(s => s.date === dateIso);
+
+          const cell = document.createElement('div');
+          cell.className = `min-h-[75px] sm:min-h-[90px] p-1.5 cursor-pointer transition flex flex-col justify-between ${
+            isSelected ? 'bg-emerald-50/80 ring-2 ring-emerald-500 z-10' : 'hover:bg-slate-50 bg-white'
+          }`;
+          cell.onclick = () => {
+            this.state.calendar.selectedDate = dateIso;
+            this.renderCalendar();
+          };
+
+          let dayHeaderHtml = `
+            <div class="flex items-center justify-between">
+              <span class="font-mono text-xs font-semibold ${
+                isToday ? 'w-5 h-5 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold' : 'text-slate-700'
+              }">${day}</span>
+              ${eventsForDay.length > 0 ? `<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>` : ''}
+            </div>
+          `;
+
+          let eventsHtml = '<div class="space-y-1 mt-1 overflow-hidden">';
+          eventsForDay.slice(0, 2).forEach(ev => {
+            eventsHtml += `
+              <div class="text-[10px] px-1 py-0.5 rounded truncate font-medium ${
+                ev.status === 'Completed' ? 'bg-slate-100 text-slate-500 line-through' : 'bg-emerald-100 text-emerald-800'
+              }">
+                ${ev.startTime ? ev.startTime.slice(0, 5) + ' ' : ''}${ev.title}
+              </div>
+            `;
+          });
+          if (eventsForDay.length > 2) {
+            eventsHtml += `<div class="text-[9px] text-slate-400 font-bold">+${eventsForDay.length - 2} more</div>`;
+          }
+          eventsHtml += '</div>';
+
+          cell.innerHTML = dayHeaderHtml + eventsHtml;
+          grid.appendChild(cell);
+        }
+
+        const totalRendered = firstDayIndex + daysInMonth;
+        const remainder = 7 - (totalRendered % 7);
+        if (remainder < 7) {
+          for (let day = 1; day <= remainder; day++) {
+            const cell = document.createElement('div');
+            cell.className = 'min-h-[75px] sm:min-h-[90px] p-1.5 bg-slate-50/50 text-slate-300 text-xs select-none';
+            cell.innerHTML = `<span class="font-mono text-[11px]">${day}</span>`;
+            grid.appendChild(cell);
+          }
+        }
+
+        this.renderSelectedDayDetails();
+      },
+
+      renderSelectedDayDetails() {
+        const dateIso = this.state.calendar.selectedDate;
+        const parts = dateIso.split('-');
+        const dateObj = new Date(parts[0], parts[1] - 1, parts[2]);
+        const friendlyDate = dateObj.toLocaleDateString('en-AU', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+
+        document.getElementById('selectedDateTitle').textContent = `Schedule for ${friendlyDate}`;
+        const container = document.getElementById('selectedDayEventsList');
+        if (!container) return;
+        container.innerHTML = '';
+
+        const events = this.state.schedule.filter(s => s.date === dateIso);
+        if (events.length === 0) {
+          container.innerHTML = `
+            <div class="py-6 text-center text-slate-400 text-xs">
+              <i data-lucide="calendar" class="w-6 h-6 mx-auto mb-1 text-slate-300"></i>
+              No jobs scheduled on this date.
+            </div>
+          `;
+          lucide.createIcons();
+          return;
+        }
+
+        events.forEach(ev => {
+          const card = document.createElement('div');
+          card.className = 'p-3 bg-slate-50 border border-slate-200 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs';
+          card.innerHTML = `
+            <div class="space-y-1 min-w-0">
+              <div class="flex items-center gap-2">
+                <span class="font-bold text-slate-900 text-sm">${ev.title}</span>
+                <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-100 text-emerald-800">${ev.status}</span>
+              </div>
+              <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-slate-500 text-[11px]">
+                <span><i data-lucide="clock" class="inline w-3 h-3 text-slate-400"></i> ${ev.startTime || 'Anytime'} - ${ev.endTime || 'End'}</span>
+                <span><i data-lucide="user" class="inline w-3 h-3 text-slate-400"></i> ${ev.clientName || 'General Client'}</span>
+                ${ev.location ? `<span><i data-lucide="map-pin" class="inline w-3 h-3 text-slate-400"></i> ${ev.location}</span>` : ''}
+              </div>
+            </div>
+
+            <div class="flex items-center gap-2 flex-shrink-0">
+              <button onclick="app.setActiveJob('${ev.id}')" class="px-2.5 py-1.5 bg-slate-900 hover:bg-slate-800 text-white rounded-lg font-bold text-xs">
+                Make Active
+              </button>
+              <button onclick="app.convertScheduleToWorkLog('${ev.id}')" class="px-2.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-bold text-xs">
+                Log Shift
+              </button>
+              <button onclick="app.deleteScheduleItem('${ev.id}')" class="p-1.5 text-slate-400 hover:text-rose-600">
+                <i data-lucide="trash-2" class="w-4 h-4"></i>
+              </button>
+            </div>
+          `;
+          container.appendChild(card);
+        });
+        lucide.createIcons();
+      },
+
+      renderAgenda() {
+        const container = document.getElementById('agendaListContent');
+        const badge = document.getElementById('agendaTotalBadge');
+        if (!container) return;
+        container.innerHTML = '';
+
+        badge.textContent = `${this.state.schedule.length} Appointments`;
+        if (this.state.schedule.length === 0) {
+          container.innerHTML = `<div class="p-8 text-center text-slate-400 text-xs">No upcoming schedule items.</div>`;
+          return;
+        }
+
+        const sorted = [...this.state.schedule].sort((a, b) => a.date.localeCompare(b.date));
+        sorted.forEach(ev => {
+          const row = document.createElement('div');
+          row.className = 'p-4 hover:bg-slate-50 transition flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs';
+          row.innerHTML = `
+            <div class="flex items-start gap-3 min-w-0">
+              <div class="text-center font-mono bg-slate-100 p-2 rounded-lg min-w-[65px] border border-slate-200">
+                <span class="block text-[10px] text-slate-400 uppercase leading-none">${ev.date.slice(5, 7)}</span>
+                <span class="block text-base font-bold text-slate-800 leading-tight">${ev.date.slice(8, 10)}</span>
+                <span class="block text-[10px] text-slate-500">${ev.startTime || 'Day'}</span>
+              </div>
+              <div class="space-y-1 min-w-0">
+                <h4 class="font-bold text-slate-900 text-sm truncate">${ev.title}</h4>
+                <p class="text-slate-500 text-[11px]">${ev.clientName || 'General'} • ${ev.location || 'No location'}</p>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <button onclick="app.setActiveJob('${ev.id}')" class="px-2.5 py-1 bg-slate-900 hover:bg-slate-800 text-white rounded text-xs font-bold">
+                Make Active
+              </button>
+              <button onclick="app.deleteScheduleItem('${ev.id}')" class="p-1 text-slate-400 hover:text-rose-600">
+                <i data-lucide="trash-2" class="w-4 h-4"></i>
+              </button>
+            </div>
+          `;
+          container.appendChild(row);
+        });
+        lucide.createIcons();
+      },
+
+      renderWorkLogs() {
+        const tbody = document.getElementById('workLogsTableBody');
+        const emptyState = document.getElementById('emptyWorkLogState');
+        if (!tbody) return;
+        tbody.innerHTML = '';
+
+        if (this.state.workLogs.length === 0) {
+          if (emptyState) emptyState.classList.remove('hidden');
+          return;
+        }
+        if (emptyState) emptyState.classList.add('hidden');
+
+        this.state.workLogs.forEach(item => {
+          const tr = document.createElement('tr');
+          tr.className = 'hover:bg-slate-50 transition border-b border-slate-100';
+          tr.innerHTML = `
+            <td class="px-4 py-3 font-mono text-slate-600">${item.date}</td>
+            <td class="px-4 py-3 font-semibold text-slate-800">${item.clientName || 'General'}</td>
+            <td class="px-4 py-3 text-slate-600 max-w-xs truncate">${item.desc || '-'}</td>
+            <td class="px-4 py-3 text-right font-mono font-medium">${parseFloat(item.hours).toFixed(2)}h</td>
+            <td class="px-4 py-3 text-right font-mono text-slate-500">$${parseFloat(item.rate).toFixed(2)}</td>
+            <td class="px-4 py-3 text-right font-mono font-bold text-emerald-700">$${parseFloat(item.total).toFixed(2)}</td>
+            <td class="px-4 py-3 text-center">
+              <button onclick="app.deleteWorkLog('${item.id}')" class="text-slate-400 hover:text-rose-600 transition">
+                <i data-lucide="trash-2" class="w-4 h-4"></i>
+              </button>
+            </td>
+          `;
+          tbody.appendChild(tr);
+        });
+        lucide.createIcons();
+      },
+
+      openWorkLogModal(prefill = null) {
+        this.populateClientDropdowns();
+        const dateInput = document.getElementById('wlDate');
+        const clientSelect = document.getElementById('wlClientSelect');
+        const hoursInput = document.getElementById('wlHours');
+        const rateInput = document.getElementById('wlRate');
+        const descInput = document.getElementById('wlDesc');
+
+        if (prefill) {
+          dateInput.value = prefill.date || new Date().toISOString().split('T')[0];
+          clientSelect.value = prefill.clientId || '';
+          hoursInput.value = prefill.hours || 3.5;
+          rateInput.value = prefill.rate || 85;
+          descInput.value = prefill.desc || '';
+        } else {
+          dateInput.value = new Date().toISOString().split('T')[0];
+          clientSelect.value = '';
+          hoursInput.value = 3.5;
+          rateInput.value = this.state.settings.defaultRate || 85;
+          descInput.value = '';
+        }
+        document.getElementById('workLogModal').classList.remove('hidden');
+      },
+
+      closeWorkLogModal() {
+        document.getElementById('workLogModal').classList.add('hidden');
+      },
+
+      onWorkLogClientChange() {
+        const cid = document.getElementById('wlClientSelect').value;
+        const client = this.state.clients.find(c => c.id === cid);
+        if (client && client.rate) {
+          document.getElementById('wlRate').value = client.rate;
+        }
+      },
+
+      saveWorkLogEntry() {
+        const date = document.getElementById('wlDate').value;
+        const clientId = document.getElementById('wlClientSelect').value;
+        const hours = parseFloat(document.getElementById('wlHours').value) || 1;
+        const rate = parseFloat(document.getElementById('wlRate').value) || 85;
+        const desc = document.getElementById('wlDesc').value.trim() || 'Work shift';
+
+        let clientName = 'General Task';
+        if (clientId) {
+          const found = this.state.clients.find(c => c.id === clientId);
+          if (found) {
+            clientName = found.name;
+            found.stage = 'ACTIVE';
+            found.invoiceReminder = 'PENDING';
+          }
+        }
+
+        const entry = {
+          id: 'wl_' + Date.now(),
+          date: date || new Date().toISOString().split('T')[0],
+          clientId: clientId,
+          clientName: clientName,
+          desc: desc,
+          hours: hours,
+          rate: rate,
+          total: parseFloat((hours * rate).toFixed(2))
+        };
+
+        this.state.workLogs.unshift(entry);
+        this.saveStorage();
+        this.closeWorkLogModal();
+        this.renderWorkLogs();
+        this.renderDrawerMetrics();
+        this.renderClients();
+        this.showToast(`Logged ${hours} hrs ($${entry.total.toFixed(2)})`);
+      },
+
+      deleteWorkLog(id) {
+        this.state.workLogs = this.state.workLogs.filter(w => w.id !== id);
+        this.saveStorage();
+        this.renderWorkLogs();
+        this.renderDrawerMetrics();
+        this.showToast('Work entry removed');
+      },
+
+      clearWorkLogs() {
+        if (this.state.workLogs.length === 0) return;
+        this.state.workLogs = [];
+        this.saveStorage();
+        this.renderWorkLogs();
+        this.renderDrawerMetrics();
+        this.showToast('All work logs cleared');
+      },
+
+      populateClientDropdowns() {
+        const schedSelect = document.getElementById('modalSchedClient');
+        const wlSelect = document.getElementById('wlClientSelect');
+        const invSelect = document.getElementById('invClientSelect');
+
+        const fill = (sel, defaultText) => {
+          if (!sel) return;
+          const cur = sel.value;
+          sel.innerHTML = `<option value="">${defaultText}</option>`;
+          this.state.clients.forEach(c => {
+            const opt = document.createElement('option');
+            opt.value = c.id;
+            opt.textContent = `${c.name} (${c.contact || c.address || 'Client'})`;
+            sel.appendChild(opt);
+          });
+          sel.value = cur;
+        };
+
+        fill(schedSelect, '-- General / No Client --');
+        fill(wlSelect, '-- General / No Client --');
+        fill(invSelect, '-- Select from Registered Clients --');
+      },
+
+      onInvoiceClientChange() {
+        const cid = document.getElementById('invClientSelect').value;
+        const customBlock = document.getElementById('invCustomClientBlock');
+        const client = this.state.clients.find(c => c.id === cid);
+
+        if (client) {
+          if (customBlock) customBlock.classList.add('hidden');
+          document.getElementById('invClientName').value = client.name;
+          document.getElementById('invClientAddress').value = `${client.contact ? client.contact + '\n' : ''}${client.address || ''}\n${client.email || ''}\n${client.phone || ''}`.trim();
+        } else {
+          if (customBlock) customBlock.classList.remove('hidden');
+        }
+        this.renderInvoicePreview();
+      },
+
+      addInvoiceItem(desc = '', qty = 1, rate = 85) {
+        this.state.invoiceDraft.items.push({ desc: desc || 'Trade Service Labor', qty: qty || 1, rate: rate || 85 });
+        this.renderInvoiceItemsUI();
+        this.renderInvoicePreview();
+      },
+
+      removeInvoiceItem(index) {
+        if (this.state.invoiceDraft.items.length <= 1) {
+          this.showToast('At least one line item is required', false);
+          return;
+        }
+        this.state.invoiceDraft.items.splice(index, 1);
+        this.renderInvoiceItemsUI();
+        this.renderInvoicePreview();
+      },
+
+      renderInvoiceItemsUI() {
+        const container = document.getElementById('invItemsContainer');
+        if (!container) return;
+        container.innerHTML = '';
+
+        this.state.invoiceDraft.items.forEach((item, index) => {
+          const row = document.createElement('div');
+          row.className = 'grid grid-cols-12 gap-2 items-center bg-slate-50 p-2 rounded-xl border border-slate-200 text-xs';
+          row.innerHTML = `
+            <div class="col-span-6">
+              <input type="text" value="${item.desc}" placeholder="Description" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500" oninput="app.updateItemField(${index}, 'desc', this.value)">
+            </div>
+            <div class="col-span-2">
+              <input type="number" step="0.25" min="0" value="${item.qty}" placeholder="Qty/Hrs" class="w-full p-2 border border-slate-300 rounded-lg text-right font-mono" oninput="app.updateItemField(${index}, 'qty', this.value)">
+            </div>
+            <div class="col-span-3">
+              <input type="number" step="1" min="0" value="${item.rate}" placeholder="Rate $" class="w-full p-2 border border-slate-300 rounded-lg text-right font-mono" oninput="app.updateItemField(${index}, 'rate', this.value)">
+            </div>
+            <div class="col-span-1 text-center">
+              <button onclick="app.removeInvoiceItem(${index})" class="text-slate-400 hover:text-rose-600 transition">
+                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+              </button>
+            </div>
+          `;
+          container.appendChild(row);
+        });
+        lucide.createIcons();
+      },
+
+      updateItemField(index, field, value) {
+        if (!this.state.invoiceDraft.items[index]) return;
+        if (field === 'qty' || field === 'rate') {
+          this.state.invoiceDraft.items[index][field] = parseFloat(value) || 0;
+        } else {
+          this.state.invoiceDraft.items[index][field] = value;
+        }
+        this.renderInvoicePreview();
+      },
+
+      renderInvoicePreview() {
+        const invNum = document.getElementById('invNumber')?.value || 'INV-1001';
+        const invDate = document.getElementById('invDate')?.value || '';
+        const invDueDate = document.getElementById('invDueDate')?.value || '';
+        const gstChecked = document.getElementById('invGstToggle')?.checked ?? true;
+        const bankDetails = document.getElementById('invBankDetails')?.value || '';
+        
+        let clientName = document.getElementById('invClientName')?.value || 'Client Name';
+        let clientAddr = document.getElementById('invClientAddress')?.value || '';
+
+        document.getElementById('prevBizName').textContent = this.state.settings.bizName;
+        document.getElementById('prevBizABN').textContent = 'ABN: ' + this.state.settings.abn;
+        document.getElementById('prevBizContact').textContent = this.state.settings.contact;
+        
+        document.getElementById('prevTaxInvoiceHeader').textContent = gstChecked ? 'TAX INVOICE' : 'INVOICE';
+        document.getElementById('prevInvNumber').textContent = invNum;
+        document.getElementById('prevInvDate').textContent = invDate;
+        document.getElementById('prevInvDueDate').textContent = invDueDate;
+        document.getElementById('prevClientName').textContent = clientName;
+        document.getElementById('prevClientDetails').textContent = clientAddr;
+        document.getElementById('prevBankDetails').textContent = bankDetails;
+
+        const tbody = document.getElementById('prevItemsBody');
+        tbody.innerHTML = '';
+
+        let subtotal = 0;
+        this.state.invoiceDraft.items.forEach(item => {
+          const lineTotal = (item.qty || 0) * (item.rate || 0);
+          subtotal += lineTotal;
+          const tr = document.createElement('tr');
+          tr.className = 'border-b border-slate-100';
+          tr.innerHTML = `
+            <td class="py-1.5 text-slate-800 font-medium">${item.desc || 'Service'}</td>
+            <td class="py-1.5 text-right font-mono">${item.qty}</td>
+            <td class="py-1.5 text-right font-mono">$${(item.rate || 0).toFixed(2)}</td>
+            <td class="py-1.5 text-right font-mono font-semibold">$${lineTotal.toFixed(2)}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+
+        const gstRow = document.getElementById('prevGstRow');
+        let total = subtotal;
+        let gstAmount = 0;
+
+        if (gstChecked) {
+          gstRow.classList.remove('hidden');
+          gstAmount = subtotal * 0.10;
+          total = subtotal + gstAmount;
+        } else {
+          gstRow.classList.add('hidden');
+        }
+
+        document.getElementById('prevSubtotal').textContent = `$${subtotal.toFixed(2)}`;
+        document.getElementById('prevGstAmount').textContent = `$${gstAmount.toFixed(2)}`;
+        document.getElementById('prevTotalAmount').textContent = `$${total.toFixed(2)}`;
+      },
+
+      saveCurrentInvoiceRecord() {
+        const invNum = document.getElementById('invNumber').value.trim() || 'INV-001';
+        const invDate = document.getElementById('invDate').value;
+        const invClient = document.getElementById('invClientName').value.trim() || 'Client';
+        
+        let subtotal = 0;
+        this.state.invoiceDraft.items.forEach(i => subtotal += (i.qty * i.rate));
+        const gstChecked = document.getElementById('invGstToggle').checked;
+        const total = gstChecked ? subtotal * 1.10 : subtotal;
+
+        const newRecord = {
+          id: 'inv_' + Date.now(),
+          number: invNum,
+          date: invDate || new Date().toISOString().split('T')[0],
+          client: invClient,
+          total: total.toFixed(2),
+          status: 'Issued'
+        };
+
+        const numPart = parseInt(invNum.replace(/\D/g, '')) || 1000;
+        document.getElementById('invNumber').value = 'INV-' + (numPart + 1);
+
+        this.state.invoices.unshift(newRecord);
+        this.saveStorage();
+        this.renderSavedInvoices();
+        this.renderDrawerMetrics();
+        this.showToast(`Invoice ${invNum} saved to history!`);
+      },
+
+      renderSavedInvoices() {
+        const tbody = document.getElementById('savedInvoicesTableBody');
+        const emptyState = document.getElementById('emptyInvoiceHistoryState');
+        if (!tbody) return;
+        tbody.innerHTML = '';
+
+        if (this.state.invoices.length === 0) {
+          if (emptyState) emptyState.classList.remove('hidden');
+          return;
+        }
+        if (emptyState) emptyState.classList.add('hidden');
+
+        this.state.invoices.forEach(inv => {
+          const tr = document.createElement('tr');
+          tr.className = 'hover:bg-slate-50 transition border-b border-slate-100 text-xs';
+          tr.innerHTML = `
+            <td class="px-3 py-2.5 font-bold font-mono text-slate-800">${inv.number}</td>
+            <td class="px-3 py-2.5 font-mono text-slate-500">${inv.date}</td>
+            <td class="px-3 py-2.5 font-medium text-slate-800">${inv.client}</td>
+            <td class="px-3 py-2.5 text-right font-mono font-bold text-slate-900">$${parseFloat(inv.total).toFixed(2)}</td>
+            <td class="px-3 py-2.5 text-center">
+              <span class="px-2 py-0.5 rounded-full font-semibold ${inv.status === 'Paid' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">${inv.status}</span>
+            </td>
+            <td class="px-3 py-2.5 text-right space-x-1">
+              <button onclick="app.toggleInvoiceStatus('${inv.id}')" class="px-2 py-1 text-[11px] bg-slate-100 hover:bg-slate-200 text-slate-700 rounded transition">
+                Toggle Paid
+              </button>
+              <button onclick="app.deleteInvoiceRecord('${inv.id}')" class="p-1 text-slate-400 hover:text-rose-600 transition">
+                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+              </button>
+            </td>
+          `;
+          tbody.appendChild(tr);
+        });
+        lucide.createIcons();
+      },
+
+      toggleInvoiceStatus(id) {
+        const target = this.state.invoices.find(i => i.id === id);
+        if (target) {
+          target.status = target.status === 'Paid' ? 'Issued' : 'Paid';
+          this.saveStorage();
+          this.renderSavedInvoices();
+          this.renderDrawerMetrics();
+          this.showToast(`Invoice status marked as ${target.status}`);
+        }
+      },
+
+      deleteInvoiceRecord(id) {
+        this.state.invoices = this.state.invoices.filter(i => i.id !== id);
+        this.saveStorage();
+        this.renderSavedInvoices();
+        this.renderDrawerMetrics();
+        this.showToast('Invoice history record deleted');
+      },
+
+      resetInvoiceForm() {
+        this.state.invoiceDraft.items = [
+          { desc: 'Trade & Technical Labor', qty: 1, rate: this.state.settings.defaultRate || 85 }
+        ];
+        document.getElementById('invClientSelect').value = '';
+        this.onInvoiceClientChange();
+        this.renderInvoiceItemsUI();
+        this.renderInvoicePreview();
+        this.showToast('Blank invoice draft initialized');
+      },
+
+      /* FY 2026–2027 Resident Individual Tax Brackets Calculator */
+      calculateTax() {
+        const gross = parseFloat(document.getElementById('taxGrossIncome')?.value) || 0;
+        const deductions = parseFloat(document.getElementById('taxExpenses')?.value) || 0;
+        const gstReg = document.getElementById('taxGstRegistered')?.checked ?? true;
+        const includeMedicare = document.getElementById('taxMedicareLevy')?.checked ?? true;
+
+        const netTaxable = Math.max(0, gross - deductions);
+
+        // ATO FY 2026–2027 Brackets
+        let incomeTax = 0;
+        if (netTaxable <= 18200) {
+          incomeTax = 0;
+        } else if (netTaxable <= 45000) {
+          incomeTax = (netTaxable - 18200) * 0.16;
+        } else if (netTaxable <= 135000) {
+          incomeTax = 4288 + (netTaxable - 45000) * 0.30;
+        } else if (netTaxable <= 190000) {
+          incomeTax = 31288 + (netTaxable - 135000) * 0.37;
+        } else {
+          incomeTax = 51638 + (netTaxable - 190000) * 0.45;
+        }
+
+        let medicare = 0;
+        if (includeMedicare && netTaxable > 26000) {
+          medicare = netTaxable * 0.02;
+        }
+
+        const totalTaxObligation = incomeTax + medicare;
+        const netTakeHome = netTaxable - totalTaxObligation;
+
+        let gstCollected = 0;
+        let gstCredits = 0;
+        let netGst = 0;
+        if (gstReg) {
+          gstCollected = gross / 11;
+          gstCredits = deductions / 11;
+          netGst = Math.max(0, gstCollected - gstCredits);
+        }
+
+        let recommendedRate = 25;
+        if (netTaxable > 90000) recommendedRate = 32;
+        if (netTaxable > 140000) recommendedRate = 38;
+        if (netTaxable < 40000) recommendedRate = 18;
+
+        document.getElementById('outTaxableIncome').textContent = `$${netTaxable.toLocaleString('en-AU', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+        document.getElementById('outIncomeTax').textContent = `$${incomeTax.toLocaleString('en-AU', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+        document.getElementById('outMedicare').textContent = `$${medicare.toLocaleString('en-AU', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+        document.getElementById('outTotalTaxObligation').textContent = `$${totalTaxObligation.toLocaleString('en-AU', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+        document.getElementById('outTakeHome').textContent = `$${netTakeHome.toLocaleString('en-AU', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+        document.getElementById('outRecommendedBufferRate').textContent = `${recommendedRate}%`;
+        document.getElementById('drawerTaxBufferRate').textContent = `${recommendedRate}%`;
+
+        const gstBlock = document.getElementById('outGstBlock');
+        if (gstReg) {
+          gstBlock.classList.remove('hidden');
+          document.getElementById('outGstSetAside').textContent = `$${netGst.toLocaleString('en-AU', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+        } else {
+          gstBlock.classList.add('hidden');
+        }
+      },
+
+      renderMemoSlots() {
+        const tabsContainer = document.getElementById('memoSlotTabs');
+        if (!tabsContainer) return;
+        tabsContainer.innerHTML = '';
+
+        this.state.memoSlots.forEach((slot, index) => {
+          const btn = document.createElement('button');
+          const isActive = index === this.state.activeSlotIndex;
+          btn.className = isActive
+            ? 'px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-600 text-white shadow-sm flex-shrink-0'
+            : 'px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-600 hover:bg-slate-100 flex-shrink-0';
+          btn.textContent = slot.title.split(':')[0] || `Slot ${index + 1}`;
+          btn.onclick = () => {
+            this.state.activeSlotIndex = index;
+            this.renderMemoSlots();
+          };
+          tabsContainer.appendChild(btn);
+        });
+
+        const active = this.state.memoSlots[this.state.activeSlotIndex];
+        if (active) {
+          const titleInput = document.getElementById('activeSlotTitleInput');
+          const contentArea = document.getElementById('activeSlotContent');
+          if (titleInput) titleInput.value = active.title;
+          if (contentArea) contentArea.value = active.content;
+          this.updateSlotCounts(active.content);
+        }
+      },
+
+      onActiveSlotContentChange() {
+        const contentArea = document.getElementById('activeSlotContent');
+        const text = contentArea.value;
+        const active = this.state.memoSlots[this.state.activeSlotIndex];
+        if (active) {
+          active.content = text;
+          this.saveStorage();
+          this.updateSlotCounts(text);
+          if (this.state.activeSlotIndex === 0) {
+            const dashSlot = document.getElementById('dashSlotTextarea');
+            if (dashSlot) dashSlot.value = text;
+          }
+        }
+      },
+
+      saveDashQuickNote() {
+        const val = document.getElementById('dashSlotTextarea').value;
+        if (this.state.memoSlots.length > 0) {
+          this.state.memoSlots[0].content = val;
+          this.saveStorage();
+          this.renderMemoSlots();
+          this.showToast('Glovebox Run-Sheet saved');
+        }
+      },
+
+      updateActiveSlotTitle(newTitle) {
+        const active = this.state.memoSlots[this.state.activeSlotIndex];
+        if (active) {
+          active.title = newTitle;
+          this.saveStorage();
+          this.renderMemoSlots();
+        }
+      },
+
+      updateSlotCounts(text) {
+        const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+        const chars = text.length;
+        document.getElementById('slotWordCount').textContent = `${words} words`;
+        document.getElementById('slotCharCount').textContent = `${chars} chars`;
+      },
+
+      addNewMemoSlot() {
+        const nextNum = this.state.memoSlots.length + 1;
+        const newSlot = {
+          id: 'slot_' + Date.now(),
+          title: `Slot ${nextNum}: Field Notes`,
+          content: ''
+        };
+        this.state.memoSlots.push(newSlot);
+        this.state.activeSlotIndex = this.state.memoSlots.length - 1;
+        this.saveStorage();
+        this.renderMemoSlots();
+        this.showToast('New diary slot created');
+      },
+
+      clearActiveSlot() {
+        const active = this.state.memoSlots[this.state.activeSlotIndex];
+        if (active) {
+          active.content = '';
+          document.getElementById('activeSlotContent').value = '';
+          this.saveStorage();
+          this.updateSlotCounts('');
+          this.showToast('Slot content cleared');
+        }
+      },
+
+      deleteActiveSlot() {
+        if (this.state.memoSlots.length <= 1) {
+          this.showToast('Cannot delete the last remaining slot', false);
+          return;
+        }
+        this.state.memoSlots.splice(this.state.activeSlotIndex, 1);
+        this.state.activeSlotIndex = 0;
+        this.saveStorage();
+        this.renderMemoSlots();
+        this.showToast('Slot removed');
+      },
+
+      renderVehicleTrips() {
+        const tbody = document.getElementById('vehicleTripsTableBody');
+        const emptyState = document.getElementById('emptyTripsState');
+        if (!tbody) return;
+        tbody.innerHTML = '';
+
+        if (this.state.vehicleTrips.length === 0) {
+          if (emptyState) emptyState.classList.remove('hidden');
+          return;
+        }
+        if (emptyState) emptyState.classList.add('hidden');
+
+        this.state.vehicleTrips.forEach(trip => {
+          const tr = document.createElement('tr');
+          tr.className = 'hover:bg-slate-50 transition border-b border-slate-100 text-xs';
+          tr.innerHTML = `
+            <td class="px-4 py-3 font-mono text-slate-600">${trip.date}</td>
+            <td class="px-4 py-3 font-medium text-slate-800">${trip.purpose}</td>
+            <td class="px-4 py-3 text-right font-mono text-slate-500">${trip.startOdo || '-'}</td>
+            <td class="px-4 py-3 text-right font-mono text-slate-500">${trip.endOdo || '-'}</td>
+            <td class="px-4 py-3 text-right font-mono font-bold text-slate-900">${trip.km} km</td>
+            <td class="px-4 py-3 text-right font-mono text-emerald-700 font-semibold">$${trip.deduction.toFixed(2)}</td>
+            <td class="px-4 py-3 text-center">
+              <button onclick="app.deleteTrip('${trip.id}')" class="p-1 text-slate-400 hover:text-rose-600 transition">
+                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+              </button>
+            </td>
+          `;
+          tbody.appendChild(tr);
+        });
+        lucide.createIcons();
+      },
+
+      openVehicleTripModal() {
+        document.getElementById('tripDate').value = new Date().toISOString().split('T')[0];
+        document.getElementById('tripPurpose').value = '';
+        document.getElementById('tripStartOdo').value = '';
+        document.getElementById('tripEndOdo').value = '';
+        document.getElementById('tripTotalKm').value = '';
+        document.getElementById('tripModal').classList.remove('hidden');
+      },
+
+      closeVehicleTripModal() {
+        document.getElementById('tripModal').classList.add('hidden');
+      },
+
+      calcTripModalKm() {
+        const start = parseFloat(document.getElementById('tripStartOdo').value);
+        const end = parseFloat(document.getElementById('tripEndOdo').value);
+        if (!isNaN(start) && !isNaN(end) && end >= start) {
+          document.getElementById('tripTotalKm').value = (end - start).toFixed(0);
+        }
+      },
+
+      saveVehicleTrip() {
+        const date = document.getElementById('tripDate').value;
+        const purpose = document.getElementById('tripPurpose').value.trim() || 'Work travel';
+        const start = parseFloat(document.getElementById('tripStartOdo').value) || 0;
+        const end = parseFloat(document.getElementById('tripEndOdo').value) || 0;
+        let km = parseFloat(document.getElementById('tripTotalKm').value);
+
+        if (isNaN(km) || km <= 0) {
+          this.showToast('Please enter a valid trip distance (km)', false);
+          return;
+        }
+
+        const trip = {
+          id: 'vt_' + Date.now(),
+          date: date || new Date().toISOString().split('T')[0],
+          purpose: purpose,
+          startOdo: start,
+          endOdo: end,
+          km: km,
+          deduction: km * 0.88 // ATO FY26-27 Cents per km
+        };
+
+        this.state.vehicleTrips.unshift(trip);
+        this.saveStorage();
+        this.closeVehicleTripModal();
+        this.renderVehicleTrips();
+        this.renderDrawerMetrics();
+        this.showToast(`Recorded ${km} km work trip`);
+      },
+
+      deleteTrip(id) {
+        this.state.vehicleTrips = this.state.vehicleTrips.filter(t => t.id !== id);
+        this.saveStorage();
+        this.renderVehicleTrips();
+        this.renderDrawerMetrics();
+        this.showToast('Trip record deleted');
+      },
+
+      clearVehicleTrips() {
+        if (this.state.vehicleTrips.length === 0) return;
+        this.state.vehicleTrips = [];
+        this.saveStorage();
+        this.renderVehicleTrips();
+        this.renderDrawerMetrics();
+        this.showToast('All trip records cleared');
+      },
+
+      applySettingsToUI() {
+        const s = this.state.settings;
+        document.getElementById('sidebarBizName').textContent = s.bizName;
+        document.getElementById('sidebarABN').textContent = 'ABN: ' + s.abn;
+      },
+
+      openSettingsModal() {
+        document.getElementById('setBizName').value = this.state.settings.bizName;
+        document.getElementById('setBizABN').value = this.state.settings.abn;
+        document.getElementById('setBizContact').value = this.state.settings.contact;
+        document.getElementById('setDefaultRate').value = this.state.settings.defaultRate;
+        document.getElementById('settingsModal').classList.remove('hidden');
+      },
+
+      closeSettingsModal() {
+        document.getElementById('settingsModal').classList.add('hidden');
+      },
+
+      saveSettings() {
+        this.state.settings.bizName = document.getElementById('setBizName').value.trim() || 'Apex Trade & Contracting';
+        this.state.settings.abn = document.getElementById('setBizABN').value.trim() || '52 123 456 789';
+        this.state.settings.contact = document.getElementById('setBizContact').value.trim();
+        this.state.settings.defaultRate = parseFloat(document.getElementById('setDefaultRate').value) || 85;
+
+        this.saveStorage();
+        this.applySettingsToUI();
+        this.closeSettingsModal();
+        this.renderInvoicePreview();
+        this.showToast('Business details updated');
+      }
+    };
+
+    window.addEventListener('DOMContentLoaded', () => {
+      app.init();
+    });
+  </script>
+</body>
+</html>
