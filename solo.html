@@ -1189,110 +1189,79 @@ Reference: [Invoice Number]</textarea>
 </div>
           <!-- Modal 3: Client CRM Modal -->
 <div id="clientModal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 hidden">
-  <!-- 1. Constrain modal height and use flex column layout -->
-  <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl flex flex-col max-h-[90vh]">
+  <!-- Card: Added min-h-0 and responsive width/height -->
+  <div class="bg-white rounded-2xl w-full max-w-lg sm:max-w-xl p-6 shadow-2xl flex flex-col max-h-[90vh] sm:max-h-[85vh]">
     
-    <!-- Header: Stays pinned at top (flex-shrink-0) -->
+    <!-- Pinned Header -->
     <div class="flex items-center justify-between border-b border-slate-100 pb-3 flex-shrink-0">
       <h3 id="clientModalTitle" class="text-base font-bold text-slate-900">Add New Client</h3>
-      <button onclick="app.closeClientModal()" class="text-slate-400 hover:text-slate-600">
+      <button type="button" onclick="app.closeClientModal()" class="text-slate-400 hover:text-slate-600">
         <i data-lucide="x" class="w-5 h-5"></i>
       </button>
     </div>
     
     <input type="hidden" id="modalClientId">
     
-    <!-- Form Fields: Takes available height and scrolls (overflow-y-auto) -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs overflow-y-auto py-3 pr-1">
-      <div class="sm:col-span-2">
-        <label class="block font-semibold text-slate-700 mb-1">Company or Client Name *</label>
-        <input type="text" id="modalClientName" class="w-full border border-slate-300 rounded-lg p-2.5" required>
-      </div>
-      <div>
-        <label class="block font-semibold text-slate-700 mb-1">Client Stage / Status *</label>
-        <select id="modalClientStage" class="w-full border border-slate-300 rounded-lg p-2.5 font-semibold text-slate-800">
-          <option value="ACTIVE">Active Client (Work Completed)</option>
-          <option value="NEW">New Client (No Work Done Yet)</option>
-          <option value="LEAD">Lead / Inquiring Prospect</option>
-        </select>
-      </div>
-      <div>
-        <label class="block font-semibold text-slate-700 mb-1">Invoice Reminder Status</label>
-        <select id="modalClientInvoiceReminder" class="w-full border border-slate-300 rounded-lg p-2.5 font-semibold">
-          <option value="NONE">No Invoice Pending</option>
-          <option value="PENDING">⚠️ Send Invoice Reminder</option>
-        </select>
-      </div>
-      <div>
-        <label class="block font-semibold text-slate-700 mb-1">Contact Person</label>
-        <input type="text" id="modalClientContact" class="w-full border border-slate-300 rounded-lg p-2.5">
-      </div>
-      <div>
-        <label class="block font-semibold text-slate-700 mb-1">Phone Number (Tel)</label>
-        <input type="tel" id="modalClientPhone" class="w-full border border-slate-300 rounded-lg p-2.5" placeholder="0400 000 000">
-      </div>
-      <div class="sm:col-span-2">
-        <label class="block font-semibold text-slate-700 mb-1">Email Address</label>
-        <input type="email" id="modalClientEmail" class="w-full border border-slate-300 rounded-lg p-2.5">
-      </div>
-      <div class="sm:col-span-2">
-        <label class="block font-semibold text-slate-700 mb-1">Site / Billing Address</label>
-        <input type="text" id="modalClientAddress" class="w-full border border-slate-300 rounded-lg p-2.5" placeholder="e.g. 42 Moorabool St, Geelong VIC">
-      </div>
-      <div>
-        <label class="block font-semibold text-slate-700 mb-1">Agreed Hourly Rate ($ AUD)</label>
-        <input type="number" id="modalClientRate" class="w-full border border-slate-300 rounded-lg p-2.5" value="85">
-      </div>
-      <div>
-        <label class="block font-semibold text-slate-700 mb-1">Client ABN</label>
-        <input type="text" id="modalClientABN" class="w-full border border-slate-300 rounded-lg p-2.5" placeholder="11 digits">
-      </div>
-      <div class="sm:col-span-2">
-        <label class="block font-semibold text-slate-700 mb-1">Gate / Key Codes & Site Notes</label>
-        <textarea id="modalClientNotes" class="w-full border border-slate-300 rounded-lg p-2.5" rows="2" placeholder="Key safe #1982, side gate padlock, dog on premises..."></textarea>
+    <!-- Form Fields: Note `flex-1` and `min-h-0` added alongside `overflow-y-auto` -->
+    <div class="flex-1 min-h-0 overflow-y-auto py-3 pr-1">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+        <div class="sm:col-span-2">
+          <label class="block font-semibold text-slate-700 mb-1">Company or Client Name *</label>
+          <input type="text" id="modalClientName" class="w-full border border-slate-300 rounded-lg p-2.5" required>
+        </div>
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Client Stage / Status *</label>
+          <select id="modalClientStage" class="w-full border border-slate-300 rounded-lg p-2.5 font-semibold text-slate-800">
+            <option value="ACTIVE">Active Client (Work Completed)</option>
+            <option value="NEW">New Client (No Work Done Yet)</option>
+            <option value="LEAD">Lead / Inquiring Prospect</option>
+          </select>
+        </div>
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Invoice Reminder Status</label>
+          <select id="modalClientInvoiceReminder" class="w-full border border-slate-300 rounded-lg p-2.5 font-semibold">
+            <option value="NONE">No Invoice Pending</option>
+            <option value="PENDING">⚠️ Send Invoice Reminder</option>
+          </select>
+        </div>
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Contact Person</label>
+          <input type="text" id="modalClientContact" class="w-full border border-slate-300 rounded-lg p-2.5">
+        </div>
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Phone Number (Tel)</label>
+          <input type="tel" id="modalClientPhone" class="w-full border border-slate-300 rounded-lg p-2.5" placeholder="0400 000 000">
+        </div>
+        <div class="sm:col-span-2">
+          <label class="block font-semibold text-slate-700 mb-1">Email Address</label>
+          <input type="email" id="modalClientEmail" class="w-full border border-slate-300 rounded-lg p-2.5">
+        </div>
+        <div class="sm:col-span-2">
+          <label class="block font-semibold text-slate-700 mb-1">Site / Billing Address</label>
+          <input type="text" id="modalClientAddress" class="w-full border border-slate-300 rounded-lg p-2.5" placeholder="e.g. 42 Moorabool St, Geelong VIC">
+        </div>
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Agreed Hourly Rate ($ AUD)</label>
+          <input type="number" id="modalClientRate" class="w-full border border-slate-300 rounded-lg p-2.5" value="85">
+        </div>
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Client ABN</label>
+          <input type="text" id="modalClientABN" class="w-full border border-slate-300 rounded-lg p-2.5" placeholder="11 digits">
+        </div>
+        <div class="sm:col-span-2">
+          <label class="block font-semibold text-slate-700 mb-1">Gate / Key Codes & Site Notes</label>
+          <textarea id="modalClientNotes" class="w-full border border-slate-300 rounded-lg p-2.5" rows="2" placeholder="Key safe #1982, side gate padlock, dog on premises..."></textarea>
+        </div>
       </div>
     </div>
     
-    <!-- Footer: Stays pinned at bottom (flex-shrink-0) -->
+    <!-- Pinned Footer -->
     <div class="flex justify-end gap-2 pt-3 border-t border-slate-100 flex-shrink-0">
-      <button onclick="app.closeClientModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-semibold">Cancel</button>
-      <button onclick="app.saveClientFromModal()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold">Save Client</button>
+      <button type="button" onclick="app.closeClientModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-semibold">Cancel</button>
+      <button type="button" onclick="app.saveClientFromModal()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold">Save Client</button>
     </div>
   </div>
 </div>
-    
-    <!-- Footer: Stays pinned at bottom (flex-shrink-0) -->
-    <div class="flex justify-end gap-2 pt-3 border-t border-slate-100 flex-shrink-0">
-      <button onclick="app.closeClientModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-semibold">Cancel</button>
-      <button onclick="app.saveClientFromModal()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold">Save Client</button>
-    </div>
-  </div>
-</div>div>
-        <div>
-          <label class="block font-semibold text-slate-700 mb-1">Client or Purpose</label>
-          <input type="text" id="tripPurpose" class="w-full border border-slate-300 rounded-lg p-2.5" placeholder="e.g. Travel to client site / Bunnings pickup">
-        </div>
-        <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label class="block font-semibold text-slate-700 mb-1">Start Odometer</label>
-            <input type="number" id="tripStartOdo" class="w-full border border-slate-300 rounded-lg p-2.5" placeholder="48200" oninput="app.calcTripModalKm()">
-          </div>
-          <div>
-            <label class="block font-semibold text-slate-700 mb-1">End Odometer</label>
-            <input type="number" id="tripEndOdo" class="w-full border border-slate-300 rounded-lg p-2.5" placeholder="48265" oninput="app.calcTripModalKm()">
-          </div>
-        </div>
-        <div>
-          <label class="block font-semibold text-slate-700 mb-1">Total Distance (km)</label>
-          <input type="number" id="tripTotalKm" class="w-full border border-slate-300 rounded-lg p-2.5 font-bold text-emerald-700" placeholder="65">
-        </div>
-      </div>
-      <div class="flex justify-end gap-2 pt-2 border-t border-slate-100">
-        <button onclick="app.closeVehicleTripModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-semibold">Cancel</button>
-        <button onclick="app.saveVehicleTrip()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold">Save Trip</button>
-      </div>
-    </div>
-  </div>
 
   <!-- Modal 5: Business Settings Modal -->
   <div id="settingsModal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 hidden">
