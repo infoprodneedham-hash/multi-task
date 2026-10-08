@@ -1000,6 +1000,9 @@ Reference: [Invoice Number]</textarea>
         <button onclick="app.closeSnapshotModal()" class="text-slate-400 hover:text-slate-600">
           <i data-lucide="x" class="w-5 h-5"></i>
         </button>
+        <button onclick="app.exportGoogleSheetsCsv()" class="px-3 py-2 bg-emerald-700 hover:bg-emerald-800 text-white font-bold rounded-lg transition flex items-center gap-1.5 shadow-sm text-xs">
+  <i data-lucide="sheet" class="w-3.5 h-3.5"></i> Download Google Sheets CSV
+</button>
       </div>
 
       <div class="space-y-4 text-xs text-slate-600">
@@ -1325,6 +1328,80 @@ Reference: [Invoice Number]</textarea>
   <!-- ================= APPLICATION LOGIC SCRIPT ================= -->
   <script>
     const app = {
+
+
+      /* ================= CSV EXPORT FOR GOOGLE SHEETS ================= */
+      escapeCsvField(val) {
+        if (val === null || val === undefined) return '""';
+        const str = String(val).replace(/"/g, '""');
+        return `"${str}"`;
+      },
+
+      downloadCsvFile(filename, csvContent) {
+        // Prepend UTF-8 BOM so Excel & Google Sheets correctly parse symbols & currency
+        const blob = new Blob(["\uFEFF" + csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      },
+
+      exportGoogleSheetsCsv() {
+        const dateStamp = new Date().toISOString().slice(0, 10);
+        let csv = '';
+
+        // 1. WORK HOURS LOG SECTION
+        csv += '=== WORK HOURS & SHIFTS ===\n';
+        csv += 'Date,Client,Shift Notes / Description,Hours,Hourly Rate ($),Total ($ AUD)\n';
+        this.state.workLogs.forEach(w => {
+          csv += [
+            this.escapeCsvField(w.date),
+            this.escapeCsvField(w.clientName || 'General'),
+            this.escapeCsvField(w.desc),
+            w.hours,
+            w.rate,
+            w.total
+          ].join(',') + '\n';
+        });
+
+        // 2. VEHICLE TRIPS & KILOMETRES SECTION
+        csv += '\n=== VEHICLE KILOMETRES (ATO FY26-27 @ 88c/km) ===\n';
+        csv += 'Date,Purpose / Destination,Start Odo,End Odo,Distance (km),Guide Deduction ($ AUD)\n';
+        this.state.vehicleTrips.forEach(t => {
+          csv += [
+            this.escapeCsvField(t.date),
+            this.escapeCsvField(t.purpose),
+            t.startOdo || '',
+            t.endOdo || '',
+            t.km,
+            t.deduction ? t.deduction.toFixed(2) : (t.km * 0.88).toFixed(2)
+          ].join(',') + '\n';
+        });
+
+        // 3. TAX INVOICE REGISTER SECTION
+        csv += '\n=== ISSUED TAX INVOICES ===\n';
+        csv += 'Invoice Number,Date Issued,Client Name,Total ($ AUD),Status\n';
+        this.state.invoices.forEach(inv => {
+          csv += [
+            this.escapeCsvField(inv.number),
+            this.escapeCsvField(inv.date),
+            this.escapeCsvField(inv.client),
+            inv.total,
+            this.escapeCsvField(inv.status)
+          ].join(',') + '\n';
+        });
+
+        const filename = `SoloTrack-AU-Sheets-Export-${dateStamp}.csv`;
+        this.downloadCsvFile(filename, csv);
+        this.showToast('CSV downloaded! Ready to import into Google Sheets.');
+      },
+
+
+      
       state: {
         financialYear: 'FY 2026–2027',
         fyKey: 'FY26-27',
